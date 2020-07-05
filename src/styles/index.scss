@@ -1,0 +1,37 @@
+@import "./navbar.scss";
+@import "./element-ui.scss";
+@import "./variables.scss";
+@import "./mixin.scss";
+
+.content-wrapper{
+  padding: 20px 140px 0 140px;
+  height: 100%;
+  width: 100% !important;
+  .content-middle{
+    width: 900px !important;
+    display:inline-block;
+    margin-left: 10px;
+    z-index: 1;
+  }
+  .content-right{
+    width: 335px !important;
+    display:inline-block;
+    margin-left: 15px;
+  }
+}
+.el-row:focus {
+  outline: none;
+}
+.el-col:focus {
+  outline: none;
+}
+
+//修饰颜色方块
+.div-embellish{
+  width: 2px;
+  height: 18px;
+  background-color: #fe0000;
+  position: absolute;
+  top: 99px;
+  right: 458px;
+}

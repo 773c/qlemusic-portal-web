@@ -1,0 +1,161 @@
+// 框框
+.el-menu-demo {
+  height: 60px;
+  padding-left: 100px;
+  padding-right: 100px;
+  .nav-router-link {
+    float: left;
+    .el-menu-item {
+      height: 60px;
+      line-height: 60px;
+    }
+    .el-menu-item:not(.is-active):hover {
+      background-color: #fe0000 !important;
+    }
+  }
+}
+
+//菜单按钮
+.menu-button {
+  display: none;
+}
+
+//logo图标
+.el-menu-item-first {
+  padding-right: 5px;
+}
+
+//搜索框
+.select-box {
+  width: 400px !important;
+  height: 30px;
+  margin: 15px 0px 0px 20px ;
+  .el-button {
+    padding: 0px 12px;
+  }
+}
+
+//显示内容
+.select-content {
+  position: absolute;
+  top: 60px;
+  left: 445px;
+  height: 320px;
+  width: 400px !important;
+  background-color: antiquewhite;
+  z-index: 999;
+}
+
+// 收藏
+.collect-container{
+  height: 44px;
+  display: inline-block;
+  margin-left: 480px;
+  .collect-wrapper{
+    cursor: pointer;
+    margin-top: 15px;
+    .svg-collect{
+
+    }
+  }
+}
+
+// 消息
+.info-container{
+  height: 29px;
+  display: inline-block;
+  margin-left: 15px;
+  .info-wrapper{
+    cursor: pointer;
+    //margin-top: 15px;
+    .svg-info{
+
+    }
+  }
+}
+
+// 用户
+.avatar-container {
+  height: 48px;
+  display: inline-block;
+  float: right;
+  .avatar-wrapper {
+    cursor: pointer;
+    margin-top: 15px;
+    .user-avatar {
+      width: 30px !important;
+      height: 30px;
+      border-radius: 10px;
+    }
+    .el-icon-caret-bottom {
+      font-size: 12px;
+    }
+  }
+}
+
+.user-dropdown {
+  position: relative;
+
+}
+
+//移动端6/7/8
+.mobile {
+  .navbar-wrapper {
+    .common-navbar {
+      padding-left: 36px;
+      .menu-button {
+        display: block;
+        position: relative;
+        top: 17px;
+        left: -18px;
+      }
+      .el-menu-item-first{
+        margin: -30px 0 0 30px;
+        .img-logo {
+          width: 62px !important;
+          height: 60px;
+          margin-left: -30px;
+        }
+      }
+      .nav-link {
+        display: none;
+      }
+      .select-box {
+        width: 160px !important;
+        height: 30px;
+        position: fixed;
+        top: -1px;
+        left: 110px;
+        .el-button {
+          padding: 0px 0px 0px 7px;
+        }
+      }
+      .avatar-container {
+        margin-left:90px;
+        position: absolute;
+        top: 2px;
+        left: 236px;
+        .avatar-wrapper {
+          cursor: pointer;
+          margin-top: 14px;
+          .user-avatar {
+          }
+          .el-icon-caret-bottom {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+  .content-wrapper {
+    padding: 10px 0px;
+    .content-middle {
+      margin-left: 0px;
+      width: 375px !important;
+    }
+    .content-right{
+      display: none;
+    }
+  }
+
+}

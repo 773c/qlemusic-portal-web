@@ -1,0 +1,145 @@
+//to reset element-ui default css
+//默认文本颜色#606266
+
+.el-upload {
+  input[type="file"] {
+    display: none !important;
+  }
+}
+
+.el-upload__input {
+  display: none;
+}
+
+//修改输入框样式
+.el-input .el-input__inner:focus {
+  border-color: #fe0000;
+}
+
+.el-textarea .el-textarea__inner:focus {
+  border-color: #fe0000;
+}
+
+.el-cascader .el-input.is-focus .el-input__inner:focus {
+  border-color: #fe0000
+}
+
+.el-cascader .el-input:not(.is-focus) .el-input__inner:focus {
+  border-color: #fe0000
+}
+
+.el-select .el-input.is-focus .el-input__inner:focus {
+  border-color: #fe0000
+}
+
+.el-select .el-input:not(.is-focus) .el-input__inner:focus {
+  border-color: #fe0000
+}
+
+//表单验证成功样式
+.el-form-item.is-success .el-input__inner, .el-form-item.is-success .el-input__inner:focus, .el-form-item.is-success .el-textarea__inner, .el-form-item.is-success .el-textarea__inner:focus {
+  border-color: #67C23A
+}
+
+.el-form-item.is-success .el-input-group__append .el-input__inner, .el-form-item.is-success .el-input-group__prepend .el-input__inner {
+  border-color: transparent
+}
+
+.el-form-item.is-success .el-input__validateIcon {
+  color: #67C23A
+}
+
+//按钮样式
+.el-button--danger {
+  background-color: #fe0000;
+  border-color: #fe0000
+}
+
+.el-button--danger:hover {
+  background-color: #ff370f;
+  border-color: #fe0000;
+}
+
+.el-button--danger:focus {
+  background-color: #fe0000;
+  border-color: #fe0000;
+}
+
+.el-button--danger.is-plain {
+  color: #606266;
+  background-color: #fff;
+  border-color: #DCDFE6;
+}
+
+.el-button--danger.is-plain:hover {
+  color: #fe0000;
+  background-color: #ffe5e5;
+  border-color: #ff7070;
+}
+
+.el-button--danger.is-plain:focus {
+  color: #fe0000;
+  background-color: #ffe5e5;
+  border-color: #ff7070;
+}
+
+//暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
+.el-dialog {
+  transform: none;
+  left: 0;
+  position: relative;
+  margin: 0 auto;
+}
+
+//element ui upload
+.upload-container {
+  .el-upload {
+    width: 100%;
+    .el-upload-dragger {
+      width: 100%;
+      height: 200px;
+    }
+  }
+}
+
+//加载颜色
+
+.el-loading-mask {
+  .circular {
+    display: none;
+  }
+}
+
+.el-loading-spinner {
+  background: url("../assets/images/loading.gif") no-repeat;
+  width: 100%;
+  height: 100%;
+  position: relative;
+  top: 50%;
+  left: 45%;
+}
+
+//el-dropdown
+.el-dropdown-menu__item:not(.is-disabled):hover {
+  background-color: #fe0000;
+  color: #ffffff
+}
+
+//el-pagination
+.el-pagination.is-background .el-pager li:not(.disabled).active{
+  background-color: #fe0000;
+  color: #ffffff;
+}
+.el-pagination.is-background .el-pager li:not(.disabled):not(.active):hover{
+  color: #fe0000;
+}
+
+//el-pagination附加功能（每页显示总数）
+.el-pagination__sizes .el-input .el-input__inner:hover{
+  border-color:#fe0000;
+}
+
+//router-link
+a{
+  text-decoration: none;
+}
