@@ -1,15 +1,15 @@
 <template>
   <el-menu
     :default-active="$route.path"
-    class="el-menu-demo"
+    class="navbar"
     mode="horizontal"
     background-color="#000000"
     text-color="#fff"
     active-text-color="#fe0000">
     <!--mobile菜单按钮-->
-    <div class="menu-button">
+    <el-menu-item class="menu-button">
       <img src="@/assets/images/menu.png" width="26" height="26">
-    </div>
+    </el-menu-item>
     <!--logo图标-->
     <el-menu-item class="el-menu-item-first">
       <slot name="logo"></slot>
@@ -27,18 +27,20 @@
       <slot name="nine"></slot>
     </div>
     <!--搜索框-->
-    <el-input
-      placeholder="请输入内容"
-      v-model="selectBox"
-      class="select-box"
-      size="small"
-      @focus="showContent"
-      @blur="hideContent">
-      <el-button slot="append" icon="el-icon-search"></el-button>
-    </el-input>
-    <el-card class="select-content" v-show="isShowContent">
-      asdas
-    </el-card>
+    <el-menu-item class="el-menu-item-select">
+      <el-input
+        placeholder="请输入内容"
+        v-model="selectBox"
+        class="select-box"
+        size="small"
+        @focus="showContent"
+        @blur="hideContent">
+        <el-button slot="append" icon="el-icon-search"></el-button>
+      </el-input>
+      <el-card class="select-content" v-show="isShowContent">
+        asdas
+      </el-card>
+    </el-menu-item>
 
     <!--导航链接-->
     <slot name="after-one"></slot>

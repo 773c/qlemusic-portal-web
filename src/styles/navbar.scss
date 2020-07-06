@@ -1,16 +1,74 @@
 // 框框
-.el-menu-demo {
+.navbar {
   height: 60px;
+  border-radius: 0px !important;
   padding-left: 100px;
   padding-right: 100px;
+  .el-menu-item-first {
+    height: 59px;
+    .img-logo {
+    }
+  }
+  // 路由链接
   .nav-router-link {
     float: left;
     .el-menu-item {
-      height: 60px;
-      line-height: 60px;
+      height: 59px;
+      line-height: 63px;
     }
     .el-menu-item:not(.is-active):hover {
       background-color: #fe0000 !important;
+    }
+  }
+  // 搜索框
+  .el-menu-item-select {
+    float: left;
+    height: 59px;
+    line-height: 47px;
+  }
+
+  // 收藏
+  .collect-container {
+    height: 47px;
+    line-height: 68px;
+    position: absolute;
+    right: 195px;
+    .collect-wrapper {
+      cursor: pointer;
+      .svg-collect {
+
+      }
+    }
+  }
+  // 消息
+  .info-container {
+    height: 47px;
+    line-height: 68px;
+    position: absolute;
+    right: 165px;
+    .info-wrapper {
+      cursor: pointer;
+      .svg-info {
+
+      }
+    }
+  }
+  // 用户
+  .avatar-container {
+    height: 47px;
+    position: absolute;
+    right: 120px;
+    .avatar-wrapper {
+      cursor: pointer;
+      margin-top: 18px;
+      .user-avatar {
+        width: 30px !important;
+        height: 30px;
+        border-radius: 10px;
+      }
+      .el-icon-caret-bottom {
+        font-size: 12px;
+      }
     }
   }
 }
@@ -20,16 +78,11 @@
   display: none;
 }
 
-//logo图标
-.el-menu-item-first {
-  padding-right: 5px;
-}
-
 //搜索框
 .select-box {
   width: 400px !important;
   height: 30px;
-  margin: 15px 0px 0px 20px ;
+  margin: 15px 0px 0px 20px;
   .el-button {
     padding: 0px 12px;
   }
@@ -46,52 +99,6 @@
   z-index: 999;
 }
 
-// 收藏
-.collect-container{
-  height: 44px;
-  display: inline-block;
-  margin-left: 480px;
-  .collect-wrapper{
-    cursor: pointer;
-    margin-top: 15px;
-    .svg-collect{
-
-    }
-  }
-}
-
-// 消息
-.info-container{
-  height: 29px;
-  display: inline-block;
-  margin-left: 15px;
-  .info-wrapper{
-    cursor: pointer;
-    //margin-top: 15px;
-    .svg-info{
-
-    }
-  }
-}
-
-// 用户
-.avatar-container {
-  height: 48px;
-  display: inline-block;
-  float: right;
-  .avatar-wrapper {
-    cursor: pointer;
-    margin-top: 15px;
-    .user-avatar {
-      width: 30px !important;
-      height: 30px;
-      border-radius: 10px;
-    }
-    .el-icon-caret-bottom {
-      font-size: 12px;
-    }
-  }
-}
 
 .user-dropdown {
   position: relative;
@@ -101,48 +108,53 @@
 //移动端6/7/8
 .mobile {
   .navbar-wrapper {
-    .common-navbar {
-      padding-left: 36px;
-      .menu-button {
-        display: block;
-        position: relative;
-        top: 17px;
-        left: -18px;
+    padding-left: 36px;
+    .menu-button {
+      display: block;
+      height: 59px;
+      line-height: 55px;
+      margin-left: -36px;
+    }
+    .el-menu-item-first {
+      //margin: -58px 0 0 30px;
+      .img-logo {
+        width: 62px !important;
+        height: 60px;
+        margin-left: -30px;
       }
-      .el-menu-item-first{
-        margin: -30px 0 0 30px;
-        .img-logo {
-          width: 62px !important;
-          height: 60px;
-          margin-left: -30px;
+    }
+    .nav-link {
+      display: none;
+    }
+    .select-box {
+      width: 160px !important;
+      height: 30px;
+      position: fixed;
+      top: -1px;
+      left: 120px;
+      .el-button {
+        padding: 0px 0px 0px 7px;
+      }
+    }
+
+    .collect-container{
+      display: none;
+    }
+    .info-container{
+      display: none;
+    }
+    .avatar-container {
+      margin-left: 90px;
+      position: absolute;
+      top: -3px;
+      left: 236px;
+      .avatar-wrapper {
+        cursor: pointer;
+        margin-top: 14px;
+        .user-avatar {
         }
-      }
-      .nav-link {
-        display: none;
-      }
-      .select-box {
-        width: 160px !important;
-        height: 30px;
-        position: fixed;
-        top: -1px;
-        left: 110px;
-        .el-button {
-          padding: 0px 0px 0px 7px;
-        }
-      }
-      .avatar-container {
-        margin-left:90px;
-        position: absolute;
-        top: 2px;
-        left: 236px;
-        .avatar-wrapper {
-          cursor: pointer;
-          margin-top: 14px;
-          .user-avatar {
-          }
-          .el-icon-caret-bottom {
-            font-size: 12px;
-          }
+        .el-icon-caret-bottom {
+          font-size: 12px;
         }
       }
     }
@@ -153,7 +165,7 @@
       margin-left: 0px;
       width: 375px !important;
     }
-    .content-right{
+    .content-right {
       display: none;
     }
   }

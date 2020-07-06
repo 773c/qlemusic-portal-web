@@ -6,6 +6,7 @@
         <h3 class="medium">{{ item }}</h3>
       </el-carousel-item>
     </el-carousel>
+
     <el-card class="el-card-content" body-style="background-color:#222222;color:#ffffff">
       <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto;">
         <li v-for="i in count" class="infinite-list-item">{{ i }}</li>
@@ -19,12 +20,12 @@
     name: "index",
     data() {
       return {
-        count: 10
+        count: 0
       }
     },
     methods: {
       load() {
-        this.count += 2
+        // this.count += 2
       }
     }
   }
