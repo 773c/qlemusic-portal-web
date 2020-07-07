@@ -35,7 +35,7 @@
         size="small"
         @focus="showContent"
         @blur="hideContent">
-        <el-button slot="append" icon="el-icon-search"></el-button>
+        <el-button type="danger" slot="append" icon="el-icon-search"></el-button>
       </el-input>
       <el-card class="select-content" v-show="isShowContent">
         asdas

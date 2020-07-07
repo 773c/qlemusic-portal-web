@@ -43,12 +43,4 @@
 </script>
 
 <style scoped>
-  @import "../../styles/mixin.scss";
-
-  .main-wrapper {
-  @include clearfix;
-    position: relative;
-    height: 100%;
-    width: 100%;
-  }
 </style>

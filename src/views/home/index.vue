@@ -1,16 +1,22 @@
 <template>
   <div id="home">
     <!--走马灯-->
-    <el-carousel :interval="4000" type="card" height="200px">
+    <el-carousel :interval="4000" type="card" height="230px">
       <el-carousel-item v-for="item in 6" :key="item">
         <h3 class="medium">{{ item }}</h3>
       </el-carousel-item>
     </el-carousel>
 
     <el-card class="el-card-content" body-style="background-color:#222222;color:#ffffff">
-      <ul class="infinite-list" v-infinite-scroll="load" style="overflow:auto;">
-        <li v-for="i in count" class="infinite-list-item">{{ i }}</li>
-      </ul>
+      <div class="infinite-list-wrapper" style="overflow:auto">
+        <ul
+          class="list"
+          v-infinite-scroll="load">
+          <li v-for="i in count" class="list-item">{{ i }}</li>
+        </ul>
+        <p v-if="loading">加载中...</p>
+        <p v-if="noMore">没有更多了</p>
+      </div>
     </el-card>
   </div>
 </template>
@@ -18,15 +24,28 @@
 <script>
   export default {
     name: "index",
-    data() {
+    data () {
       return {
-        count: 0
+        count: 20,
+        loading: false
+      }
+    },
+    computed: {
+      noMore () {
+        return this.count >= 20
+      },
+      disabled () {
+        return this.loading || this.noMore
       }
     },
     methods: {
-      load() {
-        // this.count += 2
-      }
+      // load () {
+      //   this.loading = true
+      //   setTimeout(() => {
+      //     this.count += 2
+      //     this.loading = false
+      //   }, 2000)
+      // }
     }
   }
 </script>

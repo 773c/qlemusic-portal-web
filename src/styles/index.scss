@@ -1,17 +1,18 @@
 @import "./navbar.scss";
 @import "./element-ui.scss";
 @import "./variables.scss";
-@import "./mixin.scss";
 
 body {
   -moz-osx-font-smoothing: grayscale;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  width: 100% !important;
 }
 
 html {
   box-sizing: border-box;
+  width: 100% !important;
 }
 
 *,
@@ -39,17 +40,40 @@ a:hover {
 
 //内容部分
 .content-wrapper{
-  padding: 20px 140px 0 140px;
-  height: 100%;
+  padding-top: 80px;
+  width: 100% !important;
+  min-height: 100%;
   .content-middle{
-    width:890px !important;
-    display:inline-block;
-    margin-left: 5px;
+    width:58% !important;
+    margin-left: 10.8%;
+    float:left;
+    display:inline;
+    .el-card-content{
+
+    }
   }
   .content-right{
-    width: 330px !important;
-    display:inline-block;
-    margin-left: 15px;
+    width: 20% !important;
+    float:right;
+    display:inline;
+    margin-right: 10%;
+    //修饰颜色方块
+    .div-embellish{
+      width: 3px;
+      height: 18px;
+      background-color: #fe0000;
+      float: left;
+      margin-right: 2px;
+    }
+    //按钮
+    .right-button{
+      float: right;
+      margin-top: -4px;
+      padding: 6px 10px
+    }
+    .right-button:hover{
+      background-color: #fe0000;
+    }
   }
 }
 .el-row:focus {
@@ -59,12 +83,4 @@ a:hover {
   outline: none;
 }
 
-//修饰颜色方块
-.div-embellish{
-  width: 2px;
-  height: 18px;
-  background-color: #fe0000;
-  position: absolute;
-  top: 99px;
-  right: 458px;
-}
+

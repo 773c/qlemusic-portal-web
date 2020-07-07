@@ -69,12 +69,39 @@
         <el-dropdown-menu class="user-dropdown" slot="dropdown">
           <router-link class="inlineBlock" to="/">
             <el-dropdown-item>
-              首页
+              个人中心
             </el-dropdown-item>
           </router-link>
-          <el-dropdown-item divided>
-            <span @click="" style="display:block;">退出</span>
-          </el-dropdown-item>
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item>
+              我的收藏
+            </el-dropdown-item>
+          </router-link>
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item>
+              我的关注
+            </el-dropdown-item>
+          </router-link>
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item>
+              账号设置
+            </el-dropdown-item>
+          </router-link>
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item divided>
+              我的动态
+            </el-dropdown-item>
+          </router-link>
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item>
+              我的下载
+            </el-dropdown-item>
+          </router-link>
+          <router-link class="inlineBlock" to="/">
+            <el-dropdown-item divided>
+              退出
+            </el-dropdown-item>
+          </router-link>
         </el-dropdown-menu>
       </el-dropdown>
     </template>
