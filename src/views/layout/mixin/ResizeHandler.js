@@ -25,8 +25,6 @@ export default {
   methods: {
     isMobile() {
       const rect = body.getBoundingClientRect()
-      console.log(body);
-      console.log(rect.width);
       return rect.width < WIDTH
     },
     resizeHandler() {

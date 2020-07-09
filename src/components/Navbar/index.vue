@@ -89,8 +89,7 @@
           this.isShowContent = true;
         }
       },
-      hideContent(event) {
-        console.log(event);
+      hideContent() {
         this.isShowContent = false;
       }
     }

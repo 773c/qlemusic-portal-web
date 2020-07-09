@@ -1,14 +1,14 @@
 // 框框
 .navbar {
   position: fixed;
-  height: 60px;
+  height: 65px;
   border-radius: 0px !important;
   padding-right: 100px;
   width: 100%;
-  z-index: 1000;
+  z-index: 999;
   .el-menu-item-first {
     margin-left: 8.89375%;
-    height: 59px;
+    height: 63px;
     .img-logo {
 
     }
@@ -20,8 +20,8 @@
   .nav-router-link {
     float: left;
     .el-menu-item {
-      height: 59px;
-      line-height: 63px;
+      height: 64px;
+      line-height: 66px;
     }
     .el-menu-item:not(.is-active):hover {
       background-color: #fe0000 !important;
@@ -29,14 +29,14 @@
   }
   // 搜索框
   .el-menu-item-select {
-    height: 59px;
-    line-height: 47px;
+    height: 64px;
+    line-height: 52px;
   }
 
   // 收藏
   .collect-container {
-    height: 47px;
-    line-height: 68px;
+    height: 52px;
+    line-height: 72px;
     position: absolute;
     right: 205px;
     .collect-wrapper {
@@ -48,14 +48,152 @@
   }
   // 消息
   .info-container {
-    height: 47px;
-    line-height: 68px;
+    height: 52px;
+    line-height: 72px;
     position: absolute;
     right: 175px;
     .info-wrapper {
       cursor: pointer;
       .svg-info {
 
+      }
+    }
+  }
+  //用户未登录
+  .login-container {
+    height: 52px;
+    position: absolute;
+    top: 26px;
+    right: 130px;
+    cursor: pointer;
+    color: white;
+  }
+  .login-container:hover {
+    color: #fe0000;
+  }
+  .el-dialog-user {
+    .el-dialog-title {
+      position: absolute;
+      top: 15px;
+      left: 20px;
+      height: 36px;
+      width: 36px;
+      cursor: pointer;
+    }
+    .el-dialog-tabs{
+      padding-left: 47px;
+      height: 370px;
+      width: 400px;
+      .tabs-title{
+        display: inline-block;
+        width: 140px;
+        font-weight: bold;
+        font-size: 19px;
+        color: #fe0000;
+        cursor: pointer;
+      }
+      .tabs-content{
+        margin-top: 20px;
+      }
+      .tabs-label{
+        font-size: 13px;
+        color: #888888;
+      }
+      .tabs-input{
+        margin-top: 6px;
+        border: none;
+        background-color: #F7F7F7;
+        height: 29px;
+        width: 300px;
+      }
+      .tabs-input:focus{
+        outline:none;
+      }
+      .tabs-log-button{
+        width: 300px;
+        height: 45px;
+        border-radius: 50px;
+      }
+      .tabs-reg-forget{
+        .el-col{
+          font-size: 13px;
+          .tabs-reg{
+            cursor: pointer;
+          }
+        }
+      }
+      .tabs-oauth{
+        margin-top: 10px;
+        padding-right: 65px;
+        .el-col{
+          margin-left: 5px;
+          img{
+            cursor: pointer;
+          }
+        }
+      }
+      //手机号验证
+      .tabs-tel-content{
+        .el-input .el-input__inner{
+          height: 29px;
+          background-color: #F7F7F7;
+          border: 1px solid #F7F7F7;
+          color: #000000;
+        }
+        .el-input .el-input__inner:hover{
+          border: none;
+        }
+        .el-input .el-input__inner:focus {
+          border:none;
+        }
+        .el-input .el-input__inner:not(.is-focus){
+          border: 1px solid #F7F7F7;
+        }
+        .el-select .el-input .el-input__inner{
+          margin-left: -1px;
+          margin-top: 4px;
+          width: 100px;
+          background-color: #F7F7F7;
+          border: none;
+          border-radius: 0px;
+        }
+        .el-select .el-input.is-focus .el-input__inner:focus {
+          border:none
+        }
+        .el-select .el-input:not(.is-focus) .el-input__inner:focus {
+          border:none
+        }
+        .el-input__suffix{
+          margin-top: 6px;
+        }
+        .el-input .el-input--suffix.is-focus{
+          .el-input__suffix {
+            margin-top: -1px;
+          }
+        }
+
+        .tabs-verify{
+          width: 180px;
+        }
+        .verify-button{
+          margin-left: 15px;
+          padding: 8px 21px;
+          background-color: #F7F7F7;
+          border: 1px solid #F7F7F7;
+          color: 	#C4C4C4;
+          font-size: 12px;
+        }
+      }
+    }
+    // 注册
+    .el-dialog-tabs-reg{
+      .tabs-title{
+        color: #000000
+      }
+      .tabs-reg-return-log{
+        font-size: 13px;
+        cursor: pointer;
+        margin-left: -50px;
       }
     }
   }
@@ -97,12 +235,12 @@
 //显示内容
 .select-content {
   position: absolute;
-  top: 60px;
+  top: 65px;
   left: 20px;
   height: 320px;
   width: 26vw !important;
   background-color: antiquewhite;
-  z-index: 999;
+  z-index: 998;
 }
 
 //移动端6/7/8

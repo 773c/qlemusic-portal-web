@@ -129,3 +129,13 @@
   border-color:#fe0000;
 }
 
+//卡片头部
+.el-card-middle{
+  .el-card__header{
+    background-color: #cc3300;
+    height: 50px;
+    line-height: 16px;
+    border: 1px solid #cc3300;
+  }
+}
+

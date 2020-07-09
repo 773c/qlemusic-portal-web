@@ -38,6 +38,11 @@ a:hover {
   text-decoration: none;
 }
 
+//滚动条
+.el-scrollbar__wrap {
+  overflow-x: hidden;
+}
+
 //内容部分
 .content-wrapper{
   padding-top: 80px;
@@ -59,7 +64,7 @@ a:hover {
     margin-right: 10%;
     //修饰颜色方块
     .div-embellish{
-      width: 3px;
+      width: 4px;
       height: 18px;
       background-color: #fe0000;
       float: left;
@@ -83,4 +88,16 @@ a:hover {
   outline: none;
 }
 
-
+// input的placeholde属性
+::-webkit-input-placeholder { /* WebKit browsers */
+  color: #C4C4C4;
+}
+:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+  color: #C4C4C4;
+}
+::-moz-placeholder { /* Mozilla Firefox 19+ */
+  color: #C4C4C4;
+}
+:-ms-input-placeholder { /* Internet Explorer 10+ */
+  color: #C4C4C4;
+}
