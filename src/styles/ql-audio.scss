@@ -1,0 +1,65 @@
+.ql-audio {
+  height: 50px;
+  width: 80%;
+  background-color: rgba(230, 230, 230, 0.5);
+  margin-top: 10px;
+  border-radius: 40px;
+  //歌曲图片头像
+  .audio-avatar-wrapper {
+    width: 50px;
+    height: 50px;
+    border-radius: 40px;
+    background-image: url("../assets/images/1.jpg");
+    background-size: cover;
+    .play-avatar {
+      margin: 10px 0 0 10px;
+      width: 30px !important;
+      height: 30px;
+      border-radius: 40px;
+      cursor: pointer;
+    }
+    .play-avatar:hover {
+      transform: scale(1.2);
+      -ms-transform: scale(1.2);
+      transition: all 0.3s;
+    }
+  }
+  //音量
+  .voice-wrapper {
+    width: 15%;
+    height: 15px;
+    float: right;
+    margin-top: -25px;
+    margin-right: 50px;
+    //音量图标
+    .voice-icon-wrapper{
+      .voice-icon {
+        cursor: pointer;
+        width: 1.1em;
+        height: 1.1em;
+      }
+    }
+    //音量进度条
+    .voice-progress {
+      cursor: pointer;
+      margin: -26px 0 0 22px;
+      width: 99%;
+      .el-slider__runway {
+        height: 3px;
+        .el-slider__bar {
+          height: 3px;
+          background-color: #fe0000;
+        }
+       .el-slider__button-wrapper{
+         .el-slider__button{
+           border: 2px solid white;
+           width: 8px;
+           height: 8px;
+           margin-top: -2px;
+         }
+       }
+      }
+    }
+  }
+}
+

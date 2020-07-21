@@ -322,6 +322,9 @@
             color:'#ffffff'
           }
         }
+      },
+      isPassing(){
+
       }
     },
     methods: {

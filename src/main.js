@@ -7,8 +7,12 @@ import 'element-ui/lib/theme-chalk/index.css'
 import 'element-ui/lib/theme-chalk/display.css'
 import locale from 'element-ui/lib/locale/lang/zh-CN'
 
+import VueVideoPlayer from 'vue-video-player'
+import 'video.js/dist/video-js.css'
+
 import '@/styles/index.scss'
 import '@/icons'
+import '@/utils/ql-audio.js'
 
 import App from './App.vue'
 import router from './router'
@@ -16,6 +20,8 @@ import store from './store'
 
 
 Vue.use(ElementUI,{locale})
+Vue.use(VueVideoPlayer)
+
 Vue.config.productionTip = false
 
 new Vue({

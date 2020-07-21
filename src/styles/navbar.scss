@@ -287,6 +287,14 @@
     .info-container {
       display: none;
     }
+    // 未登录
+    .login-container{
+      position: absolute;
+      top: 22px;
+      right: 4%;
+    }
+
+    // 已登录
     .avatar-container {
       position: absolute;
       top: 2px;

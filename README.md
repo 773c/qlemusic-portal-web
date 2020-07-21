@@ -1,4 +1,4 @@
-# qlmusic-front-web
+# qlemusic-portal-web
 
 ## Project setup
 ```
