@@ -72,29 +72,7 @@
     color: #fe0000;
   }
   .el-dialog-user {
-    .el-dialog-title {
-      position: absolute;
-      top: 15px;
-      left: 20px;
-      height: 36px;
-      width: 36px;
-      cursor: pointer;
-    }
     .el-dialog-tabs{
-      padding-left: 47px;
-      height: 370px;
-      width: 400px;
-      .tabs-title{
-        display: inline-block;
-        width: 140px;
-        font-weight: bold;
-        font-size: 19px;
-        color: #fe0000;
-        cursor: pointer;
-      }
-      .tabs-content{
-        margin-top: 20px;
-      }
       .tabs-label{
         font-size: 13px;
         color: #888888;
@@ -176,8 +154,9 @@
           width: 180px;
         }
         .verify-button{
-          margin-left: 15px;
-          padding: 8px 21px;
+          margin-left: 10px;
+          padding: 8px 0px;
+          width: 110px;
           background-color: #F7F7F7;
           border: 1px solid #F7F7F7;
           color: 	#C4C4C4;
@@ -187,13 +166,17 @@
     }
     // 注册
     .el-dialog-tabs-reg{
-      .tabs-title{
-        color: #000000
-      }
       .tabs-reg-return-log{
         font-size: 13px;
         cursor: pointer;
+        margin-top: 20px;
         margin-left: -50px;
+      }
+      .tabs-reg-return-prev{
+        font-size: 13px;
+        cursor: pointer;
+        margin-left: -50px;
+        margin-top: 70px;
       }
     }
   }

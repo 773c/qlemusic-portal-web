@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 
+const Error = () => import('@/views/404')
 const Layout = () => import('@/views/layout/Layout')
 const Home = () => import('@/views/home')
 const Download = () => import('@/views/download')
@@ -8,6 +9,7 @@ const Download = () => import('@/views/download')
 Vue.use(VueRouter)
 
 const routes = [
+  {path:'/404',component:Error},
   {
     path: '/',
     component: Layout,

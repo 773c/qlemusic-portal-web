@@ -1,9 +1,10 @@
 import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
 import store from '../store'
+import router from '../router'
 
 const service = axios.create({
-  baseURL: 'http://47.94.161.88:8001',
+  baseURL: 'http://localhost:8001',  //47.94.161.88
   timeout: 15000
 })
 
@@ -12,6 +13,7 @@ service.interceptors.request.use(config => {
   return config
 }, error => {
   console.log(error);
+  router.push('/404')
 })
 
 // 响应拦截
@@ -31,6 +33,8 @@ service.interceptors.response.use(response => {
   }
 }, error => {
   console.log(error);
+  if(router.app.$route.name !== 'home')
+    router.push('/404')
 })
 
 export default service

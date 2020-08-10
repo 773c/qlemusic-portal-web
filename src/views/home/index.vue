@@ -1,4 +1,4 @@
-<template>
+ <template>
   <div id="home">
     <!--走马灯-->
     <el-carousel :interval="4000" type="card" height="230px" style="background-size: cover">

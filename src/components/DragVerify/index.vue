@@ -115,7 +115,6 @@
       dragEl.style.setProperty("--textColor", this.textColor);
       dragEl.style.setProperty("--width", Math.floor(this.width / 2) + "px");
       dragEl.style.setProperty("--pwidth", -Math.floor(this.width / 2) + "px");
-      console.log(this.$slots);
     },
     computed: {
       handlerStyle: function() {
