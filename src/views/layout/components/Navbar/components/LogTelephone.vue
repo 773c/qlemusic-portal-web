@@ -17,10 +17,10 @@
     </el-input>
     <br><br>
     <label for="verify" class="tabs-label">验证码</label><br>
-    <input type="text" id="verify" class="tabs-verify tabs-input" placeholder="请输入验证码">
-    <el-button class="verify-button" type="primary" :style=""
-               :disabled="logTelephone==''?true:false">
-      发送验证码
+    <input type="text" v-model="logVerify" id="verify" class="tabs-verify tabs-input" placeholder="请输入验证码">
+    <el-button class="verify-button" type="primary" :style="isShowStyle" :disabled="isDisabled"
+               @click="logSendVerifyBtonHandler">
+      {{CountDown}}
     </el-button>
     <br><br>
     <el-row style="margin-top:10px;">
@@ -54,8 +54,168 @@
 </template>
 
 <script>
+  import DragVerify from '@/components/DragVerify'
+  import {login, sendSms} from "@/api/login";
+  import {Message, MessageBox} from 'element-ui'
+
   export default {
-    name: "logTelephone"
+    name: "logTelephone",
+    components: {
+      DragVerify
+    },
+    data() {
+      return {
+        logTelephone: '',
+        logVerify: '',
+        second: 120,
+        isSendSuccess: false,
+        btonShow: true,
+        select: '',
+        region: [{
+          value: '86',
+          label: '+ 86',
+          name: '中国'
+        }, {
+          value: '1',
+          label: '+ 1',
+          name: '美国'
+        }, {
+          value: '1',
+          label: '+ 1',
+          name: '加拿大'
+        }, {
+          value: '852',
+          label: '+ 852',
+          name: '中国香港'
+        }, {
+          value: '886',
+          label: '+ 886',
+          name: '中国台湾'
+        }, {
+          value: '81',
+          label: '+ 81',
+          name: '日本'
+        },
+          {
+            value: '65',
+            label: '+ 65',
+            name: '新加坡'
+          }],
+      }
+    },
+    computed: {
+      isPassing: {
+        set(value) {
+          return value
+        },
+        get() {
+          return false
+        }
+      },
+      verifyBtonStyle() {
+        return {
+          backgroundColor: '#fe0000',
+          color: '#ffffff'
+        }
+      },
+      CountDown() {
+        if (this.second === 0) {
+          return "发送验证码"
+        } else if (this.isSendSuccess) {
+          return this.second + "s 后重新发送"
+        } else {
+          return "发送验证码"
+        }
+      },
+      isShowStyle() {
+        if (this.logTelephone === '')
+          return ''
+        else if (this.isSendSuccess === true)
+          return ''
+        else
+          return this.verifyBtonStyle
+      },
+      isDisabled() {
+        if (this.logTelephone === '')
+          return true
+        else if (this.isSendSuccess === true)
+          return true
+        else
+          return false
+      }
+    },
+    methods: {
+      //验证码登录注册按钮
+      regClickHandler() {
+        this.$emit("regClickHandler")
+      },
+      //验证码登录按钮
+      telLogBtonHandler() {
+        login({telephone: this.logTelephone, verify: this.logVerify}).then(response => {
+          console.log(response);
+        })
+      },
+      logSendVerifyBtonHandler(){
+        sendSms(this.logTelephone).then(response => {
+          Message({
+            message: "发送成功",
+            type: 'success',
+            center: true,
+            offset: 70,
+            duration: 2 * 1000
+          })
+          //短信发送成功后
+          this.isSendSuccess = true
+          //定时器倒计时
+          let timer = setInterval(() => {
+            if (this.second <= 1) {
+              this.isSendSuccess = false
+              this.second = 120
+              clearInterval(timer)
+              return
+            }
+            this.second = this.second - 1
+          }, 1000)
+        })
+      },
+      //滑块重置
+      reset() {
+        console.log("重置滑块");
+        this.isPassing = false;
+        if (this.$refs.dragVerify != undefined) {
+          this.$refs.dragVerify.reset();
+        }
+      },
+      //滑块成功调用
+      passCallBack() {
+        console.log("滑块验证成功走的方法");
+        if (this.isSendSuccess)
+          this.btonShow = false
+        else if (this.logTelephone === '') {
+          Message({
+            message: "请输入手机号登录",
+            type: 'error',
+            center: true,
+            offset: 70,
+            duration: 2 * 1000
+          })
+          setTimeout(() => {
+            this.reset()
+          }, 2000)
+        } else {
+          Message({
+            message: "请发送验证码",
+            type: 'error',
+            center: true,
+            offset: 70,
+            duration: 2 * 1000
+          })
+          setTimeout(() => {
+            this.reset()
+          }, 2000)
+        }
+      },
+    }
   }
 </script>
 

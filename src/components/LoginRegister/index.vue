@@ -58,7 +58,6 @@
         innerVisible: true,
         title: '登录',
         isLogin: true,
-        logTelephone: '',
       };
     },
     computed: {

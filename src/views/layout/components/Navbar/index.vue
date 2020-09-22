@@ -66,7 +66,7 @@
         登录
       </div>
       <login-register
-        :dialogVisible = "dialogVisible"
+        :dialogVisible="dialogVisible"
         :isShowLogin="isShowLogin"
         @setDialogVisible="setDialogVisible"
         @AccountLogHandler="isShowAccPwdLogin = true"
@@ -78,56 +78,60 @@
             @regClickHandler="isShowLogin = false">
           </log-telephone-password>
           <!--手机号验证码登录页面-->
-          <log-telephone v-show="!isShowAccPwdLogin">
+          <log-telephone
+            v-show="!isShowAccPwdLogin"
+            @regClickHandler="isShowLogin = false">
           </log-telephone>
         </template>
         <template #reg-content>
-          <reg-telephone @returnLogClickHandler="isShowLogin = true">
+          <reg-telephone @returnLogClick="isShowLogin = true">
           </reg-telephone>
         </template>
       </login-register>
-      <!--<el-dropdown class="avatar-container">-->
-      <!--<div class="avatar-wrapper">-->
-      <!--<img class="user-avatar" :src="avatar">-->
-      <!--</div>-->
-      <!--<el-dropdown-menu class="user-dropdown" slot="dropdown">-->
-      <!--<router-link class="inlineBlock" to="/">-->
-      <!--<el-dropdown-item>-->
-      <!--个人中心-->
-      <!--</el-dropdown-item>-->
-      <!--</router-link>-->
-      <!--<router-link class="inlineBlock" to="/">-->
-      <!--<el-dropdown-item>-->
-      <!--我的收藏-->
-      <!--</el-dropdown-item>-->
-      <!--</router-link>-->
-      <!--<router-link class="inlineBlock" to="/">-->
-      <!--<el-dropdown-item>-->
-      <!--我的关注-->
-      <!--</el-dropdown-item>-->
-      <!--</router-link>-->
-      <!--<router-link class="inlineBlock" to="/">-->
-      <!--<el-dropdown-item>-->
-      <!--账号设置-->
-      <!--</el-dropdown-item>-->
-      <!--</router-link>-->
-      <!--<router-link class="inlineBlock" to="/">-->
-      <!--<el-dropdown-item divided>-->
-      <!--我的动态-->
-      <!--</el-dropdown-item>-->
-      <!--</router-link>-->
-      <!--<router-link class="inlineBlock" to="/">-->
-      <!--<el-dropdown-item>-->
-      <!--我的下载-->
-      <!--</el-dropdown-item>-->
-      <!--</router-link>-->
-      <!--<router-link class="inlineBlock" to="/">-->
-      <!--<el-dropdown-item divided>-->
-      <!--退出-->
-      <!--</el-dropdown-item>-->
-      <!--</router-link>-->
-      <!--</el-dropdown-menu>-->
-      <!--</el-dropdown>-->
+      <div v-if="!isLogin">
+        <el-dropdown class="avatar-container">
+          <div class="avatar-wrapper">
+            <img class="user-avatar" :src="avatar">
+          </div>
+          <el-dropdown-menu class="user-dropdown" slot="dropdown">
+            <router-link class="inlineBlock" to="/">
+              <el-dropdown-item>
+                个人中心
+              </el-dropdown-item>
+            </router-link>
+            <router-link class="inlineBlock" to="/">
+              <el-dropdown-item>
+                我的收藏
+              </el-dropdown-item>
+            </router-link>
+            <router-link class="inlineBlock" to="/">
+              <el-dropdown-item>
+                我的关注
+              </el-dropdown-item>
+            </router-link>
+            <router-link class="inlineBlock" to="/">
+              <el-dropdown-item>
+                账号设置
+              </el-dropdown-item>
+            </router-link>
+            <router-link class="inlineBlock" to="/">
+              <el-dropdown-item divided>
+                我的动态
+              </el-dropdown-item>
+            </router-link>
+            <router-link class="inlineBlock" to="/">
+              <el-dropdown-item>
+                我的下载
+              </el-dropdown-item>
+            </router-link>
+            <router-link class="inlineBlock" to="/">
+              <el-dropdown-item divided>
+                退出
+              </el-dropdown-item>
+            </router-link>
+          </el-dropdown-menu>
+        </el-dropdown>
+      </div>
     </template>
   </common-navbar>
 </template>
@@ -153,31 +157,21 @@
     data() {
       return {
         title: '登录',
-        isLogin: true,
-        dialogVisible:false,
+        dialogVisible: false,
         isShowAccPwdLogin: true,
-        isShowLogin:true,
+        isShowLogin: true,
       }
     },
     computed: {
+      isLogin(){
+        if(this.$store.state.user.token)
+          return false;
+        else
+          return true;
+      }
     },
     methods: {
-      connectqqHandler() {
-        QC.Login.showPopup({
-          appId: "101894118",
-          redirectURI: "http://www.eiqle.com/portal/connectqq"
-        })
-        // QC.Login({
-        //   btnId:"qqLogin"	//插入按钮的节点id
-        // });
-      },
-      accLogBtonHandler() {
-
-      },
-      telLogBtonHandler() {
-
-      },
-      setDialogVisible(){
+      setDialogVisible() {
         this.dialogVisible = false
       }
     },

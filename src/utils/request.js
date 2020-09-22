@@ -2,6 +2,7 @@ import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
 import store from '../store'
 import router from '../router'
+import {getToken} from "./auth";
 
 const service = axios.create({
   baseURL: 'http://localhost:8001',  //47.94.161.88
@@ -10,6 +11,11 @@ const service = axios.create({
 
 // 请求拦截
 service.interceptors.request.use(config => {
+  console.log("请求拦截Cookie中的token：" + getToken());
+  if (store.getters.token) {
+    //在Header设置名为Authorization的token
+    config.headers.Authorization = getToken()
+  }
   return config
 }, error => {
   console.log(error);

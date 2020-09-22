@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function login() {
+export function login(data) {
   return request({
-    url:'/login',
-    method:'post'
+    url:'/portal/login',
+    method:'post',
+    data:data
   })
 }
 
@@ -39,3 +40,4 @@ export function matchVerify(telephone,verify) {
     }
   })
 }
+

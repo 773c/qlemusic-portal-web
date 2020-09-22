@@ -29,7 +29,7 @@
       return {
         drawer: false,
         innerDrawer: false,
-      };
+      }
     },
   }
 </script>
