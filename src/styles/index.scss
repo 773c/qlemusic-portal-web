@@ -9,7 +9,7 @@ body {
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   width: 100% !important;
-  background-color: #F7F7F7;
+  background-color: #F5F5F5;
 }
 
 html {
@@ -46,137 +46,224 @@ a:hover {
 }
 
 //内容部分
-.content-wrapper {
-  padding-top: 80px;
+.main-wrapper {
   width: 100% !important;
-  min-height: 100%;
-  .content-middle {
-    width: 58% !important;
-    margin-left: 10.8%;
-    float: left;
-    display: inline;
-    .middle-bbs-music {
-      .list {
-        //margin-top: 0px;
-        padding-left: 0px;
-        box-shadow: 0px -3px 0px 3px #fe0000;
+  .content-wrapper {
+    padding-top: 62px;
+    width: 100% !important;
+    min-height: 100%;
+    .content-middle {
+      width: 58% !important;
+      margin-left: 10.8%;
+      float: left;
+      display: inline;
+      .middle-bbs-music {
+        .list {
+          //margin-top: 0px;
+          padding-left: 0px;
+          box-shadow: 0px -3px 0px 3px #fe0000;
 
-        //.el-table__header-wrapper .el-table__header .has-gutter .el-table_1_column_1.is-leaf .cell {
-        //  color: #fe0000;
-        //  font-size: 19px;
-        //  margin-left: 10px;
-        //}
-        .el-table-title{
-          color: #fe0000;
-          font-size: 19px;
-          margin-left: 10px;
-        }
-        //音量
-        .voice-wrapper {
-          width: 15%;
-          height: 15px;
-          float: right;
-          margin-top: -25px;
-          margin-right: 50px;
-
-          //音量图标
-          .voice-icon-wrapper{
-            .voice-icon {
-              cursor: pointer;
-              width: 1.1em;
-              height: 1.1em;
-            }
+          //.el-table__header-wrapper .el-table__header .has-gutter .el-table_1_column_1.is-leaf .cell {
+          //  color: #fe0000;
+          //  font-size: 19px;
+          //  margin-left: 10px;
+          //}
+          .el-table-title {
+            color: #fe0000;
+            font-size: 19px;
+            margin-left: 10px;
           }
+          //音量
+          .voice-wrapper {
+            width: 15%;
+            height: 15px;
+            float: right;
+            margin-top: -25px;
+            margin-right: 50px;
 
-          //音量进度条
-          .voice-progress {
-            margin: -27px 0 0 22px;
-            width: 99%;
-            height: 25px;
-            .el-slider__runway {
-              cursor: pointer;
-              height: 3px;
-              .el-slider__bar {
-                height: 3px;
-                background-color: #fe0000;
+            //音量图标
+            .voice-icon-wrapper {
+              .voice-icon {
+                cursor: pointer;
+                width: 1.1em;
+                height: 1.1em;
               }
-              .el-slider__button-wrapper{
-                z-index: 997;
-                .el-slider__button{
-                  border: 2px solid #fe0000;
-                  width: 10px;
-                  height: 10px;
-                  margin-top: -3px;
+            }
+
+            //音量进度条
+            .voice-progress {
+              margin: -27px 0 0 22px;
+              width: 99%;
+              height: 25px;
+              .el-slider__runway {
+                cursor: pointer;
+                height: 3px;
+                .el-slider__bar {
+                  height: 3px;
+                  background-color: #fe0000;
+                }
+                .el-slider__button-wrapper {
+                  z-index: 997;
+                  .el-slider__button {
+                    border: 2px solid #fe0000;
+                    width: 10px;
+                    height: 10px;
+                    margin-top: -3px;
+                  }
                 }
               }
             }
           }
-        }
 
-        .middle-title {
+          .middle-title {
+            font-weight: bold;
+            font-size: 17px;
+            color: black;
+            margin-left: 8px;
+            cursor: pointer;
+          }
+          .middle-title:hover {
+            color: #fe0000;
+          }
+          .publisher {
+            cursor: pointer;
+            margin-left: -12px;
+          }
+          .publisher:hover {
+            color: #fe0000;
+          }
+          .div-threeIcon {
+            margin-left: 10px;
+            cursor: pointer;
+            width: 50px;
+            .threeIcon:hover {
+              color: #fe0000;
+            }
+            span {
+              margin-left: 4px;
+              color: #fe0000;
+            }
+
+          }
+          .avatar-wrapper {
+            cursor: pointer;
+            margin-top: 18px;
+            margin-left: 5px;
+            .user-avatar {
+              width: 28px !important;
+              height: 28px;
+              border-radius: 50px;
+            }
+          }
+        }
+      }
+    }
+    .content-right {
+      margin-top: 20px;
+      width: 20% !important;
+      float: right;
+      display: inline;
+      margin-right: 10%;
+      //修饰颜色方块
+      .div-embellish {
+        width: 4px;
+        height: 18px;
+        background-color: #fe0000;
+        float: left;
+        margin-right: 2px;
+      }
+      //按钮
+      .right-button {
+        float: right;
+        margin-top: -4px;
+        padding: 6px 10px
+      }
+      .right-button:hover {
+        background-color: #fe0000;
+      }
+    }
+    //第二种格式内容
+    .content-middle-two {
+      //border: 1px solid red;
+      //背景封面
+      .head-bg-wrapper {
+        background-image: url("../assets/images/bg-personal.jpg");
+        height: 200px;
+        width: 1536px !important;
+        .personal-avatar-warpper {
+          float: left;
+          padding-top: 60px;
+          width: 98px !important;
+          margin-left: 200px;
+          .music-age {
+            padding-top: 8px;
+            color: white;
+            font-size: 13px;
+          }
+        }
+        .personal-name-warpper {
+          float: left;
+          color: white;
+          margin-top: 65px;
+          margin-left: 45px;
           font-weight: bold;
-          font-size: 17px;
-          color: black;
-          margin-left: 10px;
-          cursor: pointer;
+          font-size: 16px;
         }
-        .middle-title:hover{
-          color: #fe0000;
-        }
-        .publisher {
-          cursor: pointer;
-        }
-        .div-threeIcon {
-          margin-left: 10px;
-          cursor: pointer;
-          width: 50px;
-          .threeIcon:hover {
-            color: #fe0000;
-          }
-          span{
-            margin-left: 4px;
-            color: #fe0000;
-          }
+      }
 
+      //信息内容
+      .personal-content-wrapper {
+        margin-left: 8.89375%;
+        margin-top: 10px;
+        .personal-content-nav {
+          width: 250px;
+          .personal-router-link {
+            text-align: center;
+            .el-menu-item {
+              font-size: 15px;
+            }
+            .el-menu-item.is-active {
+              background-color: #fe0000 !important;
+              color: white;
+            }
+            .el-menu-item:not(.is-active):hover {
+              background-color: #f0f0f0 !important;
+            }
+          }
         }
-        .avatar-wrapper {
-          cursor: pointer;
-          margin-top: 18px;
-          margin-left: 5px;
-          .user-avatar {
-            width: 28px !important;
-            height: 28px;
-            border-radius: 10px;
+        #right2{
+          width: 1010px !important;
+          margin-left: 260px;
+          margin-top: -265px;
+        }
+        #personal-center-info {
+          .title {
+            .title-name {
+              font-weight: bold;
+              text-align: center;
+            }
+          }
+          .account-info-wrapper {
+            padding-left: 50px;
+            .account-uniqueId{
+              .el-dialog-uniqueId{
+                margin-top: 100px;
+                .account-info-uniqueId-button{
+                  width: 250px;
+                  height: 45px;
+                  border-radius: 50px;
+                  margin-left: 70px;
+                  margin-top: 10px;
+                }
+              }
+            }
+
           }
         }
       }
     }
   }
-  .content-right {
-    width: 20% !important;
-    float: right;
-    display: inline;
-    margin-right: 10%;
-    //修饰颜色方块
-    .div-embellish {
-      width: 4px;
-      height: 18px;
-      background-color: #fe0000;
-      float: left;
-      margin-right: 2px;
-    }
-    //按钮
-    .right-button {
-      float: right;
-      margin-top: -4px;
-      padding: 6px 10px
-    }
-    .right-button:hover {
-      background-color: #fe0000;
-    }
-  }
 }
-
 
 .el-row:focus {
   outline: none;

@@ -5,11 +5,13 @@ const Error = () => import('@/views/404')
 const Layout = () => import('@/views/layout/Layout')
 const Home = () => import('@/views/home')
 const Download = () => import('@/views/download')
+const PersonalCenter = () => import('@/views/user/personalCenter')
+const PersonalCollect = () => import('@/views/user/personalCollect')
 
 Vue.use(VueRouter)
 
 const routes = [
-  {path:'/404',component:Error},
+  {path: '/404', component: Error},
   {
     path: '/',
     component: Layout,
@@ -22,14 +24,32 @@ const routes = [
     }]
   },
   {
-    path:'/nav',
-    component:Layout,
-    children:[{
-      path:'download',
-      name:'download',
-      component:Download,
-      meta:{title:'下载',icon:'download'}
+    path: '/nav',
+    component: Layout,
+    children: [{
+      path: 'download',
+      name: 'download',
+      component: Download,
+      meta: {title: '下载', icon: 'download'}
     }]
+  },
+  {
+    path: '/usr',
+    component: Layout,
+    children: [
+      {
+        path: 'personal',
+        name: 'personal',
+        component: PersonalCenter,
+        meta: {title: '个人中心', icon: 'personal'}
+      },
+      {
+        path: 'collect',
+        name: 'collect',
+        component: PersonalCollect,
+        meta: {title: '我的收藏', icon: 'collect'}
+      }
+    ]
   }
 ]
 

@@ -3,9 +3,10 @@
     :default-active="$route.path"
     class="navbar"
     mode="horizontal"
+    style="border-bottom-color: black"
     background-color="#000000"
     text-color="#fff"
-    active-text-color="#fe0000">
+    active-text-color="#ff2a00 ">
     <!--mobile菜单按钮-->
     <el-menu-item class="menu-button">
       <img src="@/assets/images/menu.png" width="26" height="26">
@@ -27,7 +28,7 @@
       <slot name="nine"></slot>
     </div>
     <!--搜索框-->
-    <el-menu-item class="el-menu-item-select">
+    <el-menu-item class="el-menu-item-select" index="/select">
       <el-input
         placeholder="请输入内容"
         v-model="selectBox"

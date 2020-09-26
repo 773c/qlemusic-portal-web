@@ -4,7 +4,7 @@
     <!--匹配验证码-->
     <div v-show="!isMatchVerify" class="tabs-tel-content tabs-content">
       <label class="tabs-label">手机号</label><br>
-      <el-input type="text" v-model="regTelephone" class="tabs-telephone tabs-input" placeholder="请输入手机号">
+      <el-input type="text" v-model="regTelephone" class="tabs-telephone tabs-input" placeholder="  请输入手机号">
         <el-select v-model="select" slot="prepend" placeholder="请选择">
           <el-option v-for="item in region"
                      :key="item.name"
@@ -18,7 +18,7 @@
       </el-input>
       <br><br>
       <label for="regVerify" class="tabs-label">验证码</label><br>
-      <input v-model="regVerify" type="text" id="regVerify" class="tabs-verify tabs-input" placeholder="请输入验证码">
+      <input v-model="regVerify" type="text" id="regVerify" class="tabs-verify tabs-input" placeholder="  请输入验证码">
       <el-button class="verify-button" type="primary" :style="isShowStyle" :disabled="isDisabled"
                  @click="regSendVerifyBtonHandler">
         {{CountDown}}

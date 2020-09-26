@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    :visible.sync="dialogVisible"
+    :visible.sync="innerVisible"
     class="el-dialog-user"
     width="435px"
     @closed="setDialogVisible"
@@ -45,8 +45,7 @@
     name: "loginRegister",
     props: {
       dialogVisible: {
-        type: Boolean,
-        default: false
+        type: Boolean
       },
       isShowLogin: {
         type: Boolean,
@@ -55,12 +54,23 @@
     },
     data() {
       return {
-        innerVisible: true,
+        closeDialog:true,
         title: '登录',
         isLogin: true,
       };
     },
     computed: {
+      innerVisible:{
+        get(){
+          if(this.closeDialog)
+            return this.dialogVisible
+          else
+            return false
+        },
+        set(show){
+          this.closeDialog = show
+        }
+      },
       verifyBtonStyle() {
         return {
           backgroundColor: '#fe0000',
@@ -109,6 +119,7 @@
         this.$emit("VerifyLogHandler")
       },
       setDialogVisible(){
+        this.closeDialog = true
         this.$emit("setDialogVisible")
       }
     }

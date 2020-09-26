@@ -8,6 +8,13 @@ export function login(data) {
   })
 }
 
+export function getInfo() {
+  return request({
+    url:'/portal/info',
+    method:'get'
+  })
+}
+
 export function sendSms(telephone) {
   return request({
     url:'/portal/sendSms',
@@ -41,3 +48,9 @@ export function matchVerify(telephone,verify) {
   })
 }
 
+export function logout() {
+  return request({
+    url:'/portal/logout',
+    method:'post'
+  })
+}

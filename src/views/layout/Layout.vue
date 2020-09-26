@@ -4,20 +4,27 @@
     <navbar class="navbar-wrapper"></navbar>
     <!--内容部分-->
     <div class="content-wrapper">
-      <!--中间内容-->
-      <div class="content-middle">
-        <middle></middle>
+      <div v-show="format" style="width: 100%">
+        <!--中间内容-->
+        <div class="content-middle" >
+          <middle></middle>
+        </div>
+        <!--右侧导航-->
+        <div class="content-right">
+          <right></right>
+        </div>
       </div>
-      <!--右侧导航-->
-      <div class="content-right">
-        <right></right>
+      <div v-show="!format" style="width: 100%">
+        <div class="content-middle-two">
+          <middle2></middle2>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-  import {Middle, Right, Navbar} from "./index";
+  import {Middle, Right, Navbar, Middle2} from "./index";
   import ResizeMixin from './mixin/ResizeHandler'
 
   export default {
@@ -25,7 +32,8 @@
     components: {
       Navbar,
       Middle,
-      Right
+      Right,
+      Middle2
     },
     mixins: [ResizeMixin],
     computed: {
@@ -37,6 +45,12 @@
         return {
           mobile: this.device === 'mobile'
         }
+      },
+      format(){
+        if(this.$route.path.indexOf("/usr") != -1)
+          return false
+        else
+          return true
       }
     }
   }

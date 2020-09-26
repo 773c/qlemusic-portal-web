@@ -3,7 +3,7 @@
   <div class="tabs-tel-content">
     <label class="tabs-label">手机号</label>
     <br>
-    <el-input type="text" v-model="logTelephone" class="tabs-telephone tabs-input" placeholder="请输入手机号">
+    <el-input type="text" v-model="logTelephone" class="tabs-telephone tabs-input" placeholder="  请输入手机号">
       <el-select v-model="select" slot="prepend">
         <el-option v-for="item in region"
                    :key="item.name"
@@ -17,7 +17,7 @@
     </el-input>
     <br><br>
     <label for="verify" class="tabs-label">验证码</label><br>
-    <input type="text" v-model="logVerify" id="verify" class="tabs-verify tabs-input" placeholder="请输入验证码">
+    <input type="text" v-model="logVerify" id="verify" class="tabs-verify tabs-input" placeholder="  请输入验证码">
     <el-button class="verify-button" type="primary" :style="isShowStyle" :disabled="isDisabled"
                @click="logSendVerifyBtonHandler">
       {{CountDown}}
@@ -39,7 +39,7 @@
       </drag-verify>
     </el-row>
     <br><br>
-    <el-button class="tabs-log-button" type="danger" round @click="telLogBtonHandler" :disabled="btonShow">登录
+    <el-button class="tabs-log-button" type="danger" round @click="telVefLogBtonHandler" :disabled="btonShow">登录
     </el-button>
     <br><br>
     <el-row class="tabs-reg-forget">
@@ -150,9 +150,12 @@
         this.$emit("regClickHandler")
       },
       //验证码登录按钮
-      telLogBtonHandler() {
-        login({telephone: this.logTelephone, verify: this.logVerify}).then(response => {
-          console.log(response);
+      telVefLogBtonHandler() {
+        this.$store.dispatch('Login',{telephone:this.logTelephone,verify:this.logVerify}).then(() => {
+          this.$store.dispatch('GetInfo').then(response => {
+            this.$emit('setDialogVisible')
+            console.log(response);
+          })
         })
       },
       logSendVerifyBtonHandler(){

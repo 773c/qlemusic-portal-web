@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 
-export function getBbsMusicList() {
+export function getRecommendList() {
   return request({
-    url:'/audio/list',
+    url:'/audio/recommend',
     method:'get'
   })
 }

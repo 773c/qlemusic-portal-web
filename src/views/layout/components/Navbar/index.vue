@@ -75,11 +75,13 @@
           <!--账号密码登录页面-->
           <log-telephone-password
             v-show="isShowAccPwdLogin"
+            @setDialogVisible="setDialogVisible"
             @regClickHandler="isShowLogin = false">
           </log-telephone-password>
           <!--手机号验证码登录页面-->
           <log-telephone
             v-show="!isShowAccPwdLogin"
+            @setDialogVisible="setDialogVisible"
             @regClickHandler="isShowLogin = false">
           </log-telephone>
         </template>
@@ -91,10 +93,10 @@
       <div v-if="!isLogin">
         <el-dropdown class="avatar-container">
           <div class="avatar-wrapper">
-            <img class="user-avatar" :src="avatar">
+            <img class="user-avatar" :src="userInfo.headIcon">
           </div>
           <el-dropdown-menu class="user-dropdown" slot="dropdown">
-            <router-link class="inlineBlock" to="/">
+            <router-link class="inlineBlock" to="/usr/personal">
               <el-dropdown-item>
                 个人中心
               </el-dropdown-item>
@@ -124,11 +126,9 @@
                 我的下载
               </el-dropdown-item>
             </router-link>
-            <router-link class="inlineBlock" to="/">
-              <el-dropdown-item divided>
-                退出
-              </el-dropdown-item>
-            </router-link>
+            <el-dropdown-item divided>
+              <div @click="logoutHandler">退出</div>
+            </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
       </div>
@@ -143,6 +143,7 @@
   import RegTelephone from './components/RegTelephone'
   import SetPassword from './components/RegTelephone/SetPassword'
   import CommonNavbar from '@/components/Navbar'
+  import {mapGetters} from 'vuex'
 
   export default {
     name: "navbar",
@@ -163,6 +164,9 @@
       }
     },
     computed: {
+      ...mapGetters([
+        'userInfo'
+      ]),
       isLogin(){
         if(this.$store.state.user.token)
           return false;
@@ -173,6 +177,9 @@
     methods: {
       setDialogVisible() {
         this.dialogVisible = false
+      },
+      logoutHandler(){
+        this.$store.dispatch('Logout')
       }
     },
   }

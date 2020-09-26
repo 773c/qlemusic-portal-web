@@ -75,7 +75,8 @@
     .el-dialog-tabs{
       .tabs-label{
         font-size: 13px;
-        color: #888888;
+        color: #000000;
+        font-weight: bold;
       }
       .tabs-input{
         margin-top: 6px;
@@ -101,7 +102,7 @@
         }
       }
       .tabs-oauth{
-        margin-top: 10px;
+        margin-top: 5px;
         padding-right: 65px;
         .el-col{
           margin-left: 5px;
@@ -182,16 +183,16 @@
   }
   // 用户
   .avatar-container {
-    height: 47px;
+    height: 52px;
     position: absolute;
     right: 130px;
     .avatar-wrapper {
       cursor: pointer;
-      margin-top: 18px;
+      margin-top: 19px;
       .user-avatar {
         width: 30px !important;
         height: 30px;
-        border-radius: 10px;
+        border-radius: 50px;
       }
       .el-icon-caret-bottom {
         font-size: 12px;
@@ -279,12 +280,12 @@
 
     // 已登录
     .avatar-container {
+      height: 52px;
       position: absolute;
-      top: 2px;
       left: 87%;
       .avatar-wrapper {
         cursor: pointer;
-        margin-top: 14px;
+        margin-top: 15px;
         .user-avatar {
         }
         .el-icon-caret-bottom {
@@ -294,7 +295,7 @@
     }
   }
   .content-wrapper {
-    padding-top: 80px;
+    padding-top: 60px;
     .content-middle {
       margin-left: 0px;
       width: 100% !important;

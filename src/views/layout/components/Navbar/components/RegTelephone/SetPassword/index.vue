@@ -2,10 +2,10 @@
   <!--手机验证码匹配正确后，设置密码-->
   <div  class="tabs-tel-content tabs-content">
     <label class="tabs-label">密码</label><br>
-    <el-input type="password" v-model="regPassword" class="tabs-telephone tabs-input" placeholder="请输入密码"/>
+    <el-input type="password" v-model="regPassword" class="tabs-telephone tabs-input" placeholder="  请输入密码"/>
     <br><br>
     <label class="tabs-label">重复密码</label><br>
-    <el-input type="password" v-model="regRePassword" class="tabs-telephone tabs-input" placeholder="请再一次输入密码"/>
+    <el-input type="password" v-model="regRePassword" class="tabs-telephone tabs-input" placeholder="  请再一次输入密码"/>
     <br><br><br>
     <el-button class="tabs-log-button" type="danger" round @click="regBtonFinalHandler"
                :disabled="finalBtonShow">完成注册

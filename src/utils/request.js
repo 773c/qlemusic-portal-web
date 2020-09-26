@@ -12,6 +12,7 @@ const service = axios.create({
 // 请求拦截
 service.interceptors.request.use(config => {
   console.log("请求拦截Cookie中的token：" + getToken());
+  console.log(store.getters.token);
   if (store.getters.token) {
     //在Header设置名为Authorization的token
     config.headers.Authorization = getToken()
@@ -34,6 +35,8 @@ service.interceptors.response.use(response => {
       duration: 2 * 1000
     })
     return Promise.reject('error')
+  }else if(data.statusCode == 403){
+    alert(111)
   } else {
     return data;
   }

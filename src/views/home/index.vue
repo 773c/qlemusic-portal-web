@@ -1,7 +1,7 @@
- <template>
+<template>
   <div id="home">
     <!--走马灯-->
-    <el-carousel :interval="4000" type="card" height="230px" style="background-size: cover">
+    <el-carousel :interval="4000" type="card" height="16vw" style="background-size: cover;margin-top: 20px">
       <el-carousel-item v-for="item in 6" :key="item">
         <div class="medium">
           <video-player
@@ -12,6 +12,8 @@
             customEventName="customstatechangedeventname"
             @play="onPlayerPlay($event)"
             @pause="onPlayerPause($event)"
+            @canplay="onPlayerCanplay($event)"
+            @canplaythrough="onPlayerCanplaythrough($event)"
             @statechanged="playerStateChanged($event)"
             @ready="playerReadied">
           </video-player>
@@ -23,8 +25,8 @@
     <!--@playing="onPlayerPlaying($event)"-->
     <!--@loadeddata="onPlayerLoadeddata($event)"-->
     <!--@timeupdate="onPlayerTimeupdate($event)"-->
-    <!--@canplay="onPlayerCanplay($event)"-->
-    <!--@canplaythrough="onPlayerCanplaythrough($event)"-->
+
+
 
     <!--音频文章区域-->
     <div class="infinite-list-wrapper middle-bbs-music" style="overflow:auto;">
@@ -53,15 +55,15 @@
                 <span>{{scope.row.title}}</span>
               </div>
               <el-row>
-                <el-col :span="1" style="padding-left: 5px;">
+                <el-col :span="2">
                   <div class="avatar-wrapper">
-                    <img class="user-avatar" src="avatar">
+                    <img class="user-avatar" :src="scope.row.umsUser.headIcon">
                   </div>
                 </el-col>
-                <el-col :span="2" style="padding: 18px 0 0 10px">
-                  <span class="publisher">asd</span>
+                <el-col :span="3" style="padding-top: 22px;">
+                  <span class="publisher">{{scope.row.umsUser.name}}</span>
                 </el-col>
-                <el-col :span="15">
+                <el-col :span="13">
                   <!--播放器-->
                   <ql-audio></ql-audio>
                 </el-col>
@@ -96,7 +98,7 @@
 </template>
 
 <script>
-  import {getBbsMusicList} from "@/api/bbsMusic";
+  import {getRecommendList} from "@/api/bbsMusic";
   import {videoPlayer} from 'vue-video-player'
 
   const defaultBbsMusic = {
@@ -120,16 +122,17 @@
         changeVoiceIcon: 'audio-voice',
         playerOptions: {
           // videojs options
-          muted: true,
-          language: 'en',
+          muted: false,
+          language: 'zh-CN',
+          preload: 'auto',
           playbackRates: [0.7, 1.0, 1.5, 2.0],
           fluid: true,
+          notSupportedMessage: '此视频暂无法播放，请稍后再试',
           sources: [{
             type: "video/mp4",
-            src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm"
+            src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm",
           }],
-          poster: "../../assets/images/1.jpg",
-
+          poster: require("@/assets/images/1.jpg"),
         },
       }
     },
@@ -155,8 +158,8 @@
       }
     },
     methods: {
-      bbsMusicList() {
-        getBbsMusicList().then(response => {
+      recommendList() {
+        getRecommendList().then(response => {
           console.log(response);
           let data = response.data;
           this.list = data
@@ -194,12 +197,18 @@
       },
       // listen event
       onPlayerPlay(player) {
-        // console.log('player play!', player)
+        console.log('player play!', player)
       },
       onPlayerPause(player) {
-        // console.log('player pause!', player)
+        console.log('player pause!', player)
       },
       // ...player event
+      onPlayerCanplay(player){
+        console.log('player canplay!', player)
+      },
+      onPlayerCanplaythrough(player){
+        console.log('player canplaythrough!', player)
+      },
 
       // or listen state event
       playerStateChanged(playerCurrentState) {
@@ -214,7 +223,7 @@
       }
     },
     created() {
-      this.bbsMusicList()
+      this.recommendList()
       if (this.bbsMusic.total < 15)
         this.pageSize = this.bbsMusic.total
       else
@@ -232,6 +241,7 @@
 </script>
 
 <style scoped>
+
   .el-carousel__item h3 {
     color: #475669;
     font-size: 14px;
@@ -246,5 +256,12 @@
 
   .el-carousel__item:nth-child(2n+1) {
     background-color: #d3dce6;
+  }
+
+  .video-js .vjs-icon-placeholder {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: 1px solid red;
   }
 </style>
