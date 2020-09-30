@@ -16,12 +16,24 @@ export function updateUniqueId(params) {
   })
 }
 
-export function isUpdateUniqueId(id) {
+export function isUpdateUniqueId(id,isLoadingNprogress) {
   return request({
     url:'/portal/isUpdateUniqueId',
     method:'get',
+    headers:{
+      isLoadingNprogress:isLoadingNprogress
+    },
     params: {
       id:id
     }
+  })
+}
+
+export function updateAvatar(data) {
+  return request({
+    url:'/portal/updateAvatar',
+    method:'post',
+    headers:{'Content-type': 'multipart/form-data;boundary = ' + new Date().getTime()},
+    data: data
   })
 }

@@ -8,10 +8,13 @@ export function login(data) {
   })
 }
 
-export function getInfo() {
+export function getInfo(isLoadingNprogress) {
   return request({
     url:'/portal/info',
-    method:'get'
+    method:'get',
+    headers:{
+      isLoadingNprogress:isLoadingNprogress
+    }
   })
 }
 

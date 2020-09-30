@@ -11,7 +11,7 @@ const PersonalCollect = () => import('@/views/user/personalCollect')
 Vue.use(VueRouter)
 
 const routes = [
-  {path: '/404', component: Error},
+  {path: '/404', component: Error,meta:{title: '404', icon: '404',isLoadingNprogress:false}},
   {
     path: '/',
     component: Layout,
@@ -20,7 +20,7 @@ const routes = [
       path: 'home',
       name: 'home',
       component: Home,
-      meta: {title: '首页', icon: 'home'}
+      meta: {title: '首页', icon: 'home',isLoadingNprogress:false}
     }]
   },
   {
@@ -30,7 +30,7 @@ const routes = [
       path: 'download',
       name: 'download',
       component: Download,
-      meta: {title: '下载', icon: 'download'}
+      meta: {title: '下载', icon: 'download',isLoadingNprogress:true}
     }]
   },
   {
@@ -41,13 +41,13 @@ const routes = [
         path: 'personal',
         name: 'personal',
         component: PersonalCenter,
-        meta: {title: '个人中心', icon: 'personal'}
+        meta: {title: '个人中心', icon: 'personal',isLoadingNprogress:false}
       },
       {
         path: 'collect',
         name: 'collect',
         component: PersonalCollect,
-        meta: {title: '我的收藏', icon: 'collect'}
+        meta: {title: '我的收藏', icon: 'collect',isLoadingNprogress:true}
       }
     ]
   }

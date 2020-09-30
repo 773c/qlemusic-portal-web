@@ -27,7 +27,6 @@
     <!--@timeupdate="onPlayerTimeupdate($event)"-->
 
 
-
     <!--音频文章区域-->
     <div class="infinite-list-wrapper middle-bbs-music" style="overflow:auto;">
       <ul
@@ -46,7 +45,7 @@
                   <svg-icon class="voice-icon" :icon-class="changeVoiceIcon"></svg-icon>
                 </div>
                 <div class="voice-progress">
-                  <el-slider v-model="voiceValue" :show-tooltip="false"></el-slider>
+                  <el-slider v-model="voiceValue" :show-tooltip="true" @input="changeVolume"></el-slider>
                 </div>
               </div>
             </template>
@@ -65,7 +64,7 @@
                 </el-col>
                 <el-col :span="13">
                   <!--播放器-->
-                  <ql-audio></ql-audio>
+                  <ql-audio :audioUrl="scope.row.audioUrl"></ql-audio>
                 </el-col>
                 <el-col :span="2" style="padding-top: 40px;">
                   <div class="like div-threeIcon">
@@ -117,7 +116,7 @@
         pageSize: 0,
         loading: false,
         bbsMusic: Object.assign({}, defaultBbsMusic),
-        list: null,
+        list: [],
         voiceValue: 50,
         changeVoiceIcon: 'audio-voice',
         playerOptions: {
@@ -137,34 +136,26 @@
       }
     },
     computed: {
-      audio() {
-        return this.$store.state.audio.qlaudio
-      },
       disabled() {
         return this.loading
       },
       player() {
         return this.$refs.videoPlayer.player
-      }
-    },
-    watch: {
-      voiceValue() {
-
       },
-      audio(oldAudio, newAudio) {
-        console.log('变化了');
-        console.log(oldAudio.volume);
-        console.log(this.audio == oldAudio)
+      volume(){
+        return this.voiceValue / 100
       }
     },
     methods: {
+      //获得默认推荐音乐片段
       recommendList() {
-        getRecommendList().then(response => {
+        getRecommendList(false).then(response => {
           console.log(response);
           let data = response.data;
           this.list = data
         })
       },
+      //当滚动条到达最底端的时候加载新内容
       load() {
         // 滚动条到最顶端的距离
         let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -181,33 +172,36 @@
           }, 2000)
         }
       },
+      changeVolume(){
+        this.qlAudio.volume = this.volume
+        localStorage.setItem("volume",this.volume)
+      },
+      //声音处理
       voiceHandler() {
-        let audio = this.audio
-        audio.volume = 0.5
+        let audio = this.qlAudio
+        //muted为true为静音
         if (audio.muted) {
           this.changeVoiceIcon = 'audio-voice'
           audio.muted = false
-        }
-        else {
+        } else {
           this.changeVoiceIcon = 'audio-voice-no'
           audio.muted = true
         }
-
-        console.log(audio);
+        localStorage.setItem("muted", audio.muted)
       },
       // listen event
       onPlayerPlay(player) {
-        console.log('player play!', player)
+        // console.log('player play!', player)
       },
       onPlayerPause(player) {
-        console.log('player pause!', player)
+        // console.log('player pause!', player)
       },
       // ...player event
-      onPlayerCanplay(player){
-        console.log('player canplay!', player)
+      onPlayerCanplay(player) {
+        // console.log('player canplay!', player)
       },
-      onPlayerCanplaythrough(player){
-        console.log('player canplaythrough!', player)
+      onPlayerCanplaythrough(player) {
+        // console.log('player canplaythrough!', player)
       },
 
       // or listen state event
@@ -217,7 +211,7 @@
 
       // player is ready
       playerReadied(player) {
-        console.log('the player is readied', player)
+        // console.log('the player is readied', player)
         // you can use it to do something...
         // player.[methods]
       }
@@ -228,8 +222,22 @@
         this.pageSize = this.bbsMusic.total
       else
         this.pageSize = 15
+      //初始化audio
+      this.initAudio()
     },
     mounted() {
+      //初始化音量图标
+      let muted = localStorage.getItem("muted")
+      if (muted === 'true') {
+        this.changeVoiceIcon = 'audio-voice-no'
+      } else {
+        this.changeVoiceIcon = 'audio-voice'
+      }
+      //初始化音量滑条
+      console.log("音量："+localStorage.getItem("volume") * 100);
+      this.voiceValue = localStorage.getItem("volume") * 100
+
+
       this.$nextTick(function () {
         window.addEventListener('scroll', this.load, true)
       })

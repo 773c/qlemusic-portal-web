@@ -15,6 +15,7 @@ import '@/styles/index.scss'
 import '@/icons'
 import '@/utils/ql-audio.js'
 import './permission'
+import qlAudio from '@/utils/qlAudio.js'
 
 import App from './App.vue'
 import router from './router'
@@ -23,6 +24,7 @@ import store from './store'
 
 Vue.use(ElementUI,{locale})
 Vue.use(VueVideoPlayer)
+Vue.use(qlAudio)
 
 Vue.config.productionTip = false
 

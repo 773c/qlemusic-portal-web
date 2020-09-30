@@ -34,9 +34,9 @@ const user = {
         })
       })
     },
-    GetInfo({commit}){
+    GetInfo({commit},isLoadingNprogress){
       return new Promise((resolve,reject) => {
-        getInfo().then(response => {
+        getInfo(isLoadingNprogress).then(response => {
           console.log(response);
           //获取后台数据data
           const data = response.data

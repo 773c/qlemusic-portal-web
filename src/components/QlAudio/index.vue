@@ -3,9 +3,10 @@
     <div class="audio-avatar-wrapper">
       <img class="play-avatar" src="@/assets/images/audio-play.png" @click="playHandler">
     </div>
-    <audio :id="id" class="bbs-audio" preload>
-      <source src="@/assets/BIGBANG (빅뱅) - 거짓말.mp3" type=""/>
-    </audio>
+    <!--<div style="border: 1px solid red;height: 50px;margin-top: -20px">{{audioUrl}}</div>-->
+    <!--<audio :id="id" class="bbs-audio" preload>-->
+    <!--<source :src="audioUrl" type=""/>-->
+    <!--</audio>-->
   </div>
 </template>
 
@@ -29,52 +30,58 @@
       },
       playTime: {
         type: Number,
-        default: 5000
-      }
+        default: 3000
+      },
+      audioUrl: String,
     },
     data() {
-      return {}
+      return {
+        times:null,
+        watchAudioUrl:'',
+        playCount:0
+      }
     },
     computed: {
-      audio() {
-        return this.$store.state.audio.qlaudio
-      },
+
+    },
+    watch: {
+      audioUrl(newVal,oldVal){
+        alert(oldVal)
+        if(oldVal !== ''){
+          window.clearTimeout(this.times)
+        }
+        // setTimeout(() => {
+        //   this.qlAudio.pause()
+        // },5000)
+      }
     },
     methods: {
-      setQlAudio() {
-        const _id = this.id
-        const audio = document.getElementById(_id)
-        this.$store.dispatch('SetQlAudio', audio)
-      },
+      //音频播放
       playHandler() {
-        let oriAudio = null
-        let item = sessionStorage.getItem('qlaudio')
-        if (item===null) {
-          console.log('sessionStorage为null')
-          this.setQlAudio()
-          //获取音频DOM对象
-          oriAudio = this.audio
-          //设置歌曲开始时间（秒）
-          oriAudio.currentTime = this.startTime
-          if (oriAudio.paused) {
-            oriAudio.play()
-            //设置歌曲结束时间（毫秒）
-            setTimeout(() => {
+        //点击播放后获取音频对象
+        let oriAudio = this.getAudio(this.audioUrl)
+        //设置歌曲开始时间（秒）
+        oriAudio.currentTime = this.startTime
+        if (oriAudio.paused) {
+          console.log("音乐开始播放");
+          oriAudio.play()
+          //audio的currentTime变化监听事件timeupdate
+          oriAudio.addEventListener("timeupdate", () => {
+            // 更新与播放进度相关的内容
+            if(parseInt(oriAudio.currentTime) === this.startTime + this.playTime / 1000){
+              console.log("暂停了");
               oriAudio.pause()
-            }, this.playTime)
-          } else {
-            oriAudio.pause()
-          }
-        }else {
-          console.log('sessionStorage不为null')
-          oriAudio = item
-          sessionStorage.removeItem('qlaudio')
+            }
+          });
+        } else {
+          oriAudio.pause()
         }
-        console.log(this.audio);
-        console.log(oriAudio);
       },
     },
+    created(){
+    },
     mounted() {
+
     }
   }
 </script>

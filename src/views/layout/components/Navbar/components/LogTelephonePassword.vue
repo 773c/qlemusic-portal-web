@@ -22,7 +22,7 @@
       </drag-verify>
     </el-row>
     <br><br>
-    <el-button class="tabs-log-button" type="danger" round @click="telPwdLogBtonHandler" :disabled="logBtonShow">登录
+    <el-button class="tabs-log-button" type="danger" round @click="telPwdLogBtonHandler" :disabled="logBtonShow" >登录
     </el-button>
     <br><br>
     <el-row class="tabs-reg-forget">
@@ -59,7 +59,7 @@
       return {
         logTelephone: '',
         password: '',
-        isNullTelPwd:true
+        isNullTelPwd:true,
       }
     },
     computed: {
@@ -152,8 +152,10 @@
         this.$emit("regClickHandler")
       },
       telPwdLogBtonHandler() {
+        this.$emit('openLoading',true)
         this.$store.dispatch('Login', {telephone: this.logTelephone, password: this.password}).then(() => {
           this.$store.dispatch('GetInfo').then(response => {
+            this.$emit('openLoading',false)
             this.$emit('setDialogVisible')
             console.log(response);
           })

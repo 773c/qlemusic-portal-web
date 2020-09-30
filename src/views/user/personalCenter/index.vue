@@ -149,6 +149,7 @@
       ]),
     },
     methods: {
+      //修改用户信息
       updateAccountInfoHandler() {
         updateAccountInfo({
           id: this.userInfo.id,
@@ -161,13 +162,14 @@
             this.isUpdate = false
           })
       },
+      //判断唯一ID是否修改过
       showUpdateUniqueId() {
-        isUpdateUniqueId(this.userInfo.id).then(response => {
+        isUpdateUniqueId(this.userInfo.id,false).then(response => {
           if(response.statusCode === 200)
             this.dialogVisible = true
         })
-
       },
+      //修改唯一ID
       updateUniqueIdHandler() {
         updateUniqueId({
           id: this.userInfo.id,

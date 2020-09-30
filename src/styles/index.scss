@@ -49,7 +49,7 @@ a:hover {
 .main-wrapper {
   width: 100% !important;
   .content-wrapper {
-    padding-top: 62px;
+    padding-top: 65px;
     width: 100% !important;
     min-height: 100%;
     .content-middle {
@@ -185,6 +185,11 @@ a:hover {
     //第二种格式内容
     .content-middle-two {
       //border: 1px solid red;
+      //导航栏背景
+      .nav-bg-wrapper{
+        background-image: url("../assets/images/bg-user-nav.jpg");
+        height: 65px;
+      }
       //背景封面
       .head-bg-wrapper {
         background-image: url("../assets/images/bg-personal.jpg");
@@ -192,11 +197,28 @@ a:hover {
         width: 1536px !important;
         .personal-avatar-warpper {
           float: left;
-          padding-top: 60px;
+          padding-top: 52px;
           width: 98px !important;
           margin-left: 200px;
+          .avatar-warpper {
+            height: 110px;
+            .update-avatar-div {
+              position: relative;
+              top: -58px;
+              font-size: 13px;
+              background-color: rgba(0, 0, 0, 0.7);
+              color: white;
+              height: 26px;
+              width: 95px;
+              text-align: center;
+              padding-top: 5px;
+              border-radius: 100px;
+            }
+          }
+          .avatar-warpper:hover{
+            cursor: pointer;
+          }
           .music-age {
-            padding-top: 8px;
             color: white;
             font-size: 13px;
           }
@@ -231,7 +253,7 @@ a:hover {
             }
           }
         }
-        #right2{
+        #right2 {
           width: 1010px !important;
           margin-left: 260px;
           margin-top: -265px;
@@ -245,10 +267,10 @@ a:hover {
           }
           .account-info-wrapper {
             padding-left: 50px;
-            .account-uniqueId{
-              .el-dialog-uniqueId{
+            .account-uniqueId {
+              .el-dialog-uniqueId {
                 margin-top: 100px;
-                .account-info-uniqueId-button{
+                .account-info-uniqueId-button {
                   width: 250px;
                   height: 45px;
                   border-radius: 50px;

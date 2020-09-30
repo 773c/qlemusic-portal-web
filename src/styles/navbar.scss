@@ -6,11 +6,13 @@
   padding-right: 100px;
   width: 100%;
   z-index: 999;
+  .el-menu-item:not(.is-active):hover {
+    background-color: rgba(255,255,255,0) !important;
+  }
   .el-menu-item-first {
     margin-left: 8.89375%;
-    height: 63px;
+    height: 65px;
     .img-logo {
-
     }
   }
   .nav-link {
@@ -20,8 +22,14 @@
   .nav-router-link {
     float: left;
     .el-menu-item {
-      height: 64px;
+      height: 65px;
       line-height: 66px;
+    }
+    .el-menu-item.is-active{
+      background-color: #000000 !important;
+    }
+    .el-menu-item.is-active:hover {
+      background-color: #000000 !important;
     }
     .el-menu-item:not(.is-active):hover {
       background-color: #fe0000 !important;
@@ -29,13 +37,13 @@
   }
   // 搜索框
   .el-menu-item-select {
-    height: 64px;
-    line-height: 52px;
+    height: 65px;
+    line-height: 51px;
   }
 
   // 收藏
   .collect-container {
-    height: 52px;
+    height: 53px;
     line-height: 72px;
     position: absolute;
     right: 205px;
@@ -48,7 +56,7 @@
   }
   // 消息
   .info-container {
-    height: 52px;
+    height: 53px;
     line-height: 72px;
     position: absolute;
     right: 175px;
@@ -61,7 +69,7 @@
   }
   //用户未登录
   .login-container {
-    height: 52px;
+    height: 53px;
     position: absolute;
     top: 26px;
     right: 130px;
@@ -223,7 +231,7 @@
   left: 20px;
   height: 320px;
   width: 26vw !important;
-  background-color: antiquewhite;
+  background-color: white;
   z-index: 998;
 }
 

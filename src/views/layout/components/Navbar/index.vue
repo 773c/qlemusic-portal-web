@@ -1,5 +1,5 @@
 <template>
-  <common-navbar>
+  <common-navbar :isUserFormat="isUserFormat">
     <template #logo>
       <a class="a-logo" href="/"><img class="img-logo" src="@/assets/images/flogo.png" width="70" height="68"></a>
     </template>
@@ -68,6 +68,7 @@
       <login-register
         :dialogVisible="dialogVisible"
         :isShowLogin="isShowLogin"
+        :loading="loading"
         @setDialogVisible="setDialogVisible"
         @AccountLogHandler="isShowAccPwdLogin = true"
         @VerifyLogHandler="isShowAccPwdLogin = false">
@@ -76,6 +77,7 @@
           <log-telephone-password
             v-show="isShowAccPwdLogin"
             @setDialogVisible="setDialogVisible"
+            @openLoading="openLoading"
             @regClickHandler="isShowLogin = false">
           </log-telephone-password>
           <!--手机号验证码登录页面-->
@@ -96,32 +98,32 @@
             <img class="user-avatar" :src="userInfo.headIcon">
           </div>
           <el-dropdown-menu class="user-dropdown" slot="dropdown">
-            <router-link class="inlineBlock" to="/usr/personal">
+            <router-link class="inlineBlock" target="_blank" to="/usr/personal">
               <el-dropdown-item>
                 个人中心
               </el-dropdown-item>
             </router-link>
-            <router-link class="inlineBlock" to="/">
+            <router-link class="inlineBlock" target="_blank" to="/">
               <el-dropdown-item>
                 我的收藏
               </el-dropdown-item>
             </router-link>
-            <router-link class="inlineBlock" to="/">
+            <router-link class="inlineBlock" target="_blank" to="/">
               <el-dropdown-item>
                 我的关注
               </el-dropdown-item>
             </router-link>
-            <router-link class="inlineBlock" to="/">
+            <router-link class="inlineBlock" target="_blank" to="/">
               <el-dropdown-item>
                 账号设置
               </el-dropdown-item>
             </router-link>
-            <router-link class="inlineBlock" to="/">
+            <router-link class="inlineBlock" target="_blank" to="/">
               <el-dropdown-item divided>
                 我的动态
               </el-dropdown-item>
             </router-link>
-            <router-link class="inlineBlock" to="/">
+            <router-link class="inlineBlock" target="_blank" to="/">
               <el-dropdown-item>
                 我的下载
               </el-dropdown-item>
@@ -155,12 +157,19 @@
       SetPassword,
       CommonNavbar
     },
+    props:{
+      isUserFormat:{
+        type:Boolean,
+        default: false
+      }
+    },
     data() {
       return {
         title: '登录',
         dialogVisible: false,
         isShowAccPwdLogin: true,
         isShowLogin: true,
+        loading:false
       }
     },
     computed: {
@@ -180,6 +189,9 @@
       },
       logoutHandler(){
         this.$store.dispatch('Logout')
+      },
+      openLoading(value){
+        this.loading = value
       }
     },
   }

@@ -3,8 +3,8 @@
     :default-active="$route.path"
     class="navbar"
     mode="horizontal"
-    style="border-bottom-color: black"
-    background-color="#000000"
+    style="border-bottom-color: black;"
+    :style="userFormatStyle"
     text-color="#fff"
     active-text-color="#ff2a00 ">
     <!--mobile菜单按钮-->
@@ -28,7 +28,7 @@
       <slot name="nine"></slot>
     </div>
     <!--搜索框-->
-    <el-menu-item class="el-menu-item-select" index="/select">
+    <el-menu-item class="el-menu-item-select">
       <el-input
         placeholder="请输入内容"
         v-model="selectBox"
@@ -59,14 +59,32 @@
 
   export default {
     name: "index",
+    components: {
+      Drawer
+    },
+    props: {
+      isUserFormat: {
+        type: Boolean,
+        default: false
+      }
+    },
     data() {
       return {
         selectBox: '',
         isShowContent: false
       }
     },
-    components: {
-      Drawer
+    computed: {
+      userFormatStyle() {
+        if (this.isUserFormat)
+          return {
+            backgroundColor: 'rgba(10,100,100,0.5)'
+          }
+        else
+          return {
+            backgroundColor: 'black'
+          }
+      }
     },
     methods: {
       remoteMethod(query) {
@@ -83,6 +101,7 @@
           this.options = [];
         }
       },
+      //当为移动端时的显示
       showContent() {
         if (this.$store.state.app.device === 'mobile') {
           this.isShowContent = false;
@@ -90,6 +109,7 @@
           this.isShowContent = true;
         }
       },
+      //当为移动端时的隐藏
       hideContent() {
         this.isShowContent = false;
       }
@@ -98,5 +118,4 @@
 </script>
 
 <style scoped>
-
 </style>

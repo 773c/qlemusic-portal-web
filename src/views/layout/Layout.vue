@@ -1,12 +1,12 @@
 <template>
   <div class="main-wrapper" :class="classObj">
     <!--导航栏-->
-    <navbar class="navbar-wrapper"></navbar>
+    <navbar class="navbar-wrapper" :isUserFormat="!format"></navbar>
     <!--内容部分-->
-    <div class="content-wrapper">
+    <div class="content-wrapper" :style="userFormatStyle">
       <div v-show="format" style="width: 100%">
         <!--中间内容-->
-        <div class="content-middle" >
+        <div class="content-middle">
           <middle></middle>
         </div>
         <!--右侧导航-->
@@ -46,11 +46,21 @@
           mobile: this.device === 'mobile'
         }
       },
-      format(){
-        if(this.$route.path.indexOf("/usr") != -1)
+      format() {
+        if (this.$route.path.indexOf("/usr") != -1)
           return false
         else
           return true
+      },
+      userFormatStyle() {
+        if (!this.format)
+          return {
+            paddingTop: '0'
+          }
+        else
+          return {
+            paddingTop: '65px'
+          }
       }
     }
   }

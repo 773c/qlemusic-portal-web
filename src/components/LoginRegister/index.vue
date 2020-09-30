@@ -13,9 +13,9 @@
       </slot>
     </div>
     <!--登录-->
-    <div v-show="isShowLogin" class="el-dialog-tabs">
+    <div v-show="isShowLogin" class="el-dialog-tabs" v-loading="loading">
       <!--登录方式-->
-      <div class="tabs-title" @click="AccountLogHandler">
+      <div class="tabs-title" @click="AccountLogHandler" >
         <slot name="log-way-one">账号登录</slot>
       </div>
       <div class="tabs-title" @click="VerifyLogHandler">
@@ -50,6 +50,10 @@
       isShowLogin: {
         type: Boolean,
         default: true
+      },
+      loading:{
+        type: Boolean,
+        default: false
       }
     },
     data() {
@@ -60,6 +64,7 @@
       };
     },
     computed: {
+      //窗口可见
       innerVisible:{
         get(){
           if(this.closeDialog)
@@ -71,6 +76,7 @@
           this.closeDialog = show
         }
       },
+      //验证码样式
       verifyBtonStyle() {
         return {
           backgroundColor: '#fe0000',
@@ -112,12 +118,15 @@
       }
     },
     methods: {
+      //切换账号密码登录
       AccountLogHandler() {
         this.$emit("AccountLogHandler")
       },
+      //切换验证码登录
       VerifyLogHandler() {
         this.$emit("VerifyLogHandler")
       },
+      //设置窗口可见（有BUG，父组件也需要设置一下）
       setDialogVisible(){
         this.closeDialog = true
         this.$emit("setDialogVisible")

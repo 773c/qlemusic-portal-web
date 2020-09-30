@@ -2,17 +2,26 @@ import axios from 'axios'
 import {Message, MessageBox} from 'element-ui'
 import store from '../store'
 import router from '../router'
-import {getToken} from "./auth";
+import {getToken, removeToken} from "./auth";
+import NProgress from 'nprogress'
 
 const service = axios.create({
   baseURL: 'http://localhost:8001',  //47.94.161.88
   timeout: 15000
 })
 
+
 // 请求拦截
 service.interceptors.request.use(config => {
+  console.log(config.url);
+  if (config.headers.isLoadingNprogress || config.headers.isLoadingNprogress == null) {
+    //进度条样式
+    NProgress.inc(0.2)
+    NProgress.configure({easing: 'ease', speed: 300, showSpinner: false})
+    //出现进度条
+    NProgress.start()
+  }
   console.log("请求拦截Cookie中的token：" + getToken());
-  console.log(store.getters.token);
   if (store.getters.token) {
     //在Header设置名为Authorization的token
     config.headers.Authorization = getToken()
@@ -25,6 +34,8 @@ service.interceptors.request.use(config => {
 
 // 响应拦截
 service.interceptors.response.use(response => {
+  //隐藏进度条
+  NProgress.done()
   const data = response.data
   if (data.statusCode !== 200) {
     Message({
@@ -35,14 +46,15 @@ service.interceptors.response.use(response => {
       duration: 2 * 1000
     })
     return Promise.reject('error')
-  }else if(data.statusCode == 403){
-    alert(111)
   } else {
     return data;
   }
 }, error => {
   console.log(error);
-  if(router.app.$route.name !== 'home')
+  if (error.response.status == 403) {
+    removeToken()
+    router.push('/')
+  } else if (router.app.$route.name !== 'home')
     router.push('/404')
 })
 

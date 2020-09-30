@@ -158,6 +158,7 @@
           })
         })
       },
+      //验证码登录发送按钮
       logSendVerifyBtonHandler(){
         sendSms(this.logTelephone).then(response => {
           Message({
