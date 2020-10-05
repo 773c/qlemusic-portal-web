@@ -33,3 +33,4 @@ router.afterEach(() => {
   //隐藏进度条
   NProgress.done()
 })
+

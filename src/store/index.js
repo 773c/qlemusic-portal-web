@@ -7,6 +7,10 @@ import getters from './getters'
 
 Vue.use(Vuex)
 
+const state = {
+  openWebType:'_self'
+}
+
 const store = new Vuex.Store({
   modules: {
     app,

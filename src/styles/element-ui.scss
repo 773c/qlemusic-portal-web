@@ -71,7 +71,19 @@
   border-color: #fe0000;
 }
 
+.el-button.is-plain:hover {
+  color: #606266;
+  background-color: #fff;
+  border-color: #fe0000;
+}
 
+.el-button--text {
+  color: #cc3300;
+}
+
+.el-button--text:hover {
+  color: #cc3300;
+}
 
 //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
 .el-dialog {
@@ -116,22 +128,23 @@
 }
 
 //el-pagination
-.el-pagination.is-background .el-pager li:not(.disabled).active{
+.el-pagination.is-background .el-pager li:not(.disabled).active {
   background-color: #fe0000;
   color: #ffffff;
 }
-.el-pagination.is-background .el-pager li:not(.disabled):not(.active):hover{
+
+.el-pagination.is-background .el-pager li:not(.disabled):not(.active):hover {
   color: #fe0000;
 }
 
 //el-pagination附加功能（每页显示总数）
-.el-pagination__sizes .el-input .el-input__inner:hover{
-  border-color:#fe0000;
+.el-pagination__sizes .el-input .el-input__inner:hover {
+  border-color: #fe0000;
 }
 
 //卡片头部
-.el-card-middle{
-  .el-card__header{
+.el-card-middle {
+  .el-card__header {
     background-color: #cc3300;
     height: 50px;
     line-height: 16px;
@@ -144,4 +157,95 @@
   background: #fe0000 !important;
 }
 
+//tabs标签（border卡片）
+.el-tabs--border-card > .el-tabs__header {
+  background-color: #108A52;
+}
+
+.el-tabs--border-card > .el-tabs__header .el-tabs__item {
+  padding-top: 5px;
+  height: 50px;
+  width: 160px;
+  text-align: center;
+}
+
+.el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active {
+  color: #fe0000;
+  font-weight: bold;
+  font-size: 16px;
+}
+
+.el-tabs--border-card > .el-tabs__header .el-tabs__item.is-active:hover {
+  color: #fe0000;
+}
+
+.el-tabs--border-card > .el-tabs__header .el-tabs__item:not(.is-active) {
+  color: white;
+  font-size: 16px;
+}
+
+.el-tabs--border-card > .el-tabs__header .el-tabs__item:not(.is-active):hover {
+  color: white;
+}
+
+.el-tabs--border-card > .el-tabs__content {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+//卡片
+.el-tabs--card > .el-tabs__header .el-tabs__item.is-active {
+  font-weight: bold;
+}
+
+//基础
+.el-tabs__item.is-active {
+  color: #fe0000;
+  font-size: 16px;
+}
+
+.el-tabs__item:not(.is-active) {
+  color: black;
+  font-size: 16px;
+}
+
+.el-tabs__active-bar {
+  border-left: 2px solid #fe0000;
+}
+
+//导航栏
+.el-menu-item.is-active:hover {
+  background-color: rgba(255, 255, 255, 0) !important;
+}
+
+.el-menu-item:not(.is-active):hover {
+  background-color: #fe0000 !important;
+}
+
+.el-menu-item:not(.is-disabled):focus {
+  background-color: rgba(255, 255, 255, 0) !important;
+}
+
+//Message消息提示
+.el-message {
+  min-width: 280px;
+}
+.el-message--success {
+  background-color: rgba(30, 30, 30, 0.7);
+  min-width: 140px;
+  .el-message__content {
+    color: white;
+  }
+  .el-icon-success {
+    color: white;
+  }
+}
+
+//分页
+.el-pagination .el-pager li:not(.disabled).active{
+  color: #fe0000;
+}
+.el-pagination .el-pager li:not(.disabled):not(.active):hover{
+  color: #fe0000;
+}
 

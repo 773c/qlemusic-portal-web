@@ -4,39 +4,43 @@
       <el-menu
         :default-active="$route.path"
         class="el-menu-vertical-demo"
+        :router="true"
         style="border-right:none">
-        <router-link class="personal-router-link" to="/usr/personal">
           <el-menu-item index="/usr/personal">
-            <i class="el-icon-edit"></i>
+            <i class="el-icon-user"></i>
             <span>个人资料</span>
           </el-menu-item>
-        </router-link>
-        <router-link class="personal-router-link" to="/usr/collect">
           <el-menu-item index="/usr/collect">
             <i class="el-icon-star-off"></i>
             <span>我的收藏</span>
           </el-menu-item>
-        </router-link>
-        <router-link class="personal-router-link" to="/">
           <el-menu-item index="/home">
-            <i class="el-icon-user"></i>
+            <i class="el-icon-circle-plus-outline"></i>
             <span>我关注的人</span>
           </el-menu-item>
-        </router-link>
-        <router-link class="personal-router-link" to="/">
           <el-menu-item index="/home">
             <i class="el-icon-magic-stick"></i>
             <span>我的粉丝</span>
           </el-menu-item>
-        </router-link>
+          <el-menu-item>
+            <i class="el-icon-service"></i>
+            <span>我的音乐</span>
+          </el-menu-item>
       </el-menu>
     </el-card>
   </div>
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
+
   export default {
-    name: "left"
+    name: "left2",
+    computed: {
+      ...mapGetters([
+        'userInfo'
+      ]),
+    }
   }
 </script>
 

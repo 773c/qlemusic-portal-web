@@ -26,7 +26,6 @@
 
 <script>
   import {register} from '@/api/login'
-  import {Message} from 'element-ui'
 
   export default {
     name: "setPassword",
@@ -61,22 +60,10 @@
         if(this.regPassword === this.regRePassword){
           register(this.regTelephone,this.regPassword,this.regRePassword).then(response => {
             console.log(response);
-            Message({
-              message: "注册成功",
-              type: 'success',
-              center: true,
-              offset: 70,
-              duration: 2 * 1000
-            })
+            this.$tip.success('注册成功')
           })
         }else {
-          Message({
-            message: "两次密码不一致",
-            type: 'error',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.error('两次密码不一致')
         }
 
       },

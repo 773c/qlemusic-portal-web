@@ -4,7 +4,9 @@
 
 <script>
   export default {
-    name: "index"
+    name: "download",
+    created(){
+    }
   }
 </script>
 

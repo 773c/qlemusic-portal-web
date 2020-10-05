@@ -51,7 +51,7 @@
           window.clearTimeout(this.times)
         }
         // setTimeout(() => {
-        //   this.qlAudio.pause()
+        //   this.$qlAudio.pause()
         // },5000)
       }
     },

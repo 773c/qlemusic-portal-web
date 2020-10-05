@@ -30,7 +30,7 @@
         <div class="collect-wrapper">
           <svg-icon class="svg-collect" icon-class="nav-collect"></svg-icon>
         </div>
-        <el-dropdown-menu class="collect-dropdown" slot="dropdown">
+        <el-dropdown-menu class="collect-dropdown" slot="dropdown" style="margin-left: 6px">
           <router-link class="inlineBlock" to="/">
             <el-dropdown-item>
               首页
@@ -48,7 +48,7 @@
         <div class="info-wrapper">
           <svg-icon class="svg-info" icon-class="nav-info"></svg-icon>
         </div>
-        <el-dropdown-menu class="info-dropdown" slot="dropdown">
+        <el-dropdown-menu class="info-dropdown" slot="dropdown" style="margin-left: 6px">
           <router-link class="inlineBlock" to="/">
             <el-dropdown-item>
               首页
@@ -98,38 +98,38 @@
             <img class="user-avatar" :src="userInfo.headIcon">
           </div>
           <el-dropdown-menu class="user-dropdown" slot="dropdown">
-            <router-link class="inlineBlock" target="_blank" to="/usr/personal">
+            <div @click="clickForward('/usr/personal')">
               <el-dropdown-item>
-                个人中心
+                <i class="el-icon-user"></i>个人中心
               </el-dropdown-item>
-            </router-link>
-            <router-link class="inlineBlock" target="_blank" to="/">
+            </div>
+            <div @click="clickForward('/usr/collect')">
               <el-dropdown-item>
-                我的收藏
+                <i class="el-icon-star-off"></i>我的收藏
               </el-dropdown-item>
-            </router-link>
-            <router-link class="inlineBlock" target="_blank" to="/">
+            </div>
+            <div @click="clickForward('/')">
               <el-dropdown-item>
-                我的关注
+                <i class="el-icon-circle-plus-outline"></i>我的关注
               </el-dropdown-item>
-            </router-link>
-            <router-link class="inlineBlock" target="_blank" to="/">
+            </div>
+            <div @click="clickForward('/')">
               <el-dropdown-item>
-                账号设置
+                <i class="el-icon-setting"></i>账号设置
               </el-dropdown-item>
-            </router-link>
-            <router-link class="inlineBlock" target="_blank" to="/">
+            </div>
+            <div @click="clickForward(userInfo.uniqueId)">
               <el-dropdown-item divided>
-                我的动态
+                <i class="el-icon-service"></i>我的音乐
               </el-dropdown-item>
-            </router-link>
-            <router-link class="inlineBlock" target="_blank" to="/">
+            </div>
+            <div @click="clickForward('')">
               <el-dropdown-item>
-                我的下载
+                <i class="el-icon-download"></i>我的下载
               </el-dropdown-item>
-            </router-link>
+            </div>
             <el-dropdown-item divided>
-              <div @click="logoutHandler">退出</div>
+              <div @click="logoutHandler"><i class="el-icon-switch-button"></i>退出</div>
             </el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
@@ -157,9 +157,9 @@
       SetPassword,
       CommonNavbar
     },
-    props:{
-      isUserFormat:{
-        type:Boolean,
+    props: {
+      isUserFormat: {
+        type: Boolean,
         default: false
       }
     },
@@ -169,15 +169,15 @@
         dialogVisible: false,
         isShowAccPwdLogin: true,
         isShowLogin: true,
-        loading:false
+        loading: false,
       }
     },
     computed: {
       ...mapGetters([
         'userInfo'
       ]),
-      isLogin(){
-        if(this.$store.state.user.token)
+      isLogin() {
+        if (this.$store.state.user.token)
           return false;
         else
           return true;
@@ -187,13 +187,24 @@
       setDialogVisible() {
         this.dialogVisible = false
       },
-      logoutHandler(){
+      logoutHandler() {
         this.$store.dispatch('Logout')
       },
-      openLoading(value){
+      openLoading(value) {
         this.loading = value
+      },
+      clickForward(path) {
+        let routeUrl = this.$router.resolve({
+          path: path
+        })
+        if(this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel){
+          window.open(routeUrl.href, '_self');
+        }else {
+          window.open(routeUrl.href, '_blank');
+        }
+
       }
-    },
+    }
   }
 </script>
 

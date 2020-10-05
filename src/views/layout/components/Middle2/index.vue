@@ -1,7 +1,5 @@
 <template>
   <div id="middle2">
-    <!--导航栏背景图-->
-    <div class="nav-bg-wrapper"></div>
     <!--背景封面-->
     <div class="head-bg-wrapper">
       <div class="personal-avatar-warpper">
@@ -54,7 +52,7 @@
   import {updateAvatar} from "@/api/user";
 
   export default {
-    name: "index",
+    name: "middle2",
     components: {
       Left2,
       Right2,

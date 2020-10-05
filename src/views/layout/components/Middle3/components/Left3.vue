@@ -1,6 +1,6 @@
 <template>
-  <div id="right2">
-    <el-card class="box-card">
+  <div id="left3">
+    <el-card class="box-card" :body-style="{ padding: '0px' }">
       <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
@@ -10,7 +10,7 @@
 
 <script>
   export default {
-    name: "right2"
+    name: "left3"
   }
 </script>
 

@@ -56,7 +56,6 @@
 <script>
   import DragVerify from '@/components/DragVerify'
   import {login, sendSms} from "@/api/login";
-  import {Message, MessageBox} from 'element-ui'
 
   export default {
     name: "logTelephone",
@@ -161,13 +160,7 @@
       //验证码登录发送按钮
       logSendVerifyBtonHandler(){
         sendSms(this.logTelephone).then(response => {
-          Message({
-            message: "发送成功",
-            type: 'success',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.success('发送成功')
           //短信发送成功后
           this.isSendSuccess = true
           //定时器倒计时
@@ -196,24 +189,12 @@
         if (this.isSendSuccess)
           this.btonShow = false
         else if (this.logTelephone === '') {
-          Message({
-            message: "请输入手机号登录",
-            type: 'error',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.error('请输入手机号登录')
           setTimeout(() => {
             this.reset()
           }, 2000)
         } else {
-          Message({
-            message: "请发送验证码",
-            type: 'error',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.error('请发送验证码')
           setTimeout(() => {
             this.reset()
           }, 2000)

@@ -1,9 +1,9 @@
 export default{
   install(Vue,options)
   {
-    Vue.prototype.qlAudio = document.createElement("AUDIO")
+    Vue.prototype.$qlAudio = document.createElement("AUDIO")
     Vue.prototype.initAudio = function () {
-      let audio = this.qlAudio
+      let audio = this.$qlAudio
       let muted = localStorage.getItem("muted")
       let volume = localStorage.getItem("volume")
       console.log("全局getAudio");
@@ -18,7 +18,7 @@ export default{
       return audio
     }
     Vue.prototype.getAudio = function (audioUrl) {
-      let audio = this.qlAudio
+      let audio = this.$qlAudio
       audio.src = audioUrl
       return audio
     }

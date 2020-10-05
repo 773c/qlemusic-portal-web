@@ -94,6 +94,7 @@
                    @click="updateAccountInfoHandler">保存
         </el-button>
       </div>
+
     </div>
   </div>
 </template>
@@ -101,7 +102,6 @@
 <script>
   import {mapGetters} from 'vuex'
   import {updateAccountInfo, updateUniqueId,isUpdateUniqueId} from "@/api/user";
-  import {Message, MessageBox} from 'element-ui'
 
   export default {
     name: "personalCenter",
@@ -178,20 +178,36 @@
           .then(response => {
             console.log(response);
             this.dialogVisible = false
-            Message({
-              message: '修改成功',
-              type: 'success',
-              center: true,
-              offset: 70,
-              duration: 2 * 1000
-            })
-
+            this.$tip.success('操作成功')
           })
       }
     }
   }
 </script>
 
-<style scoped>
-
+<style lang="scss" scoped>
+  //个人信息
+  #personal-center-info {
+    .title {
+      .title-name {
+        font-weight: bold;
+        text-align: center;
+      }
+    }
+    .account-info-wrapper {
+      padding-left: 50px;
+      .account-uniqueId {
+        .el-dialog-uniqueId {
+          margin-top: 100px;
+          .account-info-uniqueId-button {
+            width: 250px;
+            height: 45px;
+            border-radius: 50px;
+            margin-left: 70px;
+            margin-top: 10px;
+          }
+        }
+      }
+    }
+  }
 </style>

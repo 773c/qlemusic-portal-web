@@ -2,7 +2,7 @@
   <el-dialog
     :visible.sync="innerVisible"
     class="el-dialog-user"
-    width="435px"
+    :width="logDiaLogWidth"
     @closed="setDialogVisible"
     :close-on-click-modal="false"
     :modal-append-to-body="false"
@@ -115,6 +115,13 @@
           return true
         else
           return false
+      },
+      logDiaLogWidth(){
+        if(this.$store.state.app.device === 'mobile'){
+          return '100%'
+        }else {
+          return '445px'
+        }
       }
     },
     methods: {

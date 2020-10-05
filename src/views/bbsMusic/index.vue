@@ -1,12 +1,14 @@
 <template>
-  <div>
-    PersonalCollect
+  <div id="bbsMusic">
+    <div class="bbsMusic-title">
+
+    </div>
   </div>
 </template>
 
 <script>
   export default {
-    name: "personalCollect"
+    name: "bbsMusic"
   }
 </script>
 

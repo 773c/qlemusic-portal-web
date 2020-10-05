@@ -1,8 +1,8 @@
 <template>
   <div id="home">
     <!--走马灯-->
-    <el-carousel :interval="4000" type="card" height="16vw" style="background-size: cover;margin-top: 20px">
-      <el-carousel-item v-for="item in 6" :key="item">
+    <el-carousel class="home-el-carousel" :interval="4000" type="card" style="background-size: cover;">
+      <el-carousel-item class="home-el-carousel-item" v-for="item in 6" :key="item">
         <div class="medium">
           <video-player
             class="video-player vjs-custom-skin"
@@ -25,8 +25,7 @@
     <!--@playing="onPlayerPlaying($event)"-->
     <!--@loadeddata="onPlayerLoadeddata($event)"-->
     <!--@timeupdate="onPlayerTimeupdate($event)"-->
-
-
+    <collect-model :isShowCollectModel="isShowCollectModel" @addFavoriteHandler="addFavoriteHandler"></collect-model>
     <!--音频文章区域-->
     <div class="infinite-list-wrapper middle-bbs-music" style="overflow:auto;">
       <ul
@@ -40,6 +39,7 @@
           <el-table-column>
             <template slot="header" slot-scope="scope">
               <div class="el-table-title">推荐</div>
+              <!--音量调节-->
               <div class="voice-wrapper">
                 <div class="voice-icon-wrapper" @click="voiceHandler">
                   <svg-icon class="voice-icon" :icon-class="changeVoiceIcon"></svg-icon>
@@ -50,43 +50,41 @@
               </div>
             </template>
             <template #default="scope">
-              <div class="middle-title">
-                <span>{{scope.row.title}}</span>
-              </div>
-              <el-row>
-                <el-col :span="2">
+              <div class="bbs-music-row-wrapper">
+                <div class="middle-title">
+                  <span>{{scope.row.title}}</span>
+                </div>
+                <div style="width: 40px;float: left;margin-top: 1px">
                   <div class="avatar-wrapper">
                     <img class="user-avatar" :src="scope.row.umsUser.headIcon">
                   </div>
-                </el-col>
-                <el-col :span="3" style="padding-top: 22px;">
+                </div>
+                <div style="width: auto;float: left;margin-left: 15px;margin-top: 22px">
                   <span class="publisher">{{scope.row.umsUser.name}}</span>
-                </el-col>
-                <el-col :span="13">
-                  <!--播放器-->
+                </div>
+                <!--播放器-->
+                <div style="width: 35vw;float: left;margin-left: 20px;">
                   <ql-audio :audioUrl="scope.row.audioUrl"></ql-audio>
-                </el-col>
-                <el-col :span="2" style="padding-top: 40px;">
-                  <div class="like div-threeIcon">
-                    <svg-icon class="threeIcon" icon-class="like"></svg-icon>
-                    <span>{{bbsMusic.likeNum}}</span>
-                  </div>
-                  <div style="width:0;height: 12px;border-left: 1px solid #C4C4C4;float: right;margin-top: -17px"></div>
-                </el-col>
-                <el-col :span="2" style="padding-top: 40px;">
-                  <div class="see div-threeIcon">
-                    <svg-icon class="threeIcon" icon-class="see"></svg-icon>
-                    <span>{{bbsMusic.seeNum}}</span>
-                  </div>
-                  <div style="width:0;height: 12px;border-left: 1px solid #C4C4C4;float: right;margin-top: -17px"></div>
-                </el-col>
-                <el-col :span="2" style="padding-top: 40px;">
-                  <div class="comment div-threeIcon">
-                    <svg-icon class="threeIcon" icon-class="comment"></svg-icon>
-                    <span>{{bbsMusic.commentNum}}</span>
-                  </div>
-                </el-col>
-              </el-row>
+                </div>
+                <!--评论-->
+                <div class="comment div-threeIcon" style="width: auto;float: right;margin-top: 40px;margin-right: 15px">
+                  <svg-icon class="threeIcon" icon-class="comment"></svg-icon>
+                  <span>{{bbsMusic.commentNum}}</span>
+                </div>
+                <!--查看-->
+                <div class="see div-threeIcon" style="width: auto;float: right;margin-top: 40px">
+                  <svg-icon class="threeIcon" icon-class="see"></svg-icon>
+                  <span>{{bbsMusic.seeNum}}</span>
+                  <el-divider direction="vertical"></el-divider>
+                </div>
+                <!--点赞-->
+                <div class="like div-threeIcon" @click="collectHandler(scope.row.id)"
+                     style="width: auto;float: right;margin-top: 40px">
+                  <svg-icon class="threeIcon" icon-class="like"></svg-icon>
+                  <span>{{bbsMusic.likeNum}}</span>
+                  <el-divider direction="vertical"></el-divider>
+                </div>
+              </div>
             </template>
           </el-table-column>
         </el-table>
@@ -99,17 +97,20 @@
 <script>
   import {getRecommendList} from "@/api/bbsMusic";
   import {videoPlayer} from 'vue-video-player'
+  import CollectModel from '@/components/CollectModel'
+  import {addCollect} from "@/api/collect";
 
   const defaultBbsMusic = {
     likeNum: '',
     seeNum: '',
-    commentNum: '',
+    commentNum: '12312',
     total: 300
   }
   export default {
-    name: "index",
+    name: "home",
     components: {
-      videoPlayer
+      videoPlayer,
+      CollectModel
     },
     data() {
       return {
@@ -117,6 +118,7 @@
         loading: false,
         bbsMusic: Object.assign({}, defaultBbsMusic),
         list: [],
+        musicId: '',
         voiceValue: 50,
         changeVoiceIcon: 'audio-voice',
         playerOptions: {
@@ -133,6 +135,7 @@
           }],
           poster: require("@/assets/images/1.jpg"),
         },
+        isShowCollectModel: false
       }
     },
     computed: {
@@ -142,11 +145,16 @@
       player() {
         return this.$refs.videoPlayer.player
       },
-      volume(){
+      volume() {
         return this.voiceValue / 100
       }
     },
     methods: {
+      addFavoriteHandler() {
+        addCollect(8, this.musicId).then(response => {
+          console.log(response);
+        })
+      },
       //获得默认推荐音乐片段
       recommendList() {
         getRecommendList(false).then(response => {
@@ -172,13 +180,13 @@
           }, 2000)
         }
       },
-      changeVolume(){
-        this.qlAudio.volume = this.volume
-        localStorage.setItem("volume",this.volume)
+      changeVolume() {
+        this.$qlAudio.volume = this.volume
+        localStorage.setItem("volume", this.volume)
       },
       //声音处理
       voiceHandler() {
-        let audio = this.qlAudio
+        let audio = this.$qlAudio
         //muted为true为静音
         if (audio.muted) {
           this.changeVoiceIcon = 'audio-voice'
@@ -188,6 +196,10 @@
           audio.muted = true
         }
         localStorage.setItem("muted", audio.muted)
+      },
+      collectHandler(id) {
+        this.isShowCollectModel = true
+        this.musicId = id
       },
       // listen event
       onPlayerPlay(player) {
@@ -228,15 +240,15 @@
     mounted() {
       //初始化音量图标
       let muted = localStorage.getItem("muted")
+      console.log(muted);
       if (muted === 'true') {
         this.changeVoiceIcon = 'audio-voice-no'
       } else {
         this.changeVoiceIcon = 'audio-voice'
       }
       //初始化音量滑条
-      console.log("音量："+localStorage.getItem("volume") * 100);
+      console.log("音量：" + localStorage.getItem("volume") * 100);
       this.voiceValue = localStorage.getItem("volume") * 100
-
 
       this.$nextTick(function () {
         window.addEventListener('scroll', this.load, true)

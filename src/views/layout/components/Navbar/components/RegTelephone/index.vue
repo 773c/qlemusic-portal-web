@@ -43,8 +43,10 @@
       <el-button class="tabs-log-button" type="danger" round @click="regBtonNextHandler" :disabled="btonShow">下一步
       </el-button>
       <button style="display: none"></button>
-      <div class="tabs-reg-return-log" align="center" @click="returnLogClick">
-        返回登录
+      <div align="center">
+        <div class="tabs-reg-return-log" @click="returnLogClick">
+          返回登录
+        </div>
       </div>
     </div>
     <!--设置密码-->
@@ -57,7 +59,6 @@
   import SetPassword from './SetPassword'
   import DragVerify from '@/components/DragVerify'
   import {matchVerify, sendSms} from "@/api/login"
-  import {Message, MessageBox} from 'element-ui'
 
   export default {
     name: "regTelephone",
@@ -151,13 +152,7 @@
       //注册验证码发送
       regSendVerifyBtonHandler() {
         sendSms(this.regTelephone).then(response => {
-            Message({
-              message: "发送成功",
-              type: 'success',
-              center: true,
-              offset: 70,
-              duration: 2 * 1000
-            })
+          this.$tip.success('发送成功')
             //短信发送成功后
             this.isSendSuccess = true
             //定时器倒计时
@@ -175,21 +170,9 @@
       //注册下一步按钮
       regBtonNextHandler() {
         if (this.regTelephone === '') {
-          Message({
-            message: "手机号不能为空",
-            type: 'error',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.error('手机号不能为空')
         } else if (this.regVerify === '') {
-          Message({
-            message: "验证码不能为空",
-            type: 'error',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.error('验证码不能为空')
         } else {
           matchVerify(this.regTelephone, this.regVerify).then(response => {
             console.log(response);
@@ -212,24 +195,12 @@
         if (this.isSendSuccess)
           this.btonShow = false
         else if (this.regTelephone === '') {
-          Message({
-            message: "请输入手机号注册",
-            type: 'error',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.error('请输入手机号注册')
           setTimeout(() => {
             this.reset()
           }, 2000)
         } else {
-          Message({
-            message: "请发送验证码",
-            type: 'error',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.error('请发送验证码')
           setTimeout(() => {
             this.reset()
           }, 2000)

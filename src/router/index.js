@@ -6,12 +6,14 @@ const Layout = () => import('@/views/layout/Layout')
 const Home = () => import('@/views/home')
 const Download = () => import('@/views/download')
 const PersonalCenter = () => import('@/views/user/personalCenter')
-const PersonalCollect = () => import('@/views/user/personalCollect')
+const Collect = () => import('@/views/user/collect')
+const MyMusic = () => import('@/views/user/myMusic')
+const BbsMusic = () => import('@/views/bbsMusic')
 
 Vue.use(VueRouter)
 
 const routes = [
-  {path: '/404', component: Error,meta:{title: '404', icon: '404',isLoadingNprogress:false}},
+  {path: '/404', component: Error, meta: {title: '404', icon: '404', isLoadingNprogress: false}},
   {
     path: '/',
     component: Layout,
@@ -20,7 +22,7 @@ const routes = [
       path: 'home',
       name: 'home',
       component: Home,
-      meta: {title: '首页', icon: 'home',isLoadingNprogress:false}
+      meta: {title: '首页', icon: 'home', isLoadingNprogress: false,isLevel: 1}
     }]
   },
   {
@@ -30,7 +32,7 @@ const routes = [
       path: 'download',
       name: 'download',
       component: Download,
-      meta: {title: '下载', icon: 'download',isLoadingNprogress:true}
+      meta: {title: '下载', icon: 'download', isLoadingNprogress: true,isLevel: 1}
     }]
   },
   {
@@ -41,16 +43,29 @@ const routes = [
         path: 'personal',
         name: 'personal',
         component: PersonalCenter,
-        meta: {title: '个人中心', icon: 'personal',isLoadingNprogress:false}
+        meta: {title: '个人中心', icon: 'personal', isLoadingNprogress: false,isLevel: 2}
       },
       {
         path: 'collect',
         name: 'collect',
-        component: PersonalCollect,
-        meta: {title: '我的收藏', icon: 'collect',isLoadingNprogress:true}
+        component: Collect,
+        meta: {title: '我的收藏', icon: 'collect', isLoadingNprogress: true,isLevel: 2}
       }
     ]
-  }
+  },
+  {
+    path: '/:uniqueId',
+    component: Layout,
+    name: 'bbsMusic',
+    children: [
+      {
+        path: '',
+        name: ':uniqueId',
+        component: MyMusic,
+        meta: {title: '我的音乐', icon: 'myMusic', isLoadingNprogress: true,isLevel: 2}
+      }
+    ]
+  },
 ]
 
 const router = new VueRouter({

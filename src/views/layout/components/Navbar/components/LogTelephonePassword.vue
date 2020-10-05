@@ -47,7 +47,6 @@
 
 <script>
   import DragVerify from '@/components/DragVerify'
-  import {Message, MessageBox} from 'element-ui'
 
   export default {
     name: "logTelephonePassword",
@@ -91,24 +90,12 @@
       passCallBack() {
         console.log("滑块验证成功走的方法");
         if (this.logTelephone === '') {
-          Message({
-            message: "请输入账号",
-            type: 'error',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.error('请输入账号')
           setTimeout(() => {
             this.reset()
           }, 2000)
         } else if (this.password === ''){
-          Message({
-            message: "请输入密码",
-            type: 'error',
-            center: true,
-            offset: 70,
-            duration: 2 * 1000
-          })
+          this.$tip.error('请输入密码')
           setTimeout(() => {
             this.reset()
           }, 2000)

@@ -8,6 +8,7 @@ body {
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   width: 100% !important;
   background-color: #F5F5F5;
 }
@@ -39,162 +40,176 @@ a:hover {
   color: inherit;
   text-decoration: none;
 }
-
-//滚动条
-.el-scrollbar__wrap {
-  overflow-x: hidden;
-}
-
 //内容部分
 .main-wrapper {
-  width: 100% !important;
+  width: 100%;
+  //导航栏背景
+  .nav-bg-wrapper {
+    width: $fullWidth;
+    background-image: url("../assets/images/bg-user-nav.jpg");
+    height: 65px;
+  }
   .content-wrapper {
-    padding-top: 65px;
-    width: 100% !important;
+    width: $fullWidth;
     min-height: 100%;
-    .content-middle {
-      width: 58% !important;
-      margin-left: 10.8%;
-      float: left;
-      display: inline;
-      .middle-bbs-music {
-        .list {
-          //margin-top: 0px;
-          padding-left: 0px;
-          box-shadow: 0px -3px 0px 3px #fe0000;
+    //第一种格式（home）
+    .content-middle-one {
+      //轮翻图
+      .home-el-carousel {
+        .el-carousel__container {
+          height: 270px;
+        }
+        .home-el-carousel-item {
+          height: 250px;
+        }
+      }
+      .content-middle {
+        width: 893px;
+        margin-left: 10vw;
+        float: left;
+        margin-top: 20px;
+        //滚动条
+        .el-scrollbar__wrap {
+          overflow-x: hidden;
+        }
+        .middle-bbs-music {
+          .list {
+            padding-left: 0px;
+            box-shadow: 0px -3px 0px 3px #fe0000;
 
-          //.el-table__header-wrapper .el-table__header .has-gutter .el-table_1_column_1.is-leaf .cell {
-          //  color: #fe0000;
-          //  font-size: 19px;
-          //  margin-left: 10px;
-          //}
-          .el-table-title {
-            color: #fe0000;
-            font-size: 19px;
-            margin-left: 10px;
-          }
-          //音量
-          .voice-wrapper {
-            width: 15%;
-            height: 15px;
-            float: right;
-            margin-top: -25px;
-            margin-right: 50px;
+            //.el-table__header-wrapper .el-table__header .has-gutter .el-table_1_column_1.is-leaf .cell {
+            //  color: #fe0000;
+            //  font-size: 19px;
+            //  margin-left: 10px;
+            //}
 
-            //音量图标
-            .voice-icon-wrapper {
-              .voice-icon {
-                cursor: pointer;
-                width: 1.1em;
-                height: 1.1em;
-              }
+            //每一行音乐片段的div
+            .bbs-music-row-wrapper {
+              width: 870px;
             }
 
-            //音量进度条
-            .voice-progress {
-              margin: -27px 0 0 22px;
-              width: 99%;
-              height: 25px;
-              .el-slider__runway {
-                cursor: pointer;
-                height: 3px;
-                .el-slider__bar {
-                  height: 3px;
-                  background-color: #fe0000;
+            .el-table-title {
+              color: #fe0000;
+              font-size: 19px;
+              margin-left: 10px;
+            }
+            //音量
+            .voice-wrapper {
+              width: 15%;
+              height: 15px;
+              float: right;
+              margin-top: -25px;
+              margin-right: 50px;
+
+              //音量图标
+              .voice-icon-wrapper {
+                .voice-icon {
+                  cursor: pointer;
+                  width: 1.1em;
+                  height: 1.1em;
                 }
-                .el-slider__button-wrapper {
-                  z-index: 997;
-                  .el-slider__button {
-                    border: 2px solid #fe0000;
-                    width: 10px;
-                    height: 10px;
-                    margin-top: -3px;
+              }
+
+              //音量进度条
+              .voice-progress {
+                margin: -27px 0 0 22px;
+                width: 99%;
+                height: 25px;
+                .el-slider__runway {
+                  cursor: pointer;
+                  height: 3px;
+                  .el-slider__bar {
+                    height: 3px;
+                    background-color: #fe0000;
+                  }
+                  .el-slider__button-wrapper {
+                    z-index: 997;
+                    .el-slider__button {
+                      border: 2px solid #fe0000;
+                      width: 10px;
+                      height: 10px;
+                      margin-top: -3px;
+                    }
                   }
                 }
               }
             }
-          }
 
-          .middle-title {
-            font-weight: bold;
-            font-size: 17px;
-            color: black;
-            margin-left: 8px;
-            cursor: pointer;
-          }
-          .middle-title:hover {
-            color: #fe0000;
-          }
-          .publisher {
-            cursor: pointer;
-            margin-left: -12px;
-          }
-          .publisher:hover {
-            color: #fe0000;
-          }
-          .div-threeIcon {
-            margin-left: 10px;
-            cursor: pointer;
-            width: 50px;
-            .threeIcon:hover {
+            .middle-title {
+              font-weight: bold;
+              font-size: 17px;
+              color: black;
+              margin-left: 8px;
+              cursor: pointer;
+            }
+            .middle-title:hover {
               color: #fe0000;
             }
-            span {
-              margin-left: 4px;
+            .publisher {
+              cursor: pointer;
+              margin-left: -12px;
+            }
+            .publisher:hover {
               color: #fe0000;
             }
+            .div-threeIcon {
+              margin-left: 10px;
+              cursor: pointer;
+              width: 100px;
+              .threeIcon:hover {
+                color: #fe0000;
+              }
+              span {
+                margin-left: 4px;
+                color: #fe0000;
+              }
 
-          }
-          .avatar-wrapper {
-            cursor: pointer;
-            margin-top: 18px;
-            margin-left: 5px;
-            .user-avatar {
-              width: 28px !important;
-              height: 28px;
-              border-radius: 50px;
+            }
+            .avatar-wrapper {
+              cursor: pointer;
+              margin-top: 18px;
+              margin-left: 5px;
+              .user-avatar {
+                width: 28px !important;
+                height: 28px;
+                border-radius: 50px;
+              }
             }
           }
         }
       }
-    }
-    .content-right {
-      margin-top: 20px;
-      width: 20% !important;
-      float: right;
-      display: inline;
-      margin-right: 10%;
-      //修饰颜色方块
-      .div-embellish {
-        width: 4px;
-        height: 18px;
-        background-color: #fe0000;
+      .content-right {
+        margin-top: 20px;
+        width: 306px !important;
         float: left;
-        margin-right: 2px;
-      }
-      //按钮
-      .right-button {
-        float: right;
-        margin-top: -4px;
-        padding: 6px 10px
-      }
-      .right-button:hover {
-        background-color: #fe0000;
+        margin-left: 9px;
+        //修饰颜色方块
+        .div-embellish {
+          width: 4px;
+          height: 18px;
+          background-color: #fe0000;
+          float: left;
+          margin-right: 2px;
+        }
+        //按钮
+        .right-button {
+          float: right;
+          margin-top: -4px;
+          padding: 6px 10px
+        }
+        .right-button:hover {
+          border: 1px solid #fe0000;
+        }
       }
     }
-    //第二种格式内容
+    //第二种格式（user）
     .content-middle-two {
       //border: 1px solid red;
-      //导航栏背景
-      .nav-bg-wrapper{
-        background-image: url("../assets/images/bg-user-nav.jpg");
-        height: 65px;
-      }
       //背景封面
       .head-bg-wrapper {
         background-image: url("../assets/images/bg-personal.jpg");
         height: 200px;
-        width: 1536px !important;
+        width: $fullWidth !important;
         .personal-avatar-warpper {
           float: left;
           padding-top: 52px;
@@ -215,7 +230,7 @@ a:hover {
               border-radius: 100px;
             }
           }
-          .avatar-warpper:hover{
+          .avatar-warpper:hover {
             cursor: pointer;
           }
           .music-age {
@@ -237,53 +252,57 @@ a:hover {
       .personal-content-wrapper {
         margin-left: 8.89375%;
         margin-top: 10px;
+        width: 1260px;
         .personal-content-nav {
           width: 250px;
-          .personal-router-link {
-            text-align: center;
-            .el-menu-item {
-              font-size: 15px;
-            }
-            .el-menu-item.is-active {
-              background-color: #fe0000 !important;
-              color: white;
-            }
-            .el-menu-item:not(.is-active):hover {
-              background-color: #f0f0f0 !important;
-            }
+          float: left;
+          .el-menu-item {
+            font-size: 15px;
+          }
+          .el-menu-item.is-active {
+            background-color: #fe0000 !important;
+            color: white;
+          }
+          .el-menu-item:not(.is-active):hover {
+            background-color: #f0f0f0 !important;
           }
         }
         #right2 {
           width: 1010px !important;
           margin-left: 260px;
-          margin-top: -265px;
-        }
-        #personal-center-info {
-          .title {
-            .title-name {
+          //收藏
+          #collect {
+            .el-dialog__title {
               font-weight: bold;
-              text-align: center;
             }
-          }
-          .account-info-wrapper {
-            padding-left: 50px;
-            .account-uniqueId {
-              .el-dialog-uniqueId {
-                margin-top: 100px;
-                .account-info-uniqueId-button {
-                  width: 250px;
-                  height: 45px;
-                  border-radius: 50px;
-                  margin-left: 70px;
-                  margin-top: 10px;
-                }
-              }
+            .el-transfer-panel{
+              width: 360px;
             }
+            .el-transfer-panel__item{
 
+            }
           }
         }
       }
     }
+
+    //第三种格式（bbsMusic）
+    .content-middle-three {
+      .bbsMusic-content-wrapper {
+        margin-left: 8.89375%;
+        margin-top: 10px;
+        width: 1246px;
+        #left3 {
+          width: 946px;
+          float: left;
+        }
+        #right3 {
+          width: 300px;
+          margin-left: 955px;
+        }
+      }
+    }
+
   }
 }
 

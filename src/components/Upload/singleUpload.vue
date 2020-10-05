@@ -18,7 +18,7 @@
       <div v-if="!isSelectAvatar">
         <i class="el-icon-upload"></i>
         <div class="el-upload__text">将文件拖到此处，或<em> 点击上传</em></div>
-        <div class="el-upload__tip" slot="tip">只能上传jpg/png文件，且不超过500kb</div>
+        <div class="el-upload__tip" slot="tip">*上传反动、色情等照片将导致您的账号被删除</div>
       </div>
       <div v-else>
         <el-avatar :size=120 :src="imageUrl"></el-avatar>

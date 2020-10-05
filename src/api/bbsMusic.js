@@ -9,3 +9,24 @@ export function getRecommendList(isLoadingNprogress) {
     }
   })
 }
+
+export function getMyMusicList(id,isLoadingNprogress) {
+  return request({
+    url:'/audio/myMusic',
+    method:'get',
+    headers:{
+      isLoadingNprogress:isLoadingNprogress
+    },
+    params:{
+      id:id
+    }
+  })
+}
+
+export function getMusicByCollectId(params) {
+  return request({
+    url:'/audio/getMusicByCollectId',
+    method:'get',
+    params:params
+  })
+}

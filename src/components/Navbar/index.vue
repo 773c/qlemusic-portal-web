@@ -6,7 +6,7 @@
     style="border-bottom-color: black;"
     :style="userFormatStyle"
     text-color="#fff"
-    active-text-color="#ff2a00 ">
+    active-text-color="#ff2a00">
     <!--mobile菜单按钮-->
     <el-menu-item class="menu-button">
       <img src="@/assets/images/menu.png" width="26" height="26">
@@ -28,7 +28,7 @@
       <slot name="nine"></slot>
     </div>
     <!--搜索框-->
-    <el-menu-item class="el-menu-item-select">
+    <div class="el-menu-item-select">
       <el-input
         placeholder="请输入内容"
         v-model="selectBox"
@@ -41,13 +41,16 @@
       <el-card class="select-content" v-show="isShowContent">
         asdas
       </el-card>
-    </el-menu-item>
+    </div>
 
     <!--导航链接-->
-    <slot name="after-one"></slot>
-    <slot name="after-two"></slot>
-    <slot name="after-three"></slot>
-    <slot name="after-four"></slot>
+    <div class="nav-link-right">
+      <slot name="after-one"></slot>
+      <slot name="after-two"></slot>
+      <slot name="after-three"></slot>
+      <slot name="after-four"></slot>
+    </div>
+
 
     <!--用户-->
     <slot name="user"></slot>
