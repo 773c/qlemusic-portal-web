@@ -11,6 +11,18 @@ body {
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   width: 100% !important;
   background-color: #F5F5F5;
+  //滚动条整体样式
+  ::-webkit-scrollbar {
+    width: 7px;
+  }
+  //滚动条里面小方块样式
+  ::-webkit-scrollbar-thumb {
+    border-radius: 100px;
+    background: rgb(225, 225, 225);
+  }
+  //滚动条里面轨道样式
+  ::-webkit-scrollbar-track {
+  }
 }
 
 html {
@@ -40,17 +52,34 @@ a:hover {
   color: inherit;
   text-decoration: none;
 }
-//内容部分
+
+/**
+  内容部分
+ */
 .main-wrapper {
   width: 100%;
+  //导航
+  .navbar-wrapper {
+    width: $fullWidth;
+  }
+  //首页导航栏背景
+  .nav-bg-home-wrapper{
+    width: $fullWidth;
+    background-image: url("../assets/images/bg-home-nav.gif");
+    height: 65px;
+    position: fixed;
+    z-index: 998;
+  }
   //导航栏背景
   .nav-bg-wrapper {
     width: $fullWidth;
     background-image: url("../assets/images/bg-user-nav.jpg");
     height: 65px;
+    position: fixed;
+    z-index: 998;
   }
   .content-wrapper {
-    width: $fullWidth;
+    width: 100%;
     min-height: 100%;
     //第一种格式（home）
     .content-middle-one {
@@ -64,7 +93,7 @@ a:hover {
         }
       }
       .content-middle {
-        width: 893px;
+        width: 900px;
         margin-left: 10vw;
         float: left;
         margin-top: 20px;
@@ -82,11 +111,6 @@ a:hover {
             //  font-size: 19px;
             //  margin-left: 10px;
             //}
-
-            //每一行音乐片段的div
-            .bbs-music-row-wrapper {
-              width: 870px;
-            }
 
             .el-table-title {
               color: #fe0000;
@@ -135,6 +159,10 @@ a:hover {
               }
             }
 
+            //每一行音乐片段的div
+            .bbs-music-row-wrapper {
+              width: 870px;
+            }
             .middle-title {
               font-weight: bold;
               font-size: 17px;
@@ -180,9 +208,9 @@ a:hover {
       }
       .content-right {
         margin-top: 20px;
-        width: 306px !important;
+        width: 290px !important;
         float: left;
-        margin-left: 9px;
+        margin-left: 10px;
         //修饰颜色方块
         .div-embellish {
           width: 4px;
@@ -210,9 +238,11 @@ a:hover {
         background-image: url("../assets/images/bg-personal.jpg");
         height: 200px;
         width: $fullWidth !important;
+        position: fixed;
+        z-index: 997;
         .personal-avatar-warpper {
           float: left;
-          padding-top: 52px;
+          padding-top: 45px;
           width: 98px !important;
           margin-left: 200px;
           .avatar-warpper {
@@ -241,44 +271,51 @@ a:hover {
         .personal-name-warpper {
           float: left;
           color: white;
-          margin-top: 65px;
+          margin-top: 60px;
           margin-left: 45px;
           font-weight: bold;
           font-size: 16px;
         }
       }
-
       //信息内容
       .personal-content-wrapper {
-        margin-left: 8.89375%;
-        margin-top: 10px;
-        width: 1260px;
-        .personal-content-nav {
+        margin-left: 10vw;
+        width: 1205px;
+        #left2 {
           width: 250px;
+          position: fixed;
+          top: 265px;
           float: left;
-          .el-menu-item {
-            font-size: 15px;
-          }
-          .el-menu-item.is-active {
-            background-color: #fe0000 !important;
-            color: white;
-          }
-          .el-menu-item:not(.is-active):hover {
-            background-color: #f0f0f0 !important;
+          .left2-card {
+            height: 488px;
+            border-radius: 0;
+            overflow-y: auto;
+            .el-menu-item {
+              font-size: 15px;
+              height: 50px;
+              line-height: 50px;
+            }
+            .el-menu-item.is-active {
+              background-color: #fe0000 !important;
+              color: white;
+            }
+            .el-menu-item:not(.is-active):hover {
+              background-color: #f0f0f0 !important;
+            }
           }
         }
         #right2 {
-          width: 1010px !important;
-          margin-left: 260px;
+          width: 945px !important;
+          margin-left: 250px;
           //收藏
           #collect {
             .el-dialog__title {
               font-weight: bold;
             }
-            .el-transfer-panel{
+            .el-transfer-panel {
               width: 360px;
             }
-            .el-transfer-panel__item{
+            .el-transfer-panel__item {
 
             }
           }
@@ -289,16 +326,102 @@ a:hover {
     //第三种格式（bbsMusic）
     .content-middle-three {
       .bbsMusic-content-wrapper {
-        margin-left: 8.89375%;
+        margin-left: 10vw;
         margin-top: 10px;
-        width: 1246px;
+        width: 1200px;
         #left3 {
-          width: 946px;
+          width: 910px;
           float: left;
+          //我的音乐
+          #myMusic {
+            .el-slider__runway {
+              cursor: pointer;
+              height: 3px;
+              .el-slider__bar {
+                height: 3px;
+                background-color: #fe0000;
+              }
+              .el-slider__button-wrapper {
+                z-index: 997;
+                .el-slider__button {
+                  border: 2px solid #fe0000;
+                  width: 10px;
+                  height: 10px;
+                  margin-top: -3px;
+                }
+              }
+            }
+          }
         }
         #right3 {
-          width: 300px;
-          margin-left: 955px;
+          width: 280px;
+          margin-left: 918px;
+        }
+      }
+    }
+    //管理格式
+    .content-middle-manage {
+      #manage {
+        .manage-content-wrapper {
+          margin-left: 10vw;
+          width: 1200px;
+          #left-manage {
+            width: 250px;
+            float: left;
+            position: fixed;
+            .left-manage-card {
+              border-radius: 0;
+              overflow-y: auto;
+              height: 688px;
+              .release-button-wrapper {
+                text-align: center;
+                .release-button {
+                  width: 200px;
+                  border-radius: 20px;
+                  font-size: 16px;
+                }
+              }
+              .left-manage-nav-wrapper {
+                .el-menu-item {
+                  font-size: 14px;
+                  height: 50px;
+                  line-height: 50px;
+                }
+                .el-menu-item.is-active {
+                  color: #fe0000;
+                }
+                .el-menu-item.is-active i {
+                  border-left: 4px solid #fe0000;
+                }
+                .el-menu-item i {
+                  width: 60px;
+                  margin-left: -20px;
+                  padding-left: 30px;
+                }
+                .el-menu-item:not(.is-active):hover {
+                  background-color: #e8e8e8 !important;
+                }
+              }
+              .left-manage-footer-wrapper {
+                height: 280px;
+                padding: 20px;
+                .left-manage-footer {
+                  font-size: 12px;
+                  color: #999999;
+                }
+                .left-manage-wx-qrcode{
+                  text-align: center;
+                }
+              }
+            }
+          }
+          #right-manage {
+            width: 940px;
+            margin-left: 250px;
+            .right-manage-card{
+              border-radius: 0;
+            }
+          }
         }
       }
     }

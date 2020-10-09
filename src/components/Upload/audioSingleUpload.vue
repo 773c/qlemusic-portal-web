@@ -1,34 +1,22 @@
 <template>
-  <div>
+  <div id="audio-single-upload">
     <el-upload
-      ref="singleUpload"
+      ref="audioSingleUpload"
       action="useOss?ossUploadUrl:minioUploadUrl"
+      list-type="picture"
       :data="useOss?dataObj:null"
       :http-request="uploadHandler"
       :file-list="fileList"
-      :show-file-list="false"
       :before-upload="beforeUploadHandler"
       :on-change="changeHandler"
       :on-remove="removeHandler"
       :on-preview="previewHandler"
       :on-success="uploadSuccessHandler"
       :limit="2"
-      :drag="avatar==='audio' || isSelectAvatar===true?false:true"
+      drag
       :auto-upload="false">
-      <div v-if="avatar==='audio'" style="border: 1px dashed #d9d9d9;border-radius: 6px;">
-        <img v-if="imageUrl" :src="imageUrl" class="avatar">
-        <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-      </div>
-      <div v-else>
-        <div v-if="!isSelectAvatar">
-          <i class="el-icon-upload"></i>
-          <div class="el-upload__text">将文件拖到此处，或<em> 点击上传</em></div>
-        </div>
-        <div v-else>
-          <el-avatar :size=120 :src="imageUrl"></el-avatar>
-        </div>
-      </div>
-      <div class="el-upload__tip" slot="tip" style="color: #999999">*上传反动、色情等照片将导致您的账号被删除</div>
+      <i class="el-icon-upload"></i>
+      <div class="el-upload__text">将文件拖到此处，或<em> 点击上传</em></div>
     </el-upload>
   </div>
 </template>
@@ -37,16 +25,7 @@
   import {policy} from "@/api/oss";
 
   export default {
-    name: "singleUpload",
-    props: {
-      value: String,
-      isUpdateAvatar: {
-        type: Boolean,
-        default: false
-      },
-      uniqueId: String,
-      avatar: String
-    },
+    name: "audioSingleUpload",
     data() {
       return {
         dataObj: {
@@ -57,8 +36,7 @@
           dir: '',
           host: ''
         },
-        imageUrl: '',
-        isSelectAvatar: false,
+        audioUrl: '',
         useOss: true, //true为oss，false为minio
         ossUploadUrl: 'http://qlmusic-oss1.oss-cn-zhangjiakou.aliyuncs.com/',
         minioUploadUrl: 'http://localhost:8080/minio/upload',
@@ -76,32 +54,26 @@
     methods: {
       //父组件需要调用时的手动提交
       submit() {
-        console.log(this.fileList);
-        this.$refs.singleUpload.submit()
+        this.$refs.audioSingleUpload.submit()
       },
       //选择文件后触发
       changeHandler(file, fileList) {
         console.log(file);
-        const isImg = file.raw.type === 'image/jpeg';
-        const isLt3M = file.raw.size / 1024 / 1024 < 3;
+        const isAudio = file.raw.type === 'audio/mpeg';
+        const isLt20M = file.raw.size / 1024 / 1024 < 20;
 
-        if (!isImg) {
-          this.$message.error('上传文件只能是图片格式!');
+        if (!isAudio) {
+          this.$message.error('上传文件只能是音频( mp3 )格式');
         }
-        if (!isLt3M) {
-          this.$message.error('上传文件大小不能超过 3MB!');
+        if (!isLt20M) {
+          this.$message.error('上传文件大小不能超过 20MB!');
         }
-        if (isImg && isLt3M) {
-          this.$emit('selectAvatar', true)
-          this.isSelectAvatar = true
-          this.imageUrl = URL.createObjectURL(file.raw);
+        if(isAudio && isLt20M){
           //将文件存入fileList
           this.fileList.push(file)
-          console.log(this.fileList);
-          //设置头像切换机制(到达2张后，移除前面一张)
+          //设置文件切换机制
           if (fileList.length === 2) {
             fileList.splice(0, 1)
-            this.fileList.splice(0, 1)
           }
           let _self = this;
           if (!this.useOss) {
@@ -117,7 +89,7 @@
               _self.dataObj.key = data.dir + '/${filename}';
               _self.dataObj.dir = data.dir;
               _self.dataObj.host = data.host;
-              this.$emit('setAudioAvatar', file.raw)
+              this.$emit('setAudioSrc',file.url)
               resolve(true) //为true则执行成功
             }).catch(err => {
               console.log(err)
@@ -135,21 +107,14 @@
       },
       //自定义上传
       uploadHandler() {
-        console.log("上传图片文件");
+
+        console.log("上传音频文件");
         let formData = new FormData();
-        //如果是发布作品的音乐封面
         this.fileList.forEach(file => {
           formData.append("file", file.raw)
         })
         formData.append("ossUploadUrl", this.ossUploadUrl)
-        if (this.avatar === 'audio') {
-          console.log("音频图片发布");
-          this.$emit('releaseHandler', formData)
-        } else {
-          this.$emit('updateAvatarHandler', formData)
-        }
-
-
+        this.$emit('releaseHandler', formData)
       },
       //上传文件之前触发
       beforeUploadHandler(file) {
@@ -167,35 +132,12 @@
         this.fileList.push({name: file.name, url: url});
         // this.$emit('updateAvatarHandler', url)
       }
+    },
+    activated(){
+      console.log("1");
     }
   }
 </script>
 
-<style scoped>
-  .avatar-uploader .el-upload {
-    border: 1px dashed #d9d9d9;
-    border-radius: 6px;
-    cursor: pointer;
-    position: relative;
-    overflow: hidden;
-  }
-
-  .avatar-uploader .el-upload:hover {
-    border-color: #409EFF;
-  }
-
-  .avatar-uploader-icon {
-    font-size: 28px;
-    color: #8c939d;
-    width: 178px;
-    height: 178px;
-    line-height: 178px;
-    text-align: center;
-  }
-
-  .avatar {
-    width: 178px;
-    height: 178px;
-    display: block;
-  }
+<style lang="scss" scoped>
 </style>

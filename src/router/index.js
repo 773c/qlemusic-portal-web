@@ -9,6 +9,8 @@ const PersonalCenter = () => import('@/views/user/personalCenter')
 const Collect = () => import('@/views/user/collect')
 const MyMusic = () => import('@/views/user/myMusic')
 const BbsMusic = () => import('@/views/bbsMusic')
+const ManageHome = () => import('@/views/manage/home')
+const EditMusic = () => import('@/views/manage/editMusic')
 
 Vue.use(VueRouter)
 
@@ -66,7 +68,31 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/manage',
+    component: Layout,
+    children: [
+      {
+        path: 'home',
+        name: 'home',
+        component: ManageHome,
+        meta: {title: '管理首页', icon: 'home', isLoadingNprogress: false,isLevel: 3}
+      },
+      {
+        path: 'edit',
+        name: 'edit',
+        component: EditMusic,
+        meta: {title: '管理音乐', icon: 'edit', isLoadingNprogress: true,isLevel: 3}
+      }
+    ]
+  },
 ]
+
+//路由重复点击报错
+const routerPush = VueRouter.prototype.push
+VueRouter.prototype.push = function push(location) {
+  return routerPush.call(this, location).catch(error=> error)
+}
 
 const router = new VueRouter({
   routes,

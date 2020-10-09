@@ -60,6 +60,7 @@
         if(this.regPassword === this.regRePassword){
           register(this.regTelephone,this.regPassword,this.regRePassword).then(response => {
             console.log(response);
+            this.$emit('setDialogVisible')
             this.$tip.success('注册成功')
           })
         }else {

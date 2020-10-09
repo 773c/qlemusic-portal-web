@@ -1,17 +1,22 @@
 const audio = {
   state:{
-    qlaudio: {}
+    qlaudio: {},
+    count:0
   },
   mutations:{
     SET_QLAUDIO(state,qlaudio){
       state.qlaudio = qlaudio
+    },
+    SET_COUNT(state){
+      state.count++
     }
   },
   actions:{
     SetQlAudio({commit},qlaudio){
       commit('SET_QLAUDIO',qlaudio)
-      console.log(qlaudio);
-      sessionStorage.setItem('qlaudio',qlaudio.toString())
+    },
+    IncreasePlayCount({commit}){
+      commit('SET_COUNT')
     }
   }
 }

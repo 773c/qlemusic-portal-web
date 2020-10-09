@@ -50,7 +50,11 @@
       </div>
     </div>
     <!--设置密码-->
-    <set-password v-show="isMatchVerify" @regReset="regReset" :regTelephone="regTelephone">
+    <set-password
+      v-show="isMatchVerify"
+      @regReset="regReset"
+      @setDialogVisible="setDialogVisible"
+      :regTelephone="regTelephone">
     </set-password>
   </div>
 </template>
@@ -221,6 +225,10 @@
         this.isSendSuccess = false
         //验证条复原
         this.reset()
+      },
+      //调用父组件方法
+      setDialogVisible(){
+        this.$emit('setDialogVisible')
       }
     }
   }

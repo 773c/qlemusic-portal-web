@@ -30,7 +30,7 @@
         <div class="collect-wrapper">
           <svg-icon class="svg-collect" icon-class="nav-collect"></svg-icon>
         </div>
-        <el-dropdown-menu class="collect-dropdown" slot="dropdown" style="margin-left: 6px">
+        <el-dropdown-menu class="collect-dropdown" slot="dropdown" style="margin-left: 6px;width: 126px">
           <router-link class="inlineBlock" to="/">
             <el-dropdown-item>
               首页
@@ -48,7 +48,7 @@
         <div class="info-wrapper">
           <svg-icon class="svg-info" icon-class="nav-info"></svg-icon>
         </div>
-        <el-dropdown-menu class="info-dropdown" slot="dropdown" style="margin-left: 6px">
+        <el-dropdown-menu class="info-dropdown" slot="dropdown" style="margin-left: 6px;width: 126px">
           <router-link class="inlineBlock" to="/">
             <el-dropdown-item>
               首页
@@ -88,7 +88,9 @@
           </log-telephone>
         </template>
         <template #reg-content>
-          <reg-telephone @returnLogClick="isShowLogin = true">
+          <reg-telephone
+            @returnLogClick="isShowLogin = true"
+            @setDialogVisible="setDialogVisible">
           </reg-telephone>
         </template>
       </login-register>
@@ -97,33 +99,38 @@
           <div class="avatar-wrapper">
             <img class="user-avatar" :src="userInfo.headIcon">
           </div>
-          <el-dropdown-menu class="user-dropdown" slot="dropdown">
-            <div @click="clickForward('/usr/personal')">
+          <el-dropdown-menu class="user-dropdown" slot="dropdown" style="width: 126px">
+            <div @click="clickForward('/usr/personal',false)">
               <el-dropdown-item>
                 <i class="el-icon-user"></i>个人中心
               </el-dropdown-item>
             </div>
-            <div @click="clickForward('/usr/collect')">
+            <div @click="clickForward('/usr/collect',false)">
               <el-dropdown-item>
                 <i class="el-icon-star-off"></i>我的收藏
               </el-dropdown-item>
             </div>
-            <div @click="clickForward('/')">
+            <div @click="clickForward('/',false)">
               <el-dropdown-item>
                 <i class="el-icon-circle-plus-outline"></i>我的关注
               </el-dropdown-item>
             </div>
-            <div @click="clickForward('/')">
+            <div @click="clickForward('/',false)">
               <el-dropdown-item>
                 <i class="el-icon-setting"></i>账号设置
               </el-dropdown-item>
             </div>
-            <div @click="clickForward(userInfo.uniqueId)">
+            <div @click="clickForward(userInfo.uniqueId,true)">
               <el-dropdown-item divided>
                 <i class="el-icon-service"></i>我的音乐
               </el-dropdown-item>
             </div>
-            <div @click="clickForward('')">
+            <div @click="clickForward('/manage/home',false)">
+              <el-dropdown-item>
+                <i class="el-icon-aim"></i>管理音乐
+              </el-dropdown-item>
+            </div>
+            <div @click="clickForward('',false)">
               <el-dropdown-item>
                 <i class="el-icon-download"></i>我的下载
               </el-dropdown-item>
@@ -193,16 +200,23 @@
       openLoading(value) {
         this.loading = value
       },
-      clickForward(path) {
-        let routeUrl = this.$router.resolve({
-          path: path
-        })
-        if(this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel){
-          window.open(routeUrl.href, '_self');
+      clickForward(path, flag) {
+        let routeUrl = null
+        if (flag) {
+          routeUrl = this.$router.resolve({
+            path: path,
+            query: {id: this.userInfo.id}
+          })
         }else {
+          routeUrl = this.$router.resolve({
+            path: path
+          })
+        }
+        if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
+          window.open(routeUrl.href, '_self');
+        } else {
           window.open(routeUrl.href, '_blank');
         }
-
       }
     }
   }

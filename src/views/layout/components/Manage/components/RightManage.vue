@@ -1,7 +1,6 @@
 <template>
-  <div id="right2">
-    <div style="height: 200px"></div>
-    <el-card class="box-card" style="border-radius: 0" shadow="never">
+  <div id="right-manage">
+    <el-card class="right-manage-card" shadow="nerver">
       <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
@@ -11,7 +10,7 @@
 
 <script>
   export default {
-    name: "right2"
+    name: "rightManage"
   }
 </script>
 

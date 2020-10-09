@@ -19,7 +19,8 @@ export default{
     }
     Vue.prototype.getAudio = function (audioUrl) {
       let audio = this.$qlAudio
-      audio.src = audioUrl
+      if(audioUrl !== audio.src)
+        audio.src = audioUrl
       return audio
     }
   }

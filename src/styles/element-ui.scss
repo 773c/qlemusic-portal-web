@@ -159,7 +159,7 @@
 
 //tabs标签（border卡片）
 .el-tabs--border-card > .el-tabs__header {
-  background-color: #108A52;
+  background-color: #fafafa;
 }
 
 .el-tabs--border-card > .el-tabs__header .el-tabs__item {
@@ -180,12 +180,13 @@
 }
 
 .el-tabs--border-card > .el-tabs__header .el-tabs__item:not(.is-active) {
-  color: white;
+  color: #777777;
   font-size: 16px;
 }
 
 .el-tabs--border-card > .el-tabs__header .el-tabs__item:not(.is-active):hover {
-  color: white;
+  color: #fe0000;
+  font-weight: bold;
 }
 
 .el-tabs--border-card > .el-tabs__content {

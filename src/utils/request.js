@@ -54,8 +54,19 @@ service.interceptors.response.use(response => {
   if (error.response.status == 403) {
     removeToken()
     router.push('/')
-  } else if (router.app.$route.name !== 'home')
+  } else if (router.app.$route.name !== 'home') {
     router.push('/404')
+  } else {
+    Message({
+      message: '未知错误',
+      type: 'error',
+      center: true,
+      offset: 70,
+      duration: 2 * 1000
+    })
+  }
+
+
 })
 
 export default service

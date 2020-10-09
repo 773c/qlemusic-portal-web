@@ -107,12 +107,12 @@
     },
     methods: {
       changeVolume() {
-        this.qlAudio.volume = this.volume
+        this.$qlAudio.volume = this.volume
         localStorage.setItem("volume", this.volume)
       },
       //声音处理
       voiceHandler() {
-        let audio = this.qlAudio
+        let audio = this.$qlAudio
         //muted为true为静音
         if (audio.muted) {
           this.changeVoiceIcon = 'audio-voice'
@@ -124,7 +124,7 @@
         localStorage.setItem("muted", audio.muted)
       },
       myMusicList() {
-        getMyMusicList(this.userInfo.id, false).then(response => {
+        getMyMusicList(this.$route.query.id, false).then(response => {
           console.log(response);
           let data = response.data;
           this.list = data
@@ -186,29 +186,11 @@
           height: 1.1em;
         }
       }
-
       //音量进度条
       .voice-progress {
         margin: -27px 0 0 25px;
         width: 99%;
         height: 25px;
-        .el-slider__runway {
-          cursor: pointer;
-          height: 3px;
-          .el-slider__bar {
-            height: 3px;
-            background-color: #fe0000;
-          }
-          .el-slider__button-wrapper {
-            z-index: 997;
-            .el-slider__button {
-              border: 2px solid #fe0000;
-              width: 10px;
-              height: 10px;
-              margin-top: -3px;
-            }
-          }
-        }
       }
     }
     .myMusic-bbsMusic {

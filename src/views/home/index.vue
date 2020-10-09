@@ -54,17 +54,50 @@
                 <div class="middle-title">
                   <span>{{scope.row.title}}</span>
                 </div>
-                <div style="width: 40px;float: left;margin-top: 1px">
-                  <div class="avatar-wrapper">
-                    <img class="user-avatar" :src="scope.row.umsUser.headIcon">
-                  </div>
+                <div style="width: 40px;float: left;margin-top: 1px;">
+                  <el-popover
+                    placement="top-start"
+                    width="300"
+                    offset="40"
+                    trigger="hover">
+                    <div class="avatar-popover-wrapper">
+                      <div class="avatar-popover-top">
+                        <div class="avatar-wrapper" slot="reference">
+                          <img class="user-avatar" :src="scope.row.umsUser === null?'':scope.row.umsUser.headIcon">
+                        </div>
+                        <div class="user-info-wrapper">
+                          <div class="user-info-name">{{scope.row.umsUser === null?'':scope.row.umsUser.name}}</div>
+                          <div></div>
+                        </div>
+                      </div>
+                      <hr style=" height:2px;border:none;border-top:2px dotted #f0f0f0;"/>
+                      <div class="avatar-popover-bottom">
+                        <div class="into-home">
+                          <el-button style="padding-top: 6px" type="text">进入主页</el-button>
+                        </div>
+                        <div class="attention">
+                          <el-button type="success" size="mini">关注</el-button>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="avatar-wrapper" slot="reference">
+                      <img class="user-avatar" :src="scope.row.umsUser === null?'':scope.row.umsUser.headIcon">
+                    </div>
+                  </el-popover>
                 </div>
-                <div style="width: auto;float: left;margin-left: 15px;margin-top: 22px">
-                  <span class="publisher">{{scope.row.umsUser.name}}</span>
+                <div style="width: auto;float: left;margin-left: 15px;margin-top: 22px"
+                     @click="seeUserSendMusicHandler(scope.row.umsUser.id,scope.row.umsUser.uniqueId)">
+                  <span class="publisher">{{scope.row.umsUser === null?'':scope.row.umsUser.name}}</span>
                 </div>
                 <!--播放器-->
                 <div style="width: 35vw;float: left;margin-left: 20px;">
-                  <ql-audio :audioUrl="scope.row.audioUrl"></ql-audio>
+                  <ql-audio
+                    ref="qlAudioRef"
+                    :audioUrl="scope.row.audioUrl"
+                    :audioImgUrl="scope.row.audioAvatarUrl"
+                    :prevAudioVueComponent="prevAudioVueComponent"
+                    @setPlayEffect="setPlayEffect">
+                  </ql-audio>
                 </div>
                 <!--评论-->
                 <div class="comment div-threeIcon" style="width: auto;float: right;margin-top: 40px;margin-right: 15px">
@@ -78,10 +111,10 @@
                   <el-divider direction="vertical"></el-divider>
                 </div>
                 <!--点赞-->
-                <div class="like div-threeIcon" @click="collectHandler(scope.row.id)"
+                <div class="like div-threeIcon" @click="likeHandler(scope.row.id,scope.$index)"
                      style="width: auto;float: right;margin-top: 40px">
-                  <svg-icon class="threeIcon" icon-class="like"></svg-icon>
-                  <span>{{bbsMusic.likeNum}}</span>
+                  <svg-icon class="threeIcon" icon-class="like" :style="likeStyle"></svg-icon>
+                  <span>{{scope.row.bbsMusicOperation === null?0:scope.row.bbsMusicOperation.likeCount}}</span>
                   <el-divider direction="vertical"></el-divider>
                 </div>
               </div>
@@ -95,15 +128,17 @@
 </template>
 
 <script>
-  import {getRecommendList} from "@/api/bbsMusic";
+  import {getRecommendList, like} from "@/api/bbsMusic";
   import {videoPlayer} from 'vue-video-player'
   import CollectModel from '@/components/CollectModel'
   import {addCollect} from "@/api/collect";
+  import {mapGetters} from 'vuex'
+  import {getMyMusicList} from "@/api/bbsMusic";
 
   const defaultBbsMusic = {
-    likeNum: '',
-    seeNum: '',
-    commentNum: '12312',
+    likeNum: 0,
+    seeNum: 0,
+    commentNum: 0,
     total: 300
   }
   export default {
@@ -119,8 +154,10 @@
         bbsMusic: Object.assign({}, defaultBbsMusic),
         list: [],
         musicId: '',
+        isLike: false,
         voiceValue: 50,
         changeVoiceIcon: 'audio-voice',
+        prevAudioVueComponent:{},
         playerOptions: {
           // videojs options
           muted: false,
@@ -147,6 +184,16 @@
       },
       volume() {
         return this.voiceValue / 100
+      },
+      ...mapGetters([
+        'userInfo'
+      ]),
+      likeStyle() {
+        if (this.isLike) {
+          return {
+            color: '#fe0000'
+          }
+        }
       }
     },
     methods: {
@@ -197,9 +244,30 @@
         }
         localStorage.setItem("muted", audio.muted)
       },
-      collectHandler(id) {
-        this.isShowCollectModel = true
-        this.musicId = id
+      //点击名称查看用户发表的音乐等
+      seeUserSendMusicHandler(userId, uniqueId) {
+        let routeUrl = this.$router.resolve({
+          path: uniqueId,
+          query:{id:userId}
+        })
+        if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
+          window.open(routeUrl.href, '_self');
+        } else {
+          window.open(routeUrl.href, '_blank');
+        }
+      },
+      //点赞
+      likeHandler(id, index) {
+        // this.isShowCollectModel = true
+        // this.musicId = id
+        like(id, this.userInfo.id, false).then(response => {
+          console.log(response);
+          this.list[index].bbsMusicOperation.likeCount++
+          this.isLike = true
+        })
+      },
+      setPlayEffect(vueComponent){
+        this.prevAudioVueComponent = vueComponent
       },
       // listen event
       onPlayerPlay(player) {
@@ -253,6 +321,7 @@
       this.$nextTick(function () {
         window.addEventListener('scroll', this.load, true)
       })
+
     },
     destroyed() { //离开该页面需要移除这个监听的事件
       window.removeEventListener('scroll', this.load)
@@ -260,7 +329,39 @@
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
+  //头像提示窗口
+  .avatar-popover-wrapper {
+    .avatar-popover-top {
+      .avatar-wrapper {
+        width: 65px;
+        margin-left: 5px;
+        .user-avatar {
+          width: 64px !important;
+          height: 64px;
+          border-radius: 50px;
+        }
+      }
+      .user-info-wrapper {
+        width: auto;
+        position: absolute;
+        top: 15px;
+        left: 100px;
+        .user-info-name {
+
+        }
+      }
+    }
+    .avatar-popover-bottom {
+      .into-home {
+        float: left;
+        height: 30px;
+      }
+      .attention {
+        float: right;
+      }
+    }
+  }
 
   .el-carousel__item h3 {
     color: #475669;

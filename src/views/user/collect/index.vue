@@ -35,14 +35,14 @@
       <div class="favorite-info-wrapper">
         <div class="favorite-description-wrapper">
           <span class="favorite-name">描述：</span>
-          <span class="description-content">{{currentFavorite.description===''?createFavoriteDescription:currentFavorite.description}}</span>
+          <span class="description-content">{{currentFavorite.description===''?defaultFavoriteDescription:currentFavorite.description}}</span>
           <el-tooltip class="item" effect="light" content="添加描述" placement="top">
             <i class="el-icon-edit" style="color: black;font-size: 14px;cursor:pointer;margin-left: 8px"></i>
           </el-tooltip>
         </div>
         <div class="favorite-name-wrapper">
           <span class="favorite-name">收藏夹名称：</span>
-          <span class="name-content">{{currentFavorite.title===''? createFavoriteTitle :currentFavorite.title}}</span>
+          <span class="name-content">{{currentFavorite.title===''? '默认' :currentFavorite.title}}</span>
           <el-tooltip class="item" effect="light" content="修改名称" placement="top">
             <i class="el-icon-edit" style="color: black;font-size: 14px;cursor:pointer;margin-left: 8px"></i>
           </el-tooltip>
@@ -243,7 +243,7 @@
         listQuery: Object.assign({}, defaultListQuery),
         total: null,
         isShowAddFavorite: false,
-        createFavoriteTitle: '',
+        createFavoriteTitle: '默认',
         createFavoriteDescription: '',
         currentFavorite: {
           id: 0,
@@ -259,14 +259,11 @@
         moveFavoriteIndex: null,
         bathMoveFavoriteIndex: null,
         radio: '1',
-        favoriteTabs: [{
-          id: 0,
-          title: '默认',
-          name: '1',
-          description: '请添加收藏夹描述内容'
-        }],
+        favoriteTabs: [],
+        defaultFavoriteId: null,
+        defaultFavoriteDescription:'请添加收藏夹描述内容',
         collectContentList: [],
-        tabIndex: 1,
+        tabIndex: 0,
         batchMoveData: [],
         batchMoveTargetValue: []
       }
@@ -275,6 +272,13 @@
       ...mapGetters([
         'userInfo'
       ]),
+    },
+    watch:{
+      collectContentList(val,oldVal){
+        if(val.length === 0){
+          this.isEmptyData = true
+        }
+      }
     },
     methods: {
       //获取收藏夹集合
@@ -296,12 +300,14 @@
               id: item.id,
               title: item.name,
               name: newTabName,
-              description: item.description === null ? this.favoriteTabs[0].description : description
+              description: item.description === null ? this.defaultFavoriteDescription : description
             });
           }
+          //初始化默认收藏夹内容
+          this.collectMusicList(0)
         })
       },
-      //新建收藏夹模块内容重置
+      //新建收藏夹模块内容打开重置
       createFavoriteOpenDialog() {
         this.createFavoriteTitle = ''
         this.createFavoriteDescription = ''
@@ -309,8 +315,8 @@
       //新建收藏夹
       createFavoriteHandler() {
         let flag = false
-        this.favoriteTabs.forEach((tab,index) => {
-          if(this.createFavoriteTitle === tab.title){
+        this.favoriteTabs.forEach((tab, index) => {
+          if (this.createFavoriteTitle === tab.title) {
             flag = true
           }
         })
@@ -329,7 +335,7 @@
                 id: response.data,
                 title: this.createFavoriteTitle,
                 name: newTabName,
-                description: this.createFavoriteDescription === ''?this.favoriteTabs[0].description:this.createFavoriteDescription
+                description: this.createFavoriteDescription === ''?this.defaultFavoriteDescription:this.createFavoriteDescription
               });
               this.isShowAddFavorite = false
               this.$tip.success('操作成功')
@@ -338,6 +344,7 @@
       },
       //获取对应收藏夹内容
       collectMusicList(index) {
+        console.log("收藏夹id："+this.favoriteTabs[index].id);
         this.listQuery.collectId = this.favoriteTabs[index].id
         getMusicByCollectId(this.listQuery).then(response => {
           let data = response.data
@@ -406,7 +413,7 @@
       //删除为空收藏夹
       removeEmptyFavoriteHandler() {
         //如何收藏夹为默认，则不可删除
-        if (this.currentFavorite.title === '默认') {
+        if (this.currentFavorite.title === '默认' || this.currentFavorite.title === '') {
           this.$tip.error('不能删除默认收藏夹')
           //如果收藏夹为空，直接删除
         } else if (this.isEmptyData) {
@@ -481,29 +488,29 @@
         //   })
         // })
       },
-      batchMoveContentCloseDialog(){
+      batchMoveContentCloseDialog() {
         //清除批量移动数据
-        this.batchMoveData.splice(0,this.batchMoveData.length)
+        this.batchMoveData.splice(0, this.batchMoveData.length)
         //清除移动目标的选择框内容
         this.bathMoveFavoriteIndex = null
       },
       //批量移动请求处理
       batchMoveContentHandler() {
-        if(this.bathMoveFavoriteIndex === null){
+        if (this.bathMoveFavoriteIndex === null) {
           this.$tip.error('请选择收藏夹')
-        }else if(this.batchMoveTargetValue.length === 0){
+        } else if (this.batchMoveTargetValue.length === 0) {
           this.$tip.error('请选择需要移动的内容')
-        }else {
+        } else {
           let data = new URLSearchParams()
-          data.append("collectMusicIds",this.batchMoveTargetValue)
-          data.append("id",this.favoriteTabs[this.bathMoveFavoriteIndex].id)
+          data.append("collectMusicIds", this.batchMoveTargetValue)
+          data.append("id", this.favoriteTabs[this.bathMoveFavoriteIndex].id)
           batchMoveContent(data).then(response => {
             this.isShowBatchMoveContentModel = false
             //重新获取收藏夹内容
             this.collectMusicList(this.currentFavorite.index)
             //清除批量移动数据
-            this.batchMoveData.splice(0,this.batchMoveData.length)
-            this.batchMoveTargetValue.splice(0,this.batchMoveTargetValue.length)
+            this.batchMoveData.splice(0, this.batchMoveData.length)
+            this.batchMoveTargetValue.splice(0, this.batchMoveTargetValue.length)
           })
         }
       },
@@ -516,10 +523,10 @@
     created() {
       //初始化收藏夹
       this.favoriteList()
-      this.currentFavorite.title = '默认'
-      this.currentFavorite.description = this.favoriteTabs[0].description
       //将用户id赋值
       this.listQuery.userId = this.userInfo.id
+    },
+    mounted() {
     }
   }
 </script>

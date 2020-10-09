@@ -2,7 +2,7 @@
 
 // 框框
 .navbar {
-  position: absolute;
+  position: fixed;
   height: 65px;
   border-radius: 0px !important;
   padding-right: 100px;
@@ -32,11 +32,11 @@
         line-height: 66px;
       }
       .el-menu-item.is-active {
-        background-color: #000000 !important;
+        background-color: $primaryBgColor !important;
         border-bottom: none;
       }
       .el-menu-item.is-active:hover {
-        background-color: #000000 !important;
+        background-color: $primaryBgColor !important;
       }
       .el-menu-item:not(.is-active):hover {
         background-color: #fe0000 !important;
@@ -51,7 +51,7 @@
     margin-left: 22px;
     //搜索框
     .select-box {
-      width: 400px !important;
+      width: 30vw !important;
       height: 30px;
       margin-top: 15px;
       .el-button {
@@ -66,186 +66,186 @@
       height: 320px;
       width: 400px !important;
       background-color: white;
-      z-index: 998;
+      z-index: 999;
     }
   }
-
-  .nav-link-right {
+  //导航右侧用户区域
+  .nav-right-user {
     width: 200px;
-    height: 65px;
-    line-height: 65px;
+    height: 62px;
+    line-height: 70px;
     position: absolute;
     top: 2px;
-    right: 4vw;
-    //margin-top: -53px;
-    // 收藏
-    .collect-container {
-      height: 51px;
-      .collect-wrapper {
-        cursor: pointer;
-        .svg-collect {
+    left: 82vw;
+    //用户左侧链接
+    .right-link {
+      width: 60px;
+      height: 62px;
+      float: left;
+      // 收藏
+      .collect-container {
+        height: 51px;
+        .collect-wrapper {
+          cursor: pointer;
+          .svg-collect {
+          }
+        }
+      }
+      // 消息
+      .info-container {
+        height: 51px;
+        margin-left: 16px;
+        .info-wrapper {
+          cursor: pointer;
+          .svg-info {
+
+          }
         }
       }
     }
-    // 消息
-    .info-container {
-      height: 51px;
-      margin-left: 16px;
-      .info-wrapper {
+    //用户区域
+    .right-user {
+      width: 32px;
+      height: 63px;
+      margin-left: 80px;
+      //用户未登录
+      .login-container {
+        height: 53px;
         cursor: pointer;
-        .svg-info {
+        color: white;
+      }
+      .login-container:hover {
+        color: #fe0000;
+      }
+      .el-dialog-user {
+        width: 100% !important;
+        .el-dialog-tabs {
+          .tabs-label {
+            font-size: 13px;
+            color: #000000;
+            font-weight: bold;
+          }
+          .tabs-input {
+            margin-top: 6px;
+            border: none;
+            background-color: #F7F7F7;
+            height: 29px;
+            width: 300px;
+          }
+          .tabs-input:focus {
+            outline: none;
+          }
+          .tabs-log-button {
+            width: 300px;
+            height: 45px;
+            border-radius: 50px;
+          }
+          .tabs-reg-forget {
+            .el-col {
+              font-size: 13px;
+              .tabs-reg {
+                width: 30px;
+                cursor: pointer;
+              }
+            }
+          }
+          .tabs-oauth {
+            margin-top: 5px;
+            padding-right: 65px;
+            .el-col {
+              margin-left: 5px;
+              img {
+                cursor: pointer;
+              }
+            }
+          }
+          //手机号验证
+          .tabs-tel-content {
+            .el-input .el-input__inner {
+              height: 29px;
+              background-color: #F7F7F7;
+              border: 1px solid #F7F7F7;
+              color: #000000;
+            }
+            .el-input .el-input__inner:hover {
+              border: none;
+            }
+            .el-input .el-input__inner:focus {
+              border: none;
+            }
+            .el-input .el-input__inner:not(.is-focus) {
+              border: 1px solid #F7F7F7;
+            }
+            .el-select .el-input .el-input__inner {
+              margin-left: -1px;
+              margin-top: 4px;
+              width: 100px;
+              background-color: #F7F7F7;
+              border: none;
+              border-radius: 0px;
+            }
+            .el-select .el-input.is-focus .el-input__inner:focus {
+              border: none
+            }
+            .el-select .el-input:not(.is-focus) .el-input__inner:focus {
+              border: none
+            }
+            .el-input__suffix {
+              margin-top: 6px;
+            }
+            .el-input .el-input--suffix.is-focus {
+              .el-input__suffix {
+                margin-top: -1px;
+              }
+            }
 
+            .tabs-verify {
+              width: 180px;
+            }
+            .verify-button {
+              margin-left: 10px;
+              padding: 8px 0px;
+              width: 110px;
+              background-color: #F7F7F7;
+              border: 1px solid #F7F7F7;
+              color: #C4C4C4;
+              font-size: 12px;
+            }
+          }
         }
-      }
-    }
-  }
-
-  //用户未登录
-  .login-container {
-    height: 53px;
-    cursor: pointer;
-    color: white;
-    position: absolute;
-    top: 25px;
-    right: 10vw;
-  }
-  .login-container:hover {
-    color: #fe0000;
-  }
-  .el-dialog-user {
-    .el-dialog-tabs {
-      .tabs-label {
-        font-size: 13px;
-        color: #000000;
-        font-weight: bold;
-      }
-      .tabs-input {
-        margin-top: 6px;
-        border: none;
-        background-color: #F7F7F7;
-        height: 29px;
-        width: 300px;
-      }
-      .tabs-input:focus {
-        outline: none;
-      }
-      .tabs-log-button {
-        width: 300px;
-        height: 45px;
-        border-radius: 50px;
-      }
-      .tabs-reg-forget {
-        .el-col {
-          font-size: 13px;
-          .tabs-reg {
-            width: 30px;
+        // 注册
+        .el-dialog-tabs-reg {
+          .tabs-reg-return-log {
+            font-size: 13px;
             cursor: pointer;
+            margin-top: 20px;
+            margin-left: -50px;
+            width: 60px;
           }
-        }
-      }
-      .tabs-oauth {
-        margin-top: 5px;
-        padding-right: 65px;
-        .el-col {
-          margin-left: 5px;
-          img {
+
+          .tabs-reg-return-prev {
+            font-size: 13px;
             cursor: pointer;
+            margin-left: -50px;
+            margin-top: 70px;
           }
         }
       }
-      //手机号验证
-      .tabs-tel-content {
-        .el-input .el-input__inner {
-          height: 29px;
-          background-color: #F7F7F7;
-          border: 1px solid #F7F7F7;
-          color: #000000;
-        }
-        .el-input .el-input__inner:hover {
-          border: none;
-        }
-        .el-input .el-input__inner:focus {
-          border: none;
-        }
-        .el-input .el-input__inner:not(.is-focus) {
-          border: 1px solid #F7F7F7;
-        }
-        .el-select .el-input .el-input__inner {
-          margin-left: -1px;
-          margin-top: 4px;
-          width: 100px;
-          background-color: #F7F7F7;
-          border: none;
-          border-radius: 0px;
-        }
-        .el-select .el-input.is-focus .el-input__inner:focus {
-          border: none
-        }
-        .el-select .el-input:not(.is-focus) .el-input__inner:focus {
-          border: none
-        }
-        .el-input__suffix {
-          margin-top: 6px;
-        }
-        .el-input .el-input--suffix.is-focus {
-          .el-input__suffix {
-            margin-top: -1px;
+      // 用户
+      .avatar-container {
+        height: 51px;
+        .avatar-wrapper {
+          cursor: pointer;
+          margin-top: 10px;
+          .user-avatar {
+            width: 30px !important;
+            height: 30px;
+            border-radius: 50px;
+          }
+          .el-icon-caret-bottom {
+            font-size: 12px;
           }
         }
-
-        .tabs-verify {
-          width: 180px;
-        }
-        .verify-button {
-          margin-left: 10px;
-          padding: 8px 0px;
-          width: 110px;
-          background-color: #F7F7F7;
-          border: 1px solid #F7F7F7;
-          color: #C4C4C4;
-          font-size: 12px;
-        }
-      }
-    }
-    // 注册
-    .el-dialog-tabs-reg {
-      .tabs-reg-return-log {
-        font-size: 13px;
-        cursor: pointer;
-        margin-top: 20px;
-        margin-left: -50px;
-        width: 60px;
-      }
-
-      .tabs-reg-return-prev {
-        font-size: 13px;
-        cursor: pointer;
-        margin-left: -50px;
-        margin-top: 70px;
-      }
-    }
-  }
-  //用户未登录
-  .el-dialog-user {
-    width: 100% !important;
-  }
-
-  // 用户
-  .avatar-container {
-    height: 53px;
-    position: absolute;
-    top: 0px;
-    right: 10vw;
-    .avatar-wrapper {
-      cursor: pointer;
-      margin-top: 19px;
-      .user-avatar {
-        width: 30px !important;
-        height: 30px;
-        border-radius: 50px;
-      }
-      .el-icon-caret-bottom {
-        font-size: 12px;
       }
     }
   }
@@ -258,7 +258,7 @@
     width: 100% !important;
   }
   .navbar-wrapper {
-    width: 100%;
+    width: 100% !important;
     //菜单按钮
     .menu-button {
       display: block;
@@ -271,7 +271,7 @@
     }
     .el-menu-item-first {
       margin-left: -10px;
-      margin-top: 1px;
+      margin-top: 2px;
       .img-logo {
         width: 62px !important;
         height: 65px;
@@ -283,7 +283,7 @@
     //搜索框
     .el-menu-item-select {
       position: absolute;
-      top: 1px;
+      top: 3px;
       left: 113px;
       .select-box {
         width: 160px !important;
@@ -315,11 +315,12 @@
 
     // 已登录
     .avatar-container {
-      height: 53px;
-      right: 4vw;
+      height: 53px !important;
+      margin-top: -2px;
+      right: 15vw;
       .avatar-wrapper {
         cursor: pointer;
-        margin-top: 17px;
+        height: 34px;
         .user-avatar {
         }
         .el-icon-caret-bottom {
@@ -331,11 +332,11 @@
   .content-wrapper {
     margin-top: 20px;
     //轮翻图
-    .home-el-carousel{
-      .el-carousel__container{
+    .home-el-carousel {
+      .el-carousel__container {
         height: 120px !important;
       }
-      .home-el-carousel-item{
+      .home-el-carousel-item {
         height: 105px !important;
       }
     }

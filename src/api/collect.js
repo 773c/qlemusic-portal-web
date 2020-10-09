@@ -37,11 +37,8 @@ export function addCollect(collectId,musicId) {
 
 export function deleteCollectContent(collectMusicId) {
   return request({
-    url:'/collect/deleteCollectContent',
-    method:'post',
-    data:{
-      collectMusicId:collectMusicId,
-    }
+    url:'/collect/deleteCollectContent/'+collectMusicId,
+    method:'post'
   })
 }
 

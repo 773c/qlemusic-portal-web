@@ -28,6 +28,7 @@ Vue.use(VueVideoPlayer)
 Vue.use(qlAudio)
 Vue.use(tip)
 
+
 Vue.config.productionTip = false
 
 new Vue({
