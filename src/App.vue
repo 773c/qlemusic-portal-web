@@ -5,10 +5,8 @@
 <script>
   export default {
     name: "app",
-    computed:{
-    },
-    watch:{
-    }
+    computed: {},
+    watch: {}
   }
 </script>
 

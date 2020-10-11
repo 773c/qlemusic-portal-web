@@ -1,6 +1,6 @@
 <template>
   <div id="right2">
-    <div style="height: 200px"></div>
+    <!--<div style="height: 200px"></div>-->
     <el-card class="box-card" style="border-radius: 0" shadow="never">
       <transition name="fade" mode="out-in">
         <router-view></router-view>

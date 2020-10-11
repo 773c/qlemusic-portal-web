@@ -81,7 +81,7 @@
           this.formatArr[3] = false
           this.formatArr[0] = false
           return true
-        } else if (this.$route.path.indexOf(this.uniqueId) != -1){
+        } else if (this.$route.path.indexOf(this.$route.query.uniqueId||this.uniqueId) != -1){
           console.log("风格3");
           this.formatArr[2] = true
           this.formatArr[3] = false

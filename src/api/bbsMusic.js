@@ -31,23 +31,6 @@ export function getMusicByCollectId(params) {
   })
 }
 
-export function like(id,userId,isLoadingNprogress) {
-  return request({
-    url: '/audio/like',
-    method: 'get',
-    headers: {
-      isLoadingNprogress: isLoadingNprogress
-    },
-    params: {
-      id: id,
-      userId:userId
-    }
-  })
-}
-
-export function getLikeCount() {
-
-}
 
 export function release(data) {
   return request({

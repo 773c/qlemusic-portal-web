@@ -37,3 +37,16 @@ export function updateAvatar(data) {
     data: data
   })
 }
+
+export function getUserById(id,isLoadingNprogress) {
+  return request({
+    url:'/portal/getUserById',
+    method:'get',
+    headers:{
+      isLoadingNprogress:isLoadingNprogress
+    },
+    params: {
+      id:id
+    }
+  })
+}

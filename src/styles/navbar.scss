@@ -32,11 +32,12 @@
         line-height: 66px;
       }
       .el-menu-item.is-active {
-        background-color: $primaryBgColor !important;
+        background-color: $primaryBgColor opacity(0.1) !important;
         border-bottom: none;
+
       }
       .el-menu-item.is-active:hover {
-        background-color: $primaryBgColor !important;
+        background-color: $primaryBgColor opacity(0.1) !important;
       }
       .el-menu-item:not(.is-active):hover {
         background-color: #fe0000 !important;
@@ -51,7 +52,7 @@
     margin-left: 22px;
     //搜索框
     .select-box {
-      width: 30vw !important;
+      width: 28vw !important;
       height: 30px;
       margin-top: 15px;
       .el-button {
@@ -71,34 +72,48 @@
   }
   //导航右侧用户区域
   .nav-right-user {
-    width: 200px;
+    width: auto;
     height: 62px;
-    line-height: 70px;
     position: absolute;
     top: 2px;
-    left: 82vw;
+    left: 74vw;
     //用户左侧链接
     .right-link {
-      width: 60px;
+      line-height: 65px;
+      width: auto;
       height: 62px;
       float: left;
+      //发布按钮
+      .home-release-button-wrapper{
+        float: left;
+        .home-release-button{
+          padding: 8px 14px;
+        }
+      }
       // 收藏
       .collect-container {
+        float: left;
         height: 51px;
+        line-height: 63px;
+        margin-left: 23px;
         .collect-wrapper {
           cursor: pointer;
           .svg-collect {
+            height: 20px;
+            width: 20px;
           }
         }
       }
       // 消息
       .info-container {
         height: 51px;
-        margin-left: 16px;
+        line-height: 70px;
+        margin-left: 18px;
         .info-wrapper {
           cursor: pointer;
           .svg-info {
-
+            height: 26px;
+            line-height: 24px;
           }
         }
       }
@@ -107,12 +122,13 @@
     .right-user {
       width: 32px;
       height: 63px;
-      margin-left: 80px;
+      margin-left: 208px;
       //用户未登录
       .login-container {
         height: 53px;
         cursor: pointer;
         color: white;
+        margin-top: 24px;
       }
       .login-container:hover {
         color: #fe0000;
@@ -236,7 +252,7 @@
         height: 51px;
         .avatar-wrapper {
           cursor: pointer;
-          margin-top: 10px;
+          margin-top: 18px;
           .user-avatar {
             width: 30px !important;
             height: 30px;
@@ -283,7 +299,7 @@
     //搜索框
     .el-menu-item-select {
       position: absolute;
-      top: 3px;
+      top: 2px;
       left: 113px;
       .select-box {
         width: 160px !important;
@@ -293,6 +309,9 @@
           padding: 0px 0px 0px 7px;
         }
       }
+    }
+    .home-release-button-wrapper{
+      display: none;
     }
     .collect-container {
       display: none;
@@ -317,7 +336,7 @@
     .avatar-container {
       height: 53px !important;
       margin-top: -2px;
-      right: 15vw;
+      right: 41vw;
       .avatar-wrapper {
         cursor: pointer;
         height: 34px;
@@ -331,6 +350,10 @@
   }
   .content-wrapper {
     margin-top: 20px;
+    .content-middle-one{
+      width: 100% !important;
+    }
+
     //轮翻图
     .home-el-carousel {
       .el-carousel__container {

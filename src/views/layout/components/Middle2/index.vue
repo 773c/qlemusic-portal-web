@@ -33,7 +33,9 @@
                        size="small" @click="upload">上传并保存
             </el-button>
           </el-dialog>
-          <div class="music-age" align="center">乐龄2年</div>
+          <div class="music-age" align="center">
+            <el-tag type="info" size="mini" effect="plain">乐龄2年</el-tag>
+          </div>
         </div>
         <div class="personal-name-warpper">{{userInfo.name}}</div>
       </div>

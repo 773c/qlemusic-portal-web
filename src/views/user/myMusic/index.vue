@@ -13,7 +13,7 @@
               <el-slider v-model="voiceValue" :show-tooltip="true" @input="changeVolume"></el-slider>
             </div>
           </div>
-          <div class="type-sort-wrapper" style="margin-left: 680px">
+          <div class="type-sort-wrapper" style="margin-left: 640px">
             <span style="color: #8c939d;font-size: 14px">排序：</span>
             <el-button type="text">按最新发布时间</el-button>
             <el-button type="text">按最多访问量</el-button>
@@ -41,7 +41,11 @@
                   <el-row>
                     <el-col :span="15" style="margin-left: 5px">
                       <!--播放器-->
-                      <ql-audio :audioUrl="scope.row.audioUrl"></ql-audio>
+                      <ql-audio
+                        :audioUrl="scope.row.audioUrl"
+                        :isShowLineProgress="false"
+                        :audioImgUrl="scope.row.audioAvatarUrl">
+                      </ql-audio>
                     </el-col>
                     <el-col :span="4" style="padding-top: 40px;">
                       <div class="release-time">

@@ -82,7 +82,7 @@ const routes = [
         path: 'edit',
         name: 'edit',
         component: EditMusic,
-        meta: {title: '管理音乐', icon: 'edit', isLoadingNprogress: true,isLevel: 3}
+        meta: {title: '管理空间', icon: 'edit', isLoadingNprogress: true,isLevel: 3}
       }
     ]
   },

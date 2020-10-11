@@ -4,7 +4,7 @@
       :default-active="$route.path"
       class="navbar"
       mode="horizontal"
-      style="border-bottom-color: black;"
+      style="border-bottom-color: #999999;"
       :style="userFormatStyle"
       text-color="#fff"
       active-text-color="#ff2a00">
@@ -83,7 +83,7 @@
     computed: {
       userFormatStyle() {
         return {
-          backgroundColor: 'rgba(10,100,100,0.5)'
+          backgroundColor: 'rgba(100,100,100,0.1)'
         }
       }
     },

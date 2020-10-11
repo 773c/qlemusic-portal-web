@@ -18,7 +18,7 @@
       <div class="audio-end-time">{{audioValue.formatDuration}}</div>
     </div>
     <div v-else class="audio-progress-effect-wrapper">
-      <img class="audio-progress-effect-img" :src="showProgressEffect" width="400" height="50px">
+      <img class="audio-progress-effect-img" :src="showProgressEffect">
     </div>
   </div>
 </template>
@@ -49,7 +49,11 @@
         type: Number
       },
       audioUrl: String,
-      prevAudioVueComponent:{}
+      prevAudioVueComponent:{},
+      isShowLineProgress:{
+        type:Boolean,
+        default:false
+      }
     },
     data() {
       return {
@@ -58,7 +62,6 @@
         thisStartTime: 0,
         progressTime: 0,
         isShowPlayEffect: false,
-        isShowLineProgress: false,
         audioValue: {
           formatDuration: '',
           currentTime: ''
@@ -160,9 +163,6 @@
     },
     created() {
       this.thisStartTime = this.startTime
-      if (this.$route.path !== '/home') {
-        this.isShowLineProgress = true
-      }
     },
     mounted() {
     }

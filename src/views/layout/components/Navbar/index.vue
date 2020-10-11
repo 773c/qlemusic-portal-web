@@ -6,7 +6,7 @@
     <template #one>
       <router-link class="nav-router-link" to="/">
         <el-menu-item index="/home">
-          <span>黑怕家园</span>
+          <span>黑怕空间</span>
         </el-menu-item>
       </router-link>
     </template>
@@ -20,43 +20,76 @@
     <template #three>
       <router-link class="nav-router-link" to="/nav/question">
         <el-menu-item index="/nav/question">
-          <span>问题</span>
+          <span>论坛</span>
         </el-menu-item>
       </router-link>
     </template>
-    <!--收藏-->
+    <!--发布中心按钮-->
     <template #after-one>
-      <el-dropdown class="collect-container">
-        <div class="collect-wrapper">
-          <svg-icon class="svg-collect" icon-class="nav-collect"></svg-icon>
-        </div>
-        <el-dropdown-menu class="collect-dropdown" slot="dropdown" style="margin-left: 6px;width: 126px">
-          <router-link class="inlineBlock" to="/">
-            <el-dropdown-item>
-              首页
-            </el-dropdown-item>
+      <div class="home-release-button-wrapper" @click="clickForward('/manage/home',false)">
+        <el-button class="home-release-button" type="danger">
+          <i class="el-icon-thumb"></i> 发布作品
+        </el-button>
+      </div>
+    </template>
+    <!--收藏-->
+    <template #after-two>
+      <el-tooltip class="item" effect="light" content="我的收藏" placement="bottom-start">
+        <div class="collect-container">
+          <router-link target="_blank" to="/usr/collect">
+            <div class="collect-wrapper">
+              <svg-icon class="svg-collect" icon-class="nav-collect"></svg-icon>
+            </div>
           </router-link>
-          <el-dropdown-item divided>
-            <span @click="" style="display:block;">退出</span>
-          </el-dropdown-item>
-        </el-dropdown-menu>
-      </el-dropdown>
+        </div>
+      </el-tooltip>
     </template>
     <!--消息-->
-    <template #after-two>
-      <el-dropdown class="info-container">
+    <template #after-three>
+      <el-dropdown class="info-container" placement="top">
         <div class="info-wrapper">
-          <svg-icon class="svg-info" icon-class="nav-info"></svg-icon>
+          <el-badge is-dot class="item">
+            <div class="svg-info">
+              <svg-icon icon-class="nav-info"></svg-icon>
+            </div>
+          </el-badge>
         </div>
-        <el-dropdown-menu class="info-dropdown" slot="dropdown" style="margin-left: 6px;width: 126px">
-          <router-link class="inlineBlock" to="/">
+        <el-dropdown-menu class="info-dropdown" slot="dropdown" style="width: 110px;text-align: center">
+          <router-link to="/">
             <el-dropdown-item>
-              首页
+              点赞
             </el-dropdown-item>
           </router-link>
-          <el-dropdown-item divided>
-            <span @click="" style="display:block;">退出</span>
-          </el-dropdown-item>
+          <router-link to="/">
+            <el-dropdown-item>
+              评论
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/">
+            <el-dropdown-item>
+              关注
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/">
+            <el-dropdown-item>
+              私信
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/">
+            <el-dropdown-item>
+              问答
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/">
+            <el-dropdown-item>
+              系统通知
+            </el-dropdown-item>
+          </router-link>
+          <router-link to="/">
+            <el-dropdown-item>
+              消息设置
+            </el-dropdown-item>
+          </router-link>
         </el-dropdown-menu>
       </el-dropdown>
     </template>
@@ -122,12 +155,12 @@
             </div>
             <div @click="clickForward(userInfo.uniqueId,true)">
               <el-dropdown-item divided>
-                <i class="el-icon-service"></i>我的音乐
+                <i class="el-icon-service"></i>我的空间
               </el-dropdown-item>
             </div>
             <div @click="clickForward('/manage/home',false)">
               <el-dropdown-item>
-                <i class="el-icon-aim"></i>管理音乐
+                <i class="el-icon-aim"></i>管理空间
               </el-dropdown-item>
             </div>
             <div @click="clickForward('',false)">
@@ -207,7 +240,7 @@
             path: path,
             query: {id: this.userInfo.id}
           })
-        }else {
+        } else {
           routeUrl = this.$router.resolve({
             path: path
           })

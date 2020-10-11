@@ -1,6 +1,6 @@
 <template>
   <div id="left2">
-    <el-card class="left2-card" shadow="never">
+    <el-card class="left2-card" shadow="never" :style="heightStyle">
       <el-menu
         :default-active="$route.path"
         :router="true"
@@ -29,9 +29,9 @@
           <i class="el-icon-paperclip"></i>
           <span>我的标签</span>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="#manage" @click="clickForward">
           <i class="el-icon-aim"></i>
-          <span>管理音乐</span>
+          <span>管理空间</span>
         </el-menu-item>
         <el-menu-item>
           <i class="el-icon-download"></i>
@@ -58,7 +58,62 @@
     },
     data() {
       return {
+        height: 488,
+        top: 0,
+        count: 0
       }
+    },
+    computed: {
+      heightStyle() {
+        return {
+          height: this.height + 'px',
+          marginTop: this.top + 'px'
+        }
+      }
+    },
+    methods: {
+      //当滚动条到达最底端的时候加载新内容
+      load() {
+        // 滚动条到最顶端的距离
+        let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+        // 可视区的高度
+        let windowHeight = document.documentElement.clientHeight || document.body.clientHeight
+        // 滚动条的总高度
+        let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
+        //向下滚动时
+        if (Math.ceil(scrollTop) >= this.count) {
+          this.height += Math.ceil(scrollTop)
+          this.top = -Math.ceil(scrollTop)
+          this.count = Math.ceil(scrollTop)
+          if (Math.ceil(scrollTop) >= 200) {
+            this.height = 688
+            this.top = -200
+          }
+        } else {
+          //向上滚动
+          if (Math.ceil(scrollTop) <= 200) {
+            this.height += Math.ceil(scrollTop)
+            this.top = -Math.ceil(scrollTop)
+          } else if (Math.ceil(scrollTop) >= 200) {
+            this.height = 688
+            this.top = -200
+          }
+        }
+      },
+      clickForward() {
+        let routeUrl = this.$router.resolve({
+            path: '/manage/home'
+          })
+          window.open(routeUrl.href, '_blank');
+      }
+    },
+    mounted() {
+      this.$nextTick(function () {
+        window.addEventListener('scroll', this.load, true)
+      })
+    },
+    destroyed() { //离开该页面需要移除这个监听的事件
+      window.removeEventListener('scroll', this.load)
     }
   }
 </script>

@@ -200,7 +200,7 @@
             this.dialogVisible = false
             this.$tip.success('操作成功')
           })
-      }
+      },
     }
   }
 </script>

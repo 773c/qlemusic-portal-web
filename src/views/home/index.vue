@@ -52,7 +52,7 @@
             <template #default="scope">
               <div class="bbs-music-row-wrapper">
                 <div class="middle-title">
-                  <span>{{scope.row.title}}</span>
+                  <span class="middle-title-span" @click="seeMusicContent(scope.row.id)">{{scope.row.title}}</span>
                 </div>
                 <div style="width: 40px;float: left;margin-top: 1px;">
                   <el-popover
@@ -86,7 +86,7 @@
                   </el-popover>
                 </div>
                 <div style="width: auto;float: left;margin-left: 15px;margin-top: 22px"
-                     @click="seeUserSendMusicHandler(scope.row.umsUser.id,scope.row.umsUser.uniqueId)">
+                     @click="seeUserSendMusic(scope.row.umsUser.id,scope.row.umsUser.uniqueId)">
                   <span class="publisher">{{scope.row.umsUser === null?'':scope.row.umsUser.name}}</span>
                 </div>
                 <!--播放器-->
@@ -95,6 +95,7 @@
                     ref="qlAudioRef"
                     :audioUrl="scope.row.audioUrl"
                     :audioImgUrl="scope.row.audioAvatarUrl"
+                    :isShowLineProgress="false"
                     :prevAudioVueComponent="prevAudioVueComponent"
                     @setPlayEffect="setPlayEffect">
                   </ql-audio>
@@ -111,10 +112,11 @@
                   <el-divider direction="vertical"></el-divider>
                 </div>
                 <!--点赞-->
-                <div class="like div-threeIcon" @click="likeHandler(scope.row.id,scope.$index)"
+                <div ref="likeRef" class="like div-threeIcon" @click="likeHandler(scope.row.id,scope.$index)"
                      style="width: auto;float: right;margin-top: 40px">
-                  <svg-icon class="threeIcon" icon-class="like" :style="likeStyle"></svg-icon>
-                  <span>{{scope.row.bbsMusicOperation === null?0:scope.row.bbsMusicOperation.likeCount}}</span>
+                  <svg-icon class="threeIcon" icon-class="like"
+                            :style="scope.row.bbsMusicOperation.isLike?likeStyle:''"></svg-icon>
+                  <span>{{scope.row.bbsMusicOperation === null?likeCount:scope.row.bbsMusicOperation.likeCount}}</span>
                   <el-divider direction="vertical"></el-divider>
                 </div>
               </div>
@@ -122,18 +124,19 @@
           </el-table-column>
         </el-table>
       </ul>
-      <div v-if="loading" align="center" style="padding-bottom: 100px">加载中...</div>
+      <div v-if="loading" align="center" style="padding-bottom: 100px;color: white">加载中...</div>
     </div>
   </div>
 </template>
 
 <script>
-  import {getRecommendList, like} from "@/api/bbsMusic";
+  import {getRecommendList} from "@/api/bbsMusic";
   import {videoPlayer} from 'vue-video-player'
   import CollectModel from '@/components/CollectModel'
   import {addCollect} from "@/api/collect";
   import {mapGetters} from 'vuex'
   import {getMyMusicList} from "@/api/bbsMusic";
+  import {like} from "@/api/like";
 
   const defaultBbsMusic = {
     likeNum: 0,
@@ -154,10 +157,11 @@
         bbsMusic: Object.assign({}, defaultBbsMusic),
         list: [],
         musicId: '',
+        likeCount: 0,
         isLike: false,
         voiceValue: 50,
         changeVoiceIcon: 'audio-voice',
-        prevAudioVueComponent:{},
+        prevAudioVueComponent: {},
         playerOptions: {
           // videojs options
           muted: false,
@@ -189,10 +193,8 @@
         'userInfo'
       ]),
       likeStyle() {
-        if (this.isLike) {
-          return {
-            color: '#fe0000'
-          }
+        return {
+          color: '#fe0000'
         }
       }
     },
@@ -208,6 +210,11 @@
           console.log(response);
           let data = response.data;
           this.list = data
+          this.list.forEach((item, index) => {
+            if (item.bbsMusicOperation === null) {
+              this.list[index].bbsMusicOperation = {likeCount: 0, isLike: false}
+            }
+          })
         })
       },
       //当滚动条到达最底端的时候加载新内容
@@ -245,10 +252,10 @@
         localStorage.setItem("muted", audio.muted)
       },
       //点击名称查看用户发表的音乐等
-      seeUserSendMusicHandler(userId, uniqueId) {
+      seeUserSendMusic(userId, uniqueId) {
         let routeUrl = this.$router.resolve({
           path: uniqueId,
-          query:{id:userId}
+          query: {id: userId, uniqueId: uniqueId}
         })
         if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
           window.open(routeUrl.href, '_self');
@@ -257,17 +264,28 @@
         }
       },
       //点赞
-      likeHandler(id, index) {
-        // this.isShowCollectModel = true
-        // this.musicId = id
-        like(id, this.userInfo.id, false).then(response => {
+      likeHandler(musicId, index) {
+        like(musicId, this.userInfo.id, true, false).then(response => {
           console.log(response);
           this.list[index].bbsMusicOperation.likeCount++
           this.isLike = true
         })
       },
-      setPlayEffect(vueComponent){
+      //获取子组件传来的实例
+      setPlayEffect(vueComponent) {
         this.prevAudioVueComponent = vueComponent
+      },
+      //查看音乐完整内容
+      seeMusicContent(id) {
+        // let routeUrl = this.$router.resolve({
+        //   path: id,
+        //   query:{id:userId,uniqueId:uniqueId}
+        // })
+        // if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
+        //   window.open(routeUrl.href, '_self');
+        // } else {
+        //   window.open(routeUrl.href, '_blank');
+        // }
       },
       // listen event
       onPlayerPlay(player) {
