@@ -84,9 +84,9 @@
       height: 62px;
       float: left;
       //发布按钮
-      .home-release-button-wrapper{
+      .home-release-button-wrapper {
         float: left;
-        .home-release-button{
+        .home-release-button {
           padding: 8px 14px;
         }
       }
@@ -286,7 +286,7 @@
       margin-top: 1px;
     }
     .el-menu-item-first {
-      margin-left: -10px;
+      margin-left: -15px;
       margin-top: 2px;
       .img-logo {
         width: 62px !important;
@@ -300,7 +300,7 @@
     .el-menu-item-select {
       position: absolute;
       top: 2px;
-      left: 113px;
+      left: 105px;
       .select-box {
         width: 160px !important;
         height: 30px;
@@ -310,7 +310,7 @@
         }
       }
     }
-    .home-release-button-wrapper{
+    .home-release-button-wrapper {
       display: none;
     }
     .collect-container {
@@ -322,8 +322,8 @@
     // 未登录按钮
     .login-container {
       position: absolute;
-      top: 22px;
-      right: 4%;
+      top: -2px;
+      right: 44vw;
     }
 
     .el-dialog-user {
@@ -340,8 +340,6 @@
       .avatar-wrapper {
         cursor: pointer;
         height: 34px;
-        .user-avatar {
-        }
         .el-icon-caret-bottom {
           font-size: 12px;
         }
@@ -350,25 +348,108 @@
   }
   .content-wrapper {
     margin-top: 20px;
-    .content-middle-one{
+    //第一种格式
+    .content-middle-one {
       width: 100% !important;
-    }
+      //第一种格式左侧内容
+      .content-middle {
+        margin-left: 0 !important;
+        width: 100% !important;
+        #home {
+          //轮翻图
+          .home-carousel-wrapper {
+            .home-carousel {
+              .el-carousel__container {
+                height: 120px !important;
+              }
+              .home-el-carousel-item {
+                height: 105px !important;
+              }
+            }
+          }
+          .middle-bbs-music-wrapper {
+            .list {
+              .bbsm-row-name-wrapper {
+                width: 60px !important;
+              }
+              .bbsm-row-audio-wrapper {
+                margin-left: 6px;
+                .ql-audio {
+                  width: 50px !important;
+                  height: 55px !important;
+                  .audio-progress-effect-wrapper {
+                    width: 180px !important;
+                    //display: none;
+                    .audio-progress-effect-img {
+                      width: 160px;
+                    }
+                  }
+                }
+              }
+              //播放量转文字
+              .play-text-wrapper {
+                width: auto !important;
+                clear: both;
+                padding-left: 5px;
+                color: #777777;
+              }
+              //播放量
+              .play {
+                display: none;
+              }
+              //点赞
+              .like {
+                width: 50px !important;
+                position: absolute;
+                top: -10px;
+                right: 10px;
+                text-align: center;
+                span {
+                  margin-right: 5px
+                }
+              }
+              //评论
+              .comment {
+                width: 50px !important;
+                position: absolute;
+                top: 42px;
+                right: -5px;
+                text-align: center;
+                span {
+                  margin-right: 4px
+                }
+              }
+              //评论抽屉框
+              .bbsm-row-comment-drawer-wrapper {
+                .comment-drawer {
+                  .comment-content-row-wrapper {
+                    .cc-avatar-wrapper {
+                      .cc-content {
+                        border: 1px solid red;
+                        //width: 250px !important;
+                        .cc-button {
+                          margin-top: -30px;
+                          margin-left: 100px;
+                        }
+                      }
+                    }
+                    .cc-other-user-wrapper {
+                      .ccou-content {
+                        //width: 235px !important;
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
 
-    //轮翻图
-    .home-el-carousel {
-      .el-carousel__container {
-        height: 120px !important;
       }
-      .home-el-carousel-item {
-        height: 105px !important;
+      //第一种格式右侧
+      .content-right {
+        display: none;
       }
-    }
-    .content-middle {
-      margin-left: 0 !important;
-      width: 100% !important;
-    }
-    .content-right {
-      display: none;
     }
   }
 

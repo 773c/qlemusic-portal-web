@@ -16,16 +16,17 @@ import '@/icons'
 import '@/utils/ql-audio.js'
 import './permission'
 import qlAudio from '@/utils/qlAudio.js'
+import time from '@/utils/time.js'
 import tip from '@/utils/tip.js'
 
 import App from './App.vue'
 import router from './router'
 import store from './store'
 
-
 Vue.use(ElementUI,{locale})
 Vue.use(VueVideoPlayer)
 Vue.use(qlAudio)
+Vue.use(time)
 Vue.use(tip)
 
 

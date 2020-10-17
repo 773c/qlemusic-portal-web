@@ -10,7 +10,7 @@
       active-text-color="#ff2a00">
       <!--mobile菜单按钮-->
       <el-menu-item class="menu-button">
-        <img src="@/assets/images/menu.png" width="26" height="26">
+        <img src="@/assets/images/menu.png" width="22" height="22">
       </el-menu-item>
       <!--logo图标-->
       <el-menu-item class="el-menu-item-first">

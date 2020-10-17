@@ -21,15 +21,17 @@
           @releaseHandler="releaseHandler">
         </audio-single-upload>
       </el-form-item>
-      <el-form-item v-show="audioUrl !== ''">
+      <el-form-item v-if="audioUrl !== ''">
         <ql-audio
           :audioUrl="audioUrl"
           :audioImgUrl="audioImgUrl"
-          :startTime="0">
+          :isShowLineProgress="true"
+          :bgImgStyle="{width:'490px'}"
+          :startTime="'0'">
         </ql-audio>
       </el-form-item>
-      <el-form-item v-show="audioUrl !== ''">
-        <el-col :span="9">
+      <el-form-item v-if="audioUrl !== ''">
+        <el-col :span="9" style="margin-left: -13px">
           <el-form-item label="截取开始时间" prop="startTime">
             <el-select v-model="ruleForm.startTime" filterable placeholder="请选择">
               <el-option
@@ -41,7 +43,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="9" style="margin-left: 30px">
+        <el-col :span="9" style="margin-left: 10px">
           <el-form-item label="填写播放时长" prop="playTime">
             <el-input v-model="ruleForm.playTime" placeholder="播放时长">
               <template slot="append">s</template>
@@ -49,13 +51,13 @@
           </el-form-item>
         </el-col>
       </el-form-item>
-      <el-form-item v-show="audioUrl !== ''">
-        <div class="progress-wrapper" style="margin-top: 20px;width: 575px">
+      <el-form-item v-if="audioUrl !== ''">
+        <div class="progress-wrapper" style="margin-top: 20px;width: 535px">
           <el-progress :percentage="percentage" :status="progressStatus" :color="customColor">{{percentage}}
           </el-progress>
         </div>
       </el-form-item>
-      <el-form-item style="padding-left: 220px;margin-top: 40px">
+      <el-form-item style="padding-left: 210px;margin-top: 40px">
         <el-button type="danger" @click="release('ruleForm')">立即发布</el-button>
       </el-form-item>
     </el-form>
@@ -118,7 +120,6 @@
       setAudioSrc(audioUrl) {
         this.audioUrl = audioUrl
         this.ruleForm.audioSrc = audioUrl
-        console.log("setAudioSrc：" + this.audioImgUrl);
       },
       setAudioAvatar(audioAvatar) {
         this.ruleForm.audioAvatar = audioAvatar.name

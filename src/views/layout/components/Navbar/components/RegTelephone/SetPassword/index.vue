@@ -68,6 +68,12 @@
         }
 
       },
+      regPwdReset(){
+        //密码重置
+        this.regPassword = ''
+        //再一次密码重置
+        this.regRePassword = ''
+      },
       regPrevClickHandler(){
         //注册数据重置
         this.$emit("regReset")

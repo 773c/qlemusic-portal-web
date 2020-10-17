@@ -1,5 +1,6 @@
 <template>
   <el-dialog
+    ref="logRegDialogRef"
     :visible.sync="innerVisible"
     class="el-dialog-user"
     :width="logDiaLogWidth"
@@ -13,7 +14,10 @@
       </slot>
     </div>
     <!--登录-->
-    <div v-show="isShowLogin" class="el-dialog-tabs" v-loading="loading">
+    <div
+      v-show="isShowLogin"
+      class="el-dialog-tabs"
+      element-loading-background="rgba(100, 100, 100, 0.6)">
       <!--登录方式-->
       <div class="tabs-title" @click="AccountLogHandler" >
         <slot name="log-way-one">账号登录</slot>
@@ -27,7 +31,7 @@
       </div>
     </div>
     <!--注册-->
-    <div class="el-dialog-tabs el-dialog-tabs-reg" v-show="!isShowLogin">
+    <div class="el-dialog-tabs el-dialog-tabs-reg" v-show="!isShowLogin" >
       <!--注册标题-->
       <div class="reg-tabs-title">
         <slot name="reg-title">新用户注册</slot>

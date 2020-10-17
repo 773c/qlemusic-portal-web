@@ -5,7 +5,7 @@
     <input type="text" v-model="logTelephone" id="username" class="tabs-username tabs-input"
            placeholder="  请输入手机号"><br><br>
     <label for="password" class="tabs-label">密码</label><br>
-    <input type="text" v-model="password" id="password" class="tabs-password tabs-input" placeholder="  请输入密码"><br><br>
+    <input type="password" v-model="password" id="password" class="tabs-password tabs-input" placeholder="  请输入密码"><br><br>
     <el-row style="margin-top:10px;">
       <drag-verify
         ref="dragVerify"
@@ -139,14 +139,20 @@
         this.$emit("regClickHandler")
       },
       telPwdLogBtonHandler() {
-        this.$emit('openLoading',true)
         this.$store.dispatch('Login', {telephone: this.logTelephone, password: this.password}).then(() => {
           this.$store.dispatch('GetInfo').then(response => {
-            this.$emit('openLoading',false)
-            this.$emit('setDialogVisible')
             console.log(response);
+            this.$emit('setDialogVisible')
           })
         })
+      },
+      logTelPwdReset(){
+        //重置账号文本框
+        this.logTelephone = ''
+        //重置密码
+        this.password = ''
+        //重置滑块
+        this.reset()
       }
     },
     created() {

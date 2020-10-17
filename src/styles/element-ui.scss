@@ -77,12 +77,15 @@
   border-color: #fe0000;
 }
 
-.el-button--text {
-  color: #cc3300;
+.el-button--text{
+  color: #3a8ee6;
+}
+.el-button--text:focus {
+  color: #3a8ee6;
 }
 
 .el-button--text:hover {
-  color: #cc3300;
+  color: #0000ff;
 }
 
 //暂时性解决diolag 问题 https://github.com/ElemeFE/element/issues/2461
@@ -105,7 +108,6 @@
 }
 
 //加载颜色
-
 .el-loading-mask {
   .circular {
     display: none;
@@ -114,11 +116,12 @@
 
 .el-loading-spinner {
   background: url("../assets/images/loading.gif") no-repeat;
-  width: 100%;
-  height: 100%;
+  background-size: cover;
+  width: 100px;
+  height: 100px;
   position: absolute;
-  top: 45%;
-  left: 33%;
+  top: 40%;
+  left: 45%;
 }
 
 //el-dropdown

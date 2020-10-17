@@ -200,6 +200,14 @@
           }, 2000)
         }
       },
+      logTelReset(){
+        //手机号重置
+        this.logTelephone = ''
+        //验证码重置
+        this.logVerify = ''
+        //滑块重置
+        this.reset()
+      }
     }
   }
 </script>

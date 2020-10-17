@@ -95,19 +95,21 @@
     </template>
     <!--用户信息-->
     <template #user>
-      <div class="login-container" v-if="isLogin" @click="dialogVisible = true">
+      <div id="no-login-btn" class="login-container" v-if="isLogin" @click="dialogVisible = true">
         登录
       </div>
       <login-register
         :dialogVisible="dialogVisible"
         :isShowLogin="isShowLogin"
         :loading="loading"
+        @resetAll="resetAll"
         @setDialogVisible="setDialogVisible"
         @AccountLogHandler="isShowAccPwdLogin = true"
         @VerifyLogHandler="isShowAccPwdLogin = false">
         <template #log-content>
           <!--账号密码登录页面-->
           <log-telephone-password
+            ref="logTelephonePasswordRef"
             v-show="isShowAccPwdLogin"
             @setDialogVisible="setDialogVisible"
             @openLoading="openLoading"
@@ -115,6 +117,7 @@
           </log-telephone-password>
           <!--手机号验证码登录页面-->
           <log-telephone
+            ref="logTelephoneRef"
             v-show="!isShowAccPwdLogin"
             @setDialogVisible="setDialogVisible"
             @regClickHandler="isShowLogin = false">
@@ -122,6 +125,7 @@
         </template>
         <template #reg-content>
           <reg-telephone
+            ref="regTelephoneRef"
             @returnLogClick="isShowLogin = true"
             @setDialogVisible="setDialogVisible">
           </reg-telephone>
@@ -186,6 +190,7 @@
   import SetPassword from './components/RegTelephone/SetPassword'
   import CommonNavbar from '@/components/Navbar'
   import {mapGetters} from 'vuex'
+  import {getToken} from "@/utils/auth";
 
   export default {
     name: "navbar",
@@ -226,6 +231,7 @@
     methods: {
       setDialogVisible() {
         this.dialogVisible = false
+        this.resetAll()
       },
       logoutHandler() {
         this.$store.dispatch('Logout')
@@ -250,6 +256,15 @@
         } else {
           window.open(routeUrl.href, '_blank');
         }
+      },
+      //重置所有文本框内容和其他判断
+      resetAll(){
+        //账号密码登录重置
+        this.$refs.logTelephonePasswordRef.logTelPwdReset()
+        //手机验证码登录重置
+        this.$refs.logTelephoneRef.logTelReset()
+        //手机验证码注册重置
+        this.$refs.regTelephoneRef.regReset()
       }
     }
   }

@@ -58,14 +58,13 @@ a:hover {
   内容部分
  */
 .main-wrapper {
-  width: 100% !important;
   //导航
   .navbar-wrapper {
-    width: $fullWidth;
+    width: 100% !important;
   }
   //首页导航栏背景
-  .nav-bg-home-wrapper{
-    width: $fullWidth;
+  .nav-bg-home-wrapper {
+    width: 100% !important;
     background-image: url("../assets/images/bg-home-nav.jpg");
     height: 65px;
     position: fixed;
@@ -73,7 +72,7 @@ a:hover {
   }
   //导航栏背景
   .nav-bg-wrapper {
-    width: $fullWidth;
+    width: 100% !important;
     background-image: url("../assets/images/bg-personal.jpg");
     background-size: cover;
     height: 65px;
@@ -81,129 +80,205 @@ a:hover {
     z-index: 998;
   }
   .content-wrapper {
-    width: 100%;
+    //width: 100%;
     min-height: 100%;
     //第一种格式（home）
     .content-middle-one {
-      width:$fullWidth;
-      //轮翻图
-      .home-el-carousel {
-        .el-carousel__container {
-          height: 270px;
-        }
-        .home-el-carousel-item {
-          height: 250px;
-        }
-      }
+      width: $fullWidth;
+      //主页左边内容
       .content-middle {
         width: 900px;
         margin-left: 10vw;
         float: left;
         margin-top: 20px;
-        //滚动条
-        .el-scrollbar__wrap {
-          overflow-x: hidden;
-        }
-        .middle-bbs-music {
-          .list {
-            padding-left: 0px;
-            box-shadow: 0px -3px 0px 3px #fe0000;
-
-            //.el-table__header-wrapper .el-table__header .has-gutter .el-table_1_column_1.is-leaf .cell {
-            //  color: #fe0000;
-            //  font-size: 19px;
-            //  margin-left: 10px;
-            //}
-
-            .el-table-title {
-              color: #fe0000;
-              font-size: 19px;
-              margin-left: 10px;
-            }
-            //音量
-            .voice-wrapper {
-              width: 15%;
-              height: 15px;
-              float: right;
-              margin-top: -25px;
-              margin-right: 50px;
-
-              //音量图标
-              .voice-icon-wrapper {
-                .voice-icon {
-                  cursor: pointer;
-                  width: 1.1em;
-                  height: 1.1em;
-                }
+        #home {
+          //轮翻图
+          .home-carousel-wrapper {
+            .home-carousel {
+              .el-carousel__container {
+                height: 270px;
               }
+              .home-el-carousel-item {
+                height: 250px;
+              }
+            }
+          }
+          //滚动条
+          .el-scrollbar__wrap {
+            overflow-x: hidden;
+          }
+          .middle-bbs-music-wrapper {
+            overflow: auto;
+            .list {
+              padding-left: 0px;
+              box-shadow: 0px -3px 0px 3px #fe0000;
 
-              //音量进度条
-              .voice-progress {
-                margin: -27px 0 0 22px;
-                width: 99%;
-                height: 25px;
-                .el-slider__runway {
-                  cursor: pointer;
-                  height: 3px;
-                  .el-slider__bar {
-                    height: 3px;
-                    background-color: #fe0000;
+              //.el-table__header-wrapper .el-table__header .has-gutter .el-table_1_column_1.is-leaf .cell {
+              //  color: #fe0000;
+              //  font-size: 19px;
+              //  margin-left: 10px;
+              //}
+
+              //标题
+              .bbs-music-title-wrapper {
+                .bbs-music-title {
+                  color: #fe0000;
+                  font-size: 19px;
+                  margin-left: 10px;
+                }
+                //音量调节
+                .bbs-music-voice-wrapper {
+                  width: 15%;
+                  height: 15px;
+                  float: right;
+                  margin-top: -25px;
+                  margin-right: 50px;
+
+                  //音量图标
+                  .bbs-music-voice-icon-wrapper {
+                    .bbs-music-voice-icon {
+                      cursor: pointer;
+                      width: 1.1em;
+                      height: 1.1em;
+                    }
                   }
-                  .el-slider__button-wrapper {
-                    z-index: 997;
-                    .el-slider__button {
-                      border: 2px solid #fe0000;
-                      width: 10px;
-                      height: 10px;
-                      margin-top: -3px;
+
+                  //音量进度条
+                  .bbs-music-voice-progress {
+                    margin: -27px 0 0 22px;
+                    width: 99%;
+                    height: 25px;
+                    .el-slider__runway {
+                      cursor: pointer;
+                      height: 3px;
+                      .el-slider__bar {
+                        height: 3px;
+                        background-color: #fe0000;
+                      }
+                      .el-slider__button-wrapper {
+                        z-index: 997;
+                        .el-slider__button {
+                          border: 2px solid #fe0000;
+                          width: 10px;
+                          height: 10px;
+                          margin-top: -3px;
+                        }
+                      }
                     }
                   }
                 }
               }
-            }
+              //每一行音乐片段的div
+              .bbs-music-row-wrapper {
+                width: 870px;
+                //类别标题
+                .bbsm-row-title {
+                  font-weight: bold;
+                  font-size: 17px;
+                  color: black;
+                  margin-left: 8px;
+                  .row-title-span:hover {
+                    cursor: pointer;
+                    color: #fe0000;
+                  }
+                }
+                //头像加头像提示框
+                .bbsm-row-avatar-wrapper {
+                  width: 40px;
+                  float: left;
+                  padding-left: 5px;
+                  //头像提示窗口
+                  .bbsm-avatar-popover-wrapper {
+                    .popover-top-content-wrapper {
+                      .pt-avatar-wrapper {
+                        width: 65px;
+                        margin-left: 5px;
+                      }
+                      .pt-user-info-wrapper {
+                        width: auto;
+                        position: absolute;
+                        top: 15px;
+                        left: 100px;
+                        .pt-user-info-name {
 
-            //每一行音乐片段的div
-            .bbs-music-row-wrapper {
-              width: 870px;
-            }
-            .middle-title {
-              font-weight: bold;
-              font-size: 17px;
-              color: black;
-              margin-left: 8px;
-            }
-            .middle-title-span:hover {
-              cursor: pointer;
-              color: #fe0000;
-            }
-            .publisher {
-              cursor: pointer;
-              margin-left: -12px;
-            }
-            .publisher:hover {
-              color: #fe0000;
-            }
-            .div-threeIcon {
-              margin-left: 10px;
-              cursor: pointer;
-              width: 100px;
-              .threeIcon:hover {
-                color: #fe0000;
-              }
-              span {
-                margin-left: 4px;
-                color: #fe0000;
-              }
-
-            }
-            .avatar-wrapper {
-              cursor: pointer;
-              margin-top: 18px;
-              margin-left: 5px;
-              .user-avatar {
-                width: 28px !important;
-                height: 28px;
-                border-radius: 50px;
+                        }
+                      }
+                    }
+                    .popover-bottom-content-wrapper {
+                      .pb-into-home {
+                        float: left;
+                        height: 30px;
+                      }
+                      .pb-attention {
+                        float: right;
+                      }
+                    }
+                  }
+                  //头像
+                  .bbsm-avatar-wrapper{
+                    margin-top: 16px;
+                  }
+                  .bbsm-avatar-wrapper:hover{
+                    cursor: pointer;
+                  }
+                }
+                //名称
+                .bbsm-row-name-wrapper {
+                  float: left;
+                  width: 90px;
+                  padding-left: 0.3vw;
+                  margin-top: 22px;
+                  .publisher {
+                    cursor: pointer;
+                  }
+                  .publisher:hover {
+                    color: #fe0000;
+                  }
+                }
+                //音频
+                .bbsm-row-audio-wrapper {
+                  float: left;
+                  margin-left: 1.5vw
+                }
+                //点赞，播放量，评论
+                .div-threeIcon {
+                  margin-left: 10px;
+                  cursor: pointer;
+                  width: 100px;
+                  .threeIcon:hover {
+                    color: #fe0000;
+                  }
+                  span {
+                    margin-left: 4px;
+                    color: #fe0000;
+                  }
+                }
+                //播放量
+                .play {
+                  width: auto;
+                  float: right;
+                  margin-top: 40px
+                }
+                //点赞
+                .like {
+                  width: auto;
+                  float: right;
+                  margin-top: 40px;
+                }
+                //评论
+                .comment {
+                  width: auto;
+                  float: right;
+                  margin-top: 40px;
+                  margin-right: 15px
+                }
+                //评论抽屉框
+                .bbsm-row-comment-drawer-wrapper{
+                  //给抽屉样式加滚动条
+                  .el-drawer {
+                    overflow: scroll;
+                  }
+                }
               }
             }
           }
@@ -215,13 +290,13 @@ a:hover {
         width: 290px !important;
         float: left;
         margin-left: 10px;
-        .el-card{
+        .el-card {
           border: 1px solid #999999;
         }
         .el-card__header {
           background-color: #343434;
         }
-        #right{
+        #right {
           //修饰颜色方块
           .div-embellish {
             width: 4px;
@@ -241,63 +316,63 @@ a:hover {
             border: 1px solid #fe0000;
           }
           //最新消息
-          .home-right-new-message-card{
+          .home-right-new-message-card {
             margin-top: 9px;
-            .home-right-content-wrapper{
-              .hrnmc-wrapper{
+            .home-right-content-wrapper {
+              .hrnmc-wrapper {
                 height: 60px;
-                .hrnmc-img{
+                .hrnmc-img {
                   float: left;
-                  img{
+                  img {
                     border-radius: 5px;
                   }
                 }
-                .hrnmc-img:hover{
+                .hrnmc-img:hover {
                   cursor: pointer;
                 }
-                .hrnmc-title{
+                .hrnmc-title {
                   padding-top: 2px;
                   margin-left: 76px;
                   font-weight: bold;
                   font-size: 14px;
                 }
-                .hrnmc-title:hover{
+                .hrnmc-title:hover {
                   cursor: pointer;
                   color: #fe0000;
                 }
               }
             }
           }
-          .home-right-author-card{
+          .home-right-author-card {
             margin-top: 10px;
-            .home-right-content-wrapper{
-              .hrac-wrapper{
+            .home-right-content-wrapper {
+              .hrac-wrapper {
                 height: 60px;
-                .hrac-avatar-wrapper{
+                .hrac-avatar-wrapper {
                   float: left;
                 }
-                .hrac-avatar-wrapper:hover{
+                .hrac-avatar-wrapper:hover {
                   cursor: pointer;
                 }
-                .hrac-info-wrapper{
+                .hrac-info-wrapper {
                   margin-left: 75px;
-                  .hi-name-wrapper{
+                  .hi-name-wrapper {
                     padding-top: 4px;
-                    .hi-name{
+                    .hi-name {
                       font-weight: bold;
                       font-size: 14px;
                       float: left;
                     }
-                    .hi-name:hover{
+                    .hi-name:hover {
                       cursor: pointer;
                       color: #fe0000;
                     }
-                    .hi-img{
+                    .hi-img {
                       margin-top: -3px;
                       margin-left: 46px;
                     }
                   }
-                  .hi-honor{
+                  .hi-honor {
 
                   }
                 }
@@ -406,9 +481,9 @@ a:hover {
 
     //第三种格式（bbsMusic）
     .content-middle-three {
-      .bbsMusic-title-wrapper{
+      .bbsMusic-title-wrapper {
         padding: 0px 10vw;
-        .bbsMusic-title{
+        .bbsMusic-title {
           padding-top: 33px;
           height: 80px;
           color: #fafafa;
@@ -447,24 +522,24 @@ a:hover {
         #right3 {
           width: 280px;
           margin-left: 918px;
-          .bbs-music-user-info-wrapper{
+          .bbs-music-user-info-wrapper {
             //card卡片
-            .bbs-music-user-info-card{
+            .bbs-music-user-info-card {
               //第一行
-              .user-info-one-wrapper{
+              .user-info-one-wrapper {
                 //头像
-                .user-info-avatar-wrapper{
+                .user-info-avatar-wrapper {
                   float: left;
                 }
                 //名称
-                .user-info-name-wrapper{
+                .user-info-name-wrapper {
                   width: 160px;
                   float: left;
                   padding-top: 3px;
                   margin-left: 20px;
                   font-size: 15px;
                 }
-                .user-info-age-wrapper{
+                .user-info-age-wrapper {
                   font-size: 12px;
                   padding-top: 10px;
                   padding-top: 30px;
@@ -472,69 +547,69 @@ a:hover {
                 }
               }
               //第二行
-              .user-info-two-wrapper{
+              .user-info-two-wrapper {
                 margin-top: 20px;
-                .num{
+                .num {
                   font-size: 14px;
                 }
-                .seeNum{
+                .seeNum {
                   float: left;
                   text-align: center;
-                  .see-text{
+                  .see-text {
                     margin-top: 5px;
                   }
                 }
-                .fanNum{
-                  float: left;
-                  text-align: center;
-                  margin-left: 23px;
-                  .fan-text{
-                    margin-top: 5px;
-                  }
-                }
-                .likeNum{
+                .fanNum {
                   float: left;
                   text-align: center;
                   margin-left: 23px;
-                  .like-text{
+                  .fan-text {
                     margin-top: 5px;
                   }
                 }
-                .commentNum{
+                .likeNum {
                   float: left;
                   text-align: center;
                   margin-left: 23px;
-                  .comment-text{
+                  .like-text {
                     margin-top: 5px;
                   }
                 }
-                .collectNum{
+                .commentNum {
+                  float: left;
+                  text-align: center;
+                  margin-left: 23px;
+                  .comment-text {
+                    margin-top: 5px;
+                  }
+                }
+                .collectNum {
                   float: left;
                   text-align: center;
                   margin-top: 8px;
-                  .collect-text{
+                  .collect-text {
                     margin-top: 5px;
                   }
                 }
               }
               //第三行
-              .user-info-three-wrapper{
+              .user-info-three-wrapper {
                 float: left;
                 margin-top: 25px;
                 margin-bottom: 16px;
               }
             }
           }
-          .title{
+          .title {
             height: 35px;
-            border-bottom:1px solid #e8e8e8;
-            span{
+            border-bottom: 1px solid #e8e8e8;
+            span {
               font-weight: bold;
               float: left;
               margin-top: 5px;
             }
             z-index: 1;
-            .title-img{
+            .title-img {
               position: relative;
               top: -17px;
               left: 163px;
@@ -542,25 +617,25 @@ a:hover {
             }
           }
           //热门音乐
-          .bbs-music-hot-wrapper{
+          .bbs-music-hot-wrapper {
             margin-top: 8px;
-            .bbs-music-hot-card{
-              .hot-content{
+            .bbs-music-hot-card {
+              .hot-content {
 
               }
             }
           }
           //最新音乐
-          .bbs-music-new-wrapper{
+          .bbs-music-new-wrapper {
             margin-top: 8px;
-            .bbs-music-new-card{
+            .bbs-music-new-card {
 
             }
           }
           //音乐分类
-          .bbs-music-sort-wrapper{
+          .bbs-music-sort-wrapper {
             margin-top: 8px;
-            .bbs-music-sort-card{
+            .bbs-music-sort-card {
 
             }
           }
@@ -617,7 +692,7 @@ a:hover {
                   font-size: 12px;
                   color: #999999;
                 }
-                .left-manage-wx-qrcode{
+                .left-manage-wx-qrcode {
                   text-align: center;
                 }
               }
@@ -626,7 +701,7 @@ a:hover {
           #right-manage {
             width: 940px;
             margin-left: 250px;
-            .right-manage-card{
+            .right-manage-card {
               border-radius: 0;
             }
           }
@@ -660,4 +735,12 @@ a:hover {
 
 :-ms-input-placeholder { /* Internet Explorer 10+ */
   color: #C4C4C4;
+}
+
+.emoji-picker-container {
+
+}
+
+.emoji-vue-textarea {
+
 }

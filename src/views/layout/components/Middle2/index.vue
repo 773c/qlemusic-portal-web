@@ -34,7 +34,7 @@
             </el-button>
           </el-dialog>
           <div class="music-age" align="center">
-            <el-tag type="info" size="mini" effect="plain">乐龄2年</el-tag>
+            <el-tag type="info" size="mini" effect="plain">乐龄{{musicAge}}</el-tag>
           </div>
         </div>
         <div class="personal-name-warpper">{{userInfo.name}}</div>
@@ -75,6 +75,9 @@
       ...mapGetters([
         'userInfo'
       ]),
+      musicAge(){
+        return this.timeFormatToDay(this.userInfo.createTime)
+      }
     },
     methods: {
       //头像Hover样式

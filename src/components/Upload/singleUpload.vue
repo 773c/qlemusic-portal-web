@@ -97,7 +97,6 @@
           this.imageUrl = URL.createObjectURL(file.raw);
           //将文件存入fileList
           this.fileList.push(file)
-          console.log(this.fileList);
           //设置头像切换机制(到达2张后，移除前面一张)
           if (fileList.length === 2) {
             fileList.splice(0, 1)
