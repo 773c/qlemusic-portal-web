@@ -23,7 +23,7 @@
   }
   .nav-link {
     margin-left: 8vw;
-    width: 350px !important;
+    width: 360px !important;
     // 路由链接
     .nav-router-link {
       float: left;
@@ -63,9 +63,9 @@
     .select-content {
       position: absolute;
       top: 65px;
-      left: 485px;
+      left: 493px;
       height: 320px;
-      width: 400px !important;
+      width: 430px !important;
       background-color: white;
       z-index: 999;
     }
@@ -93,27 +93,31 @@
       // 收藏
       .collect-container {
         float: left;
-        height: 51px;
-        line-height: 63px;
+        height: 50px;
         margin-left: 23px;
         .collect-wrapper {
+          margin-top: 22px;
+          height: 20px;
+          line-height: 15px;
           cursor: pointer;
           .svg-collect {
-            height: 20px;
-            width: 20px;
+            height: 21px;
+            width: 21px;
           }
         }
       }
       // 消息
       .info-container {
         height: 51px;
-        line-height: 70px;
         margin-left: 18px;
         .info-wrapper {
           cursor: pointer;
-          .svg-info {
-            height: 26px;
-            line-height: 24px;
+          .svg-info-wrapper {
+            height: 23px;
+            line-height: 23px;
+            .svg-info{
+
+            }
           }
         }
       }
@@ -125,7 +129,7 @@
       margin-left: 208px;
       //用户未登录
       .login-container {
-        height: 53px;
+        height: 22px;
         cursor: pointer;
         color: white;
         margin-top: 24px;
@@ -286,11 +290,10 @@
       margin-top: 1px;
     }
     .el-menu-item-first {
-      margin-left: -15px;
-      margin-top: 2px;
+      margin-left: -17px;
+      margin-top: 1px;
       .img-logo {
-        width: 62px !important;
-        height: 65px;
+        width: 70px !important;
       }
     }
     .nav-link {
@@ -300,7 +303,7 @@
     .el-menu-item-select {
       position: absolute;
       top: 2px;
-      left: 105px;
+      left: 110px;
       .select-box {
         width: 160px !important;
         height: 30px;
@@ -351,6 +354,51 @@
     //第一种格式
     .content-middle-one {
       width: 100% !important;
+      //轮播图视频
+      #carousel-video-wrapper {
+        .video-bgimg-wrapper {
+          .home-carousel {
+            .home-el-carousel-item {
+              .video-content-wrapper {
+                //内容标题
+                .video-content-title-wrapper {
+                  .video-content-title {
+                    height: 32px;
+                  }
+                }
+              }
+            }
+          }
+        }
+        .video-model-wrapper {
+          .video-player-wrapper {
+            // 中间大的播放按钮
+            .video-js .vjs-big-play-button {
+              font-size: 23px;
+              line-height: 36px;
+              height: 40px !important;
+              width: 40px !important;
+              border: 1px solid #e8e8e8;
+              margin-top: 55px;
+              margin-left: 140px;
+            }
+            //时间
+            .video-js .vjs-time-control {
+              display: none;
+            }
+            // 控制条所有图标
+            .vjs-button > .vjs-icon-placeholder:before {
+              font-size: 20px;
+              line-height: 2.1;
+            }
+            //倍速
+            .video-js .vjs-playback-rate .vjs-playback-rate-value {
+              line-height: 3;
+              font-size: 14px;
+            }
+          }
+        }
+      }
       //第一种格式左侧内容
       .content-middle {
         margin-left: 0 !important;
@@ -425,7 +473,6 @@
                   .comment-content-row-wrapper {
                     .cc-avatar-wrapper {
                       .cc-content {
-                        border: 1px solid red;
                         //width: 250px !important;
                         .cc-button {
                           margin-top: -30px;

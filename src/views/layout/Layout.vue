@@ -57,7 +57,7 @@
     },
     data() {
       return {
-        formatArr: [true, false, false,false]
+        formatArr: [true, false, false, false]
       }
     },
     mixins: [ResizeMixin],
@@ -73,22 +73,30 @@
           mobile: this.device === 'mobile'
         }
       },
+
       format() {
-        if (this.$route.path.indexOf("usr") != -1) {
+        if(this.$route.matched[0].path === '/'){
+          console.log("风格1");
+          this.formatArr[0] = true
+          this.formatArr[1] = false
+          this.formatArr[2] = false
+          this.formatArr[3] = false
+          return false
+        } else if (this.$route.matched[0].path === '/usr') {
           console.log("风格2");
           this.formatArr[1] = true
           this.formatArr[2] = false
           this.formatArr[3] = false
           this.formatArr[0] = false
           return true
-        } else if (this.$route.path.indexOf(this.$route.query.uniqueId||this.uniqueId) != -1){
+        } else if (this.$route.matched[0].path === '/:uniqueId'){
           console.log("风格3");
           this.formatArr[2] = true
           this.formatArr[3] = false
           this.formatArr[0] = false
           this.formatArr[1] = false
           return true
-        }else if(this.$route.path.indexOf("manage") != -1) {
+        }else if(this.$route.matched[0].path === '/manage') {
           console.log("风格4管理");
           this.formatArr[3] = true
           this.formatArr[0] = false
@@ -97,6 +105,8 @@
           return true
         }
       }
+    },
+    created(){
     }
   }
 </script>

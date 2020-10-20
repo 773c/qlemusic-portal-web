@@ -10,16 +10,14 @@ export function getRecommendList(isLoadingNprogress) {
   })
 }
 
-export function getMyMusicList(id, isLoadingNprogress) {
+export function getMyMusicList(params, isLoadingNprogress) {
   return request({
     url: '/audio/myMusic',
     method: 'get',
     headers: {
       isLoadingNprogress: isLoadingNprogress
     },
-    params: {
-      id: id
-    }
+    params: params
   })
 }
 
@@ -38,5 +36,13 @@ export function release(data) {
     method:'post',
     headers:{'Content-type': 'multipart/form-data;boundary = ' + new Date().getTime()},
     data: data
+  })
+}
+
+export function getHotMusic(params, isLoadingNprogress) {
+  return request({
+    url: '/audio/getHotMusic',
+    method: 'get',
+    params: params
   })
 }

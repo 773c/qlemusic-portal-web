@@ -208,7 +208,7 @@
       <div class="pagination-wrapper">
         <el-pagination
           @current-change="currentChangeHanlder"
-          :hide-on-single-page="false"
+          :hide-on-single-page="true"
           layout="prev,pager,next"
           :total="total">
         </el-pagination>
@@ -344,7 +344,6 @@
       },
       //获取对应收藏夹内容
       collectMusicList(index) {
-        console.log("收藏夹id："+this.favoriteTabs[index].id);
         this.listQuery.collectId = this.favoriteTabs[index].id
         getMusicByCollectId(this.listQuery).then(response => {
           let data = response.data

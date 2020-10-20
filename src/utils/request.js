@@ -20,7 +20,6 @@ service.interceptors.request.use(config => {
     //出现进度条
     NProgress.start()
   }
-  console.log("请求拦截Cookie中的token：" + getToken());
   if (store.getters.token) {
     //在Header设置名为Authorization的token
     config.headers.Authorization = getToken()

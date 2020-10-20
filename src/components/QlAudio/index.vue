@@ -68,7 +68,7 @@
       },
       startTime: {
         type: String,
-        default: 100
+        default: '100'
       },
       playTime: {
         type: String
@@ -107,10 +107,10 @@
         if (this.isShowPlayEffect) {
           return {
             webkitTransform: 'rotate(360deg)',
-            animation: 'rotation 3s linear infinite',
-            mozAnimation: 'rotation 3s linear infinite',
-            webkitAnimation: 'rotation 3s linear infinite',
-            oAnimation: 'rotation 3s linear infinite'
+            animation: 'rotation 6s linear infinite',
+            mozAnimation: 'rotation 6s linear infinite',
+            webkitAnimation: 'rotation 6s linear infinite',
+            oAnimation: 'rotation 6s linear infinite'
           }
         } else {
           return ''
@@ -160,10 +160,12 @@
             this.isClickPlay = false
           }
         })
-        //存储播放次数
-        play({musicId:this.musicId},false).then(response => {
+        if(this.musicId !== 0){
+          //存储播放次数
+          play({musicId:this.musicId},false).then(response => {
 
-        })
+          })
+        }
       },
       //音频暂停
       pauseHandler() {

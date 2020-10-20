@@ -1,7 +1,7 @@
 <template>
   <div id="myMusic">
     <el-tabs type="border-card">
-      <el-tab-pane label="音乐（999）">
+      <el-tab-pane :label="'音乐（'+myMusicQuery.musicNum+'）'">
         <!--按类型排序-->
         <div class="type-sort">
           <!--音量调节-->
@@ -15,63 +15,86 @@
           </div>
           <div class="type-sort-wrapper" style="margin-left: 640px">
             <span style="color: #8c939d;font-size: 14px">排序：</span>
-            <el-button type="text">按最新发布时间</el-button>
-            <el-button type="text">按最多访问量</el-button>
+            <el-button type="text" @click="getMyMusicListByNewTime" :style="isNewTimeSort===true?{color: '#fe0000'}:''">
+              按最新发布时间
+            </el-button>
+            <el-button type="text" @click="getMyMusicListByMaxPlay"
+                       :style="isNewTimeSort===false?{color: '#fe0000'}:''">按最多播放量
+            </el-button>
           </div>
         </div>
         <!--音乐按类型排序后的内容-->
         <div class="myMusic-bbsMusic" style="overflow:auto;">
-          <ul
-            class="list"
-            v-infinite-scroll="load"
-            infinite-scroll-disabled="disabled"
-            style="height: 60%;background-color: #222222;">
-            <el-table ref="bbsMusicTable"
-                      :data="(list||[]).slice(0,pageSize)"
-                      :show-header="false"
-                      border>
-              <div v-if="isEmptyList">
-                空空如也
-              </div>
-              <el-table-column v-else>
-                <template #default="scope">
-                  <div class="middle-title">
-                    <span>{{scope.row.title}}</span>
-                  </div>
-                  <el-row>
-                    <el-col :span="15" style="margin-left: 5px">
-                      <!--播放器-->
-                      <ql-audio
-                        :audioUrl="scope.row.audioUrl"
-                        :isShowLineProgress="false"
-                        :audioImgUrl="scope.row.audioAvatarUrl">
-                      </ql-audio>
-                    </el-col>
-                    <el-col :span="4" style="padding-top: 40px;">
-                      <div class="release-time">
-                        {{scope.row.releaseTime | formatTime}}
-                      </div>
-                    </el-col>
-                    <el-col :span="2" style="padding-top: 40px;">
-                      <div class="see div-threeIcon">
-                        <svg-icon class="threeIcon" icon-class="see"></svg-icon>
-                        <span>{{bbsMusic.seeNum}}</span>
-                      </div>
-                    </el-col>
-                  </el-row>
-                </template>
-              </el-table-column>
-            </el-table>
-          </ul>
-          <div v-if="loading" align="center" style="padding-bottom: 100px">加载中...</div>
+          <el-table ref="bbsMusicTable"
+                    :data="list"
+                    :show-header="false"
+                    border>
+            <div v-if="isEmptyList">
+              空空如也
+            </div>
+            <el-table-column v-else>
+              <template #default="scope">
+                <div class="my-music-title">
+                  <span>{{scope.row.title}}</span>
+                </div>
+                <el-row>
+                  <el-col :span="15" style="margin-left: 5px;margin-top: 5px">
+                    <!--播放器-->
+                    <ql-audio
+                      :audioUrl="scope.row.audioUrl"
+                      :musicId="0"
+                      :audioImgUrl="scope.row.audioAvatarUrl"
+                      :isShowLineProgress="false"
+                      :prevAudioVueComponent="prevAudioVueComponent"
+                      @setPlayEffect="setPlayEffect">
+                    </ql-audio>
+                  </el-col>
+                  <el-col :span="4" style="padding-top: 40px;margin-left: 10px">
+                    <div class="my-music-release-time">
+                      {{scope.row.releaseTime | formatTime}}
+                    </div>
+                  </el-col>
+                  <el-col :span="2">
+                    <div ref="likeRef" class="my-music-like" style="margin-top: 40px">
+                      <svg-icon icon-class="like-count" style="color: #bbbbbb;width: 23px"></svg-icon>
+                      <span style="color: #bbbbbb;"> {{
+                        scope.row.bbsMusicOperation === null
+                        ? myMusicQuery.likeCount
+                        : scope.row.bbsMusicOperation.likeCount}}
+                      </span>
+                    </div>
+                  </el-col>
+                  <el-col :span="2" style="padding-top: 40px;">
+                    <div class="my-music-play">
+                      <svg-icon icon-class="play-count" style="color: #bbbbbb;width: 22px"></svg-icon>
+                      <span style="color: #bbbbbb"> {{
+                        scope.row.bbsMusicOperation === null
+                        ? myMusicQuery.playCount
+                        : scope.row.bbsMusicOperation.playCount}}
+                      </span>
+                    </div>
+                  </el-col>
+                </el-row>
+              </template>
+            </el-table-column>
+          </el-table>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="资源（888）">
+      <el-tab-pane :label="'资源（'+myMusicQuery.sourceNum+'）'">
         资源
       </el-tab-pane>
-      <el-tab-pane label="问答（777）">
+      <el-tab-pane :label="'问答（'+myMusicQuery.answerNum+'）'">
         问答
       </el-tab-pane>
+      <!--分页-->
+      <div class="pagination-wrapper">
+        <el-pagination
+          @current-change="currentChangeHanlder"
+          :hide-on-single-page="true"
+          layout="prev,pager,next"
+          :total="total">
+        </el-pagination>
+      </div>
     </el-tabs>
   </div>
 </template>
@@ -80,11 +103,14 @@
   import {getMyMusicList} from "@/api/bbsMusic";
   import {mapGetters} from 'vuex'
 
-  const defaultBbsMusic = {
-    likeNum: '',
-    seeNum: '',
-    commentNum: '',
-    total: 300
+  const defaultMyMusic = {
+    pageNum: 1,
+    pageSize: 10,
+    likeCount: 0,
+    playCount: 0,
+    musicNum: 0,
+    sourceNum: 0,
+    answerNum: 0
   }
 
   export default {
@@ -92,13 +118,15 @@
     components: {},
     data() {
       return {
-        pageSize: 0,
         loading: false,
-        bbsMusic: Object.assign({}, defaultBbsMusic),
+        myMusicQuery: Object.assign({}, defaultMyMusic),
         list: [],
         isEmptyList: false,
         voiceValue: 50,
         changeVoiceIcon: 'audio-voice',
+        prevAudioVueComponent: {},
+        isNewTimeSort: true,
+        total: null,
       }
     },
     computed: {
@@ -127,32 +155,63 @@
         }
         localStorage.setItem("muted", audio.muted)
       },
-      myMusicList() {
-        getMyMusicList(this.$route.query.id, false).then(response => {
+      myMusicList(category) {
+        getMyMusicList({
+          pageNum: this.myMusicQuery.pageNum,
+          pageSize: this.myMusicQuery.pageSize,
+          userId: this.$route.query.uid,
+          category: category
+        }, false).then(response => {
           console.log(response);
           let data = response.data;
           this.list = data
+          this.total = this.myMusicQuery.musicNum = data.length
           if (data === null) {
             this.isEmptyList = true
           }
+          let likeCountSum = 0
+          let playCountSum = 0
+          let commentCountSum = 0
+          data.forEach((item, index) => {
+            if (item.bbsMusicOperation.likeCount === null)
+              item.bbsMusicOperation.likeCount = 0
+            if (item.bbsMusicOperation.playCount === null)
+              item.bbsMusicOperation.playCount = 0
+            if (item.bbsMusicOperation.commentCount === null)
+              item.bbsMusicOperation.commentCount = 0
+            likeCountSum += item.bbsMusicOperation.likeCount
+            playCountSum += item.bbsMusicOperation.playCount
+            commentCountSum += item.bbsMusicOperation.commentCount
+          })
+          this.$emit('setCount', {
+            likeCountSum: likeCountSum,
+            playCountSum: playCountSum,
+            commentCountSum: commentCountSum
+          })
         })
       },
-      //当滚动条到达最底端的时候加载新内容
-      load() {
-        // 滚动条到最顶端的距离
-        let scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-        // 可视区的高度
-        let windowHeight = document.documentElement.clientHeight || document.body.clientHeight
-        // 滚动条的总高度
-        let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
-        // 判断是否到达底部
-        if (Math.ceil(scrollTop) + windowHeight == scrollHeight) {
-          this.loading = true
-          setTimeout(() => {
-            this.pageSize += 2
-            this.loading = false
-          }, 2000)
-        }
+      //按最新发布时间排序
+      getMyMusicListByNewTime() {
+        this.myMusicList('newTime')
+        this.isNewTimeSort = true
+      },
+      //按最多播放量排序
+      getMyMusicListByMaxPlay() {
+        this.myMusicList('maxPlay')
+        this.isNewTimeSort = false
+      },
+      currentChangeHanlder(pageNum) {
+        this.myMusicQuery.pageNum = pageNum
+        let category = ''
+        if (this.isNewTimeSort)
+          category = 'newTime'
+        else
+          category = 'maxPlay'
+        this.myMusicList(category)
+      },
+      //获取子组件传来的实例
+      setPlayEffect(vueComponent) {
+        this.prevAudioVueComponent = vueComponent
       },
     },
     filters: {
@@ -162,11 +221,7 @@
       }
     },
     created() {
-      this.myMusicList()
-      if (this.bbsMusic.total < 15)
-        this.pageSize = this.bbsMusic.total
-      else
-        this.pageSize = 15
+      this.myMusicList(null)
     },
   }
 </script>
@@ -198,28 +253,22 @@
       }
     }
     .myMusic-bbsMusic {
-      .list {
-        //margin-top: 0px;
-        padding-left: 0px;
-        box-shadow: 0px -3px 0px 3px #fe0000;
-
-        //.el-table__header-wrapper .el-table__header .has-gutter .el-table_1_column_1.is-leaf .cell {
-        //  color: #fe0000;
-        //  font-size: 19px;
-        //  margin-left: 10px;
-        //}
-        .el-table-title {
-          color: #fe0000;
-          font-size: 19px;
-          margin-left: 10px;
-        }
-        .middle-title {
-          font-size: 18px;
+      .my-music-title {
+        span{
+          font-size: 20px;
           color: black;
           margin-left: 8px;
           cursor: pointer;
         }
       }
+      .my-music-release-time{
+      }
+
+    }
+    //分页
+    .pagination-wrapper {
+      margin-top: 30px;
+      text-align: center;
     }
   }
 </style>

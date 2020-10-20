@@ -1,11 +1,11 @@
 <template>
   <div id="personal-center-info">
     <div class="title">
-      <div class="title-name">
-        <div style="width:390px;border-bottom: 1px solid #e4e4e4;float: left;margin-top: 8px"></div>
-        账号信息
-        <div style="width:410px;border-bottom: 1px solid #e4e4e4;float: right;margin-top: 8px"></div>
-      </div>
+      <el-divider content-position="left">
+        <div class="title-name">
+          <span>账号信息 <i class="el-icon-edit-outline"></i></span>
+        </div>
+      </el-divider>
     </div>
     <br>
     <div class="account-info-wrapper">
@@ -95,27 +95,49 @@
                  @click="updateAccountInfoHandler">保存
       </el-button>
     </div>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
-    <div></div><br>
+    <div></div>
+    <br>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
+    <div></div>
+    <br>
   </div>
 </template>
 
@@ -210,8 +232,15 @@
   #personal-center-info {
     .title {
       .title-name {
-        font-weight: bold;
+        width: 150px;
+        height: 30px;
+        line-height: 31px;
         text-align: center;
+        background-color: #333333;
+        span {
+          color: white;
+          font-size: 16px;
+        }
       }
     }
     .account-info-wrapper {

@@ -2,30 +2,7 @@
   <div id="home">
     <!--走马灯-->
     <div class="home-carousel-wrapper">
-      <el-carousel class="home-carousel" :interval="4000" type="card" style="background-size: cover;">
-        <el-carousel-item class="home-el-carousel-item" v-for="item in 6" :key="item">
-          <div class="medium">
-            <video-player
-              class="video-player vjs-custom-skin"
-              ref="videoPlayer"
-              :options="playerOptions"
-              :playsinline="true"
-              customEventName="customstatechangedeventname"
-              @play="onPlayerPlay($event)"
-              @pause="onPlayerPause($event)"
-              @canplay="onPlayerCanplay($event)"
-              @canplaythrough="onPlayerCanplaythrough($event)"
-              @statechanged="playerStateChanged($event)"
-              @ready="playerReadied">
-            </video-player>
-          </div>
-        </el-carousel-item>
-      </el-carousel>
-      <!--@ended="onPlayerEnded($event)"-->
-      <!--@waiting="onPlayerWaiting($event)"-->
-      <!--@playing="onPlayerPlaying($event)"-->
-      <!--@loadeddata="onPlayerLoadeddata($event)"-->
-      <!--@timeupdate="onPlayerTimeupdate($event)"-->
+      <carousel-video></carousel-video>
     </div>
     <collect-model :isShowCollectModel="isShowCollectModel" @addFavoriteHandler="addFavoriteHandler"></collect-model>
     <!--音频文章区域-->
@@ -59,36 +36,10 @@
                   <span class="row-title-span" @click="seeMusicContent(scope.row.id)">{{scope.row.title}}</span>
                 </div>
                 <div class="bbsm-row-avatar-wrapper">
-                  <el-popover
-                    placement="top-start"
-                    width="300"
-                    offset="40"
-                    trigger="hover">
-                    <div class="bbsm-avatar-popover-wrapper">
-                      <div class="popover-top-content-wrapper">
-                        <div class="pt-avatar-wrapper">
-                          <el-avatar :size=60
-                                     :src="scope.row.umsUser === null?'':scope.row.umsUser.headIcon"></el-avatar>
-                        </div>
-                        <div class="pt-user-info-wrapper">
-                          <div class="pt-user-info-name">{{scope.row.umsUser === null?'':scope.row.umsUser.name}}</div>
-                          <div></div>
-                        </div>
-                      </div>
-                      <hr style=" height:2px;border:none;border-top:1px solid #e9e9eb;"/>
-                      <div class="popover-bottom-content-wrapper">
-                        <div class="pb-into-home">
-                          <el-button style="padding-top: 6px" type="text">进入主页</el-button>
-                        </div>
-                        <div class="pb-attention">
-                          <el-button type="success" size="mini">关注</el-button>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="bbsm-avatar-wrapper" slot="reference">
-                      <el-avatar :size=30 :src="scope.row.umsUser === null?'':scope.row.umsUser.headIcon"></el-avatar>
-                    </div>
-                  </el-popover>
+                  <avatar-popover
+                    :avatarUrl="scope.row.umsUser.headIcon"
+                    :name="scope.row.umsUser.name">
+                  </avatar-popover>
                 </div>
                 <!--名称-->
                 <div class="bbsm-row-name-wrapper"
@@ -102,9 +53,9 @@
                     :audioUrl="scope.row.audioUrl"
                     :audioImgUrl="scope.row.audioAvatarUrl"
                     :musicId="scope.row.id"
-                    :isShowLineProgress="false"
                     :startTime="scope.row.startTime"
                     :playTime="scope.row.playTime"
+                    :isShowLineProgress="false"
                     :prevAudioVueComponent="prevAudioVueComponent"
                     @setPlayEffect="setPlayEffect">
                   </ql-audio>
@@ -112,7 +63,11 @@
                 <!--移动端播放量-->
                 <div v-if="isMobile" class="play-text-wrapper">
                   <span>播放量 </span>
-                  <span>{{bbsMusic.seeCount}}</span>
+                  <span style="color: #fe0000">{{
+                    scope.row.bbsMusicOperation.playCount === null
+                    ? bbsMusic.playCount
+                    : scope.row.bbsMusicOperation.playCount}}
+                  </span>
                 </div>
                 <!--评论-->
                 <div class="comment div-threeIcon"
@@ -312,18 +267,30 @@
                 </div>
                 <!--播放量-->
                 <div class="play div-threeIcon">
-                  <svg-icon class="threeIcon" icon-class="play-count"></svg-icon>
-                  <span>{{scope.row.bbsMusicOperation.playCount === null?bbsMusic.playCount:scope.row.bbsMusicOperation.playCount}}</span>
+                  <svg-icon class="threeIcon" icon-class="play-count" style="width: 20px"></svg-icon>
+                  <span>
+                    {{scope.row.bbsMusicOperation.playCount === null
+                    ? bbsMusic.playCount
+                    : scope.row.bbsMusicOperation.playCount}}
+                  </span>
                   <el-divider direction="vertical"></el-divider>
                 </div>
                 <!--点赞-->
                 <div ref="likeRef" class="like div-threeIcon"
                      @click="likeHandler(scope.row.id,scope.$index,scope.row.bbsMusicOperation.isLike)"
                      style="width: auto;float: right;margin-top: 40px">
-                  <svg-icon class="threeIcon" icon-class="like"
-                            :style="scope.row.bbsMusicOperation.isLike?likeStyle:''"></svg-icon>
+                  <svg-icon
+                    class="threeIcon"
+                    :icon-class="scope.row.bbsMusicOperation.isLike === true?'like-count-full':'like-count'"
+                    style="width: 23px"
+                    :class="isClickLike === true?'animate':''"
+                    :style="scope.row.bbsMusicOperation.isLike?likeStyle:''"></svg-icon>
                   <br v-if="isMobile"/>
-                  <span>{{scope.row.bbsMusicOperation.likeCount === null?bbsMusic.likeCount:scope.row.bbsMusicOperation.likeCount}}</span>
+                  <span>
+                    {{scope.row.bbsMusicOperation.likeCount === null
+                    ? bbsMusic.likeCount
+                    : scope.row.bbsMusicOperation.likeCount}}
+                  </span>
                   <el-divider v-if="!isMobile" direction="vertical"></el-divider>
                 </div>
               </div>
@@ -337,19 +304,20 @@
 </template>
 
 <script>
-  import {getRecommendList} from "@/api/bbsMusic";
-  import {videoPlayer} from 'vue-video-player'
+  import CarouselVideo from '@/components/CarouselVideo'
+  import {getRecommendList} from '@/api/bbsMusic';
   import CollectModel from '@/components/CollectModel'
-  import {addCollect} from "@/api/collect";
+  import {addCollect} from '@/api/collect';
   import {mapGetters} from 'vuex'
-  import {getMyMusicList} from "@/api/bbsMusic";
-  import {like} from "@/api/like";
+  import {getMyMusicList} from '@/api/bbsMusic';
+  import {like} from '@/api/like';
   import {
     userComment,
     replyuserComment,
     getUserByComment,
     getCommentByMusic
   } from "@/api/comment";
+  import AvatarPopover from '@/components/AvatarPopover'
 
   const appData = require("@/assets/json/emoji.json");
 
@@ -362,8 +330,9 @@
   export default {
     name: "home",
     components: {
-      videoPlayer,
-      CollectModel
+      CollectModel,
+      CarouselVideo,
+      AvatarPopover
     },
     data() {
       return {
@@ -391,29 +360,13 @@
         isShowRelpy: false,
         changeVoiceIcon: 'audio-voice',
         prevAudioVueComponent: {},
-        playerOptions: {
-          // videojs options
-          muted: false,
-          language: 'zh-CN',
-          preload: 'auto',
-          playbackRates: [0.7, 1.0, 1.5, 2.0],
-          fluid: true,
-          notSupportedMessage: '此视频暂无法播放，请稍后再试',
-          sources: [{
-            type: "video/mp4",
-            src: "https://cdn.theguardian.tv/webM/2015/07/20/150716YesMen_synd_768k_vp8.webm",
-          }],
-          poster: require("@/assets/images/1.jpg"),
-        },
-        isShowCollectModel: false
+        isShowCollectModel: false,
+        isClickLike:false
       }
     },
     computed: {
       disabled() {
         return this.loading
-      },
-      player() {
-        return this.$refs.videoPlayer.player
       },
       volume() {
         return this.voiceValue / 100
@@ -443,7 +396,6 @@
         }
       }
     },
-    watch: {},
     methods: {
       addFavoriteHandler() {
         addCollect(8, this.musicId).then(response => {
@@ -457,8 +409,6 @@
           let data = response.data;
           this.list = data.bbsMusic
           this.list.forEach((list, index) => {
-            if (list.bbsMusicOperation === null)
-              this.list[index].bbsMusicOperation = {likeCount: 0, commentCount: 0, isLike: false}
             if (list.bbsUserLikeList.length !== 0) {
               list.bbsUserLikeList.forEach((userLike, index2) => {
                 if (userLike.userId === this.userInfo.id) {
@@ -507,7 +457,7 @@
       seeUserSendMusic(userId, uniqueId) {
         let routeUrl = this.$router.resolve({
           path: uniqueId,
-          query: {id: userId, uniqueId: uniqueId}
+          query: {uid: userId, uniqueId: uniqueId}
         })
         if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
           window.open(routeUrl.href, '_self');
@@ -517,7 +467,7 @@
       },
       //点赞
       likeHandler(musicId, index, isLike) {
-        if (this.userInfo === undefined || this.userInfo === '' || this.userInfo === null) {
+        if (this.userInfo.id === undefined || this.userInfo.id === null) {
           document.getElementById("no-login-btn").click()
         } else {
           like({
@@ -528,9 +478,15 @@
             console.log(response);
             if (!isLike) {
               this.list[index].bbsMusicOperation.likeCount++
+              this.$nextTick(()=>{
+                this.isClickLike = true
+              })
               this.list[index].bbsMusicOperation.isLike = true
             } else {
               this.list[index].bbsMusicOperation.likeCount--
+              this.$nextTick(()=>{
+                this.isClickLike = false
+              })
               this.list[index].bbsMusicOperation.isLike = false
             }
             this.recommendList()
@@ -642,7 +598,7 @@
       sendCommentHandler() {
         if (this.commentValue === '') {
           this.$tip.error("评论内容不能为空")
-        } else if (this.userInfo === undefined || this.userInfo === '' || this.userInfo === null) {
+        } else if (this.userInfo.id === undefined || this.userInfo.id === null) {
           document.getElementById("no-login-btn").click()
         } else {
           let umsUser = this.userInfo
@@ -720,7 +676,7 @@
       replyCommentHandler(replyuserId, replyuserCreateTime, replyName, rowId) {
         if (this.replyCommentValue === '') {
           this.$tip.error("评论内容不能为空")
-        } else if (this.userInfo === undefined || this.userInfo === '' || this.userInfo === null) {
+        } else if (this.userInfo.id === undefined || this.userInfo.id === null) {
           document.getElementById("no-login-btn").click()
         } else {
           let umsUser = this.userInfo
@@ -778,32 +734,6 @@
         // } else {
         //   window.open(routeUrl.href, '_blank');
         // }
-      },
-      // listen event
-      onPlayerPlay(player) {
-        // console.log('player play!', player)
-      },
-      onPlayerPause(player) {
-        // console.log('player pause!', player)
-      },
-      // ...player event
-      onPlayerCanplay(player) {
-        // console.log('player canplay!', player)
-      },
-      onPlayerCanplaythrough(player) {
-        // console.log('player canplaythrough!', player)
-      },
-
-      // or listen state event
-      playerStateChanged(playerCurrentState) {
-        // console.log('player current update state', playerCurrentState)
-      },
-
-      // player is ready
-      playerReadied(player) {
-        // console.log('the player is readied', player)
-        // you can use it to do something...
-        // player.[methods]
       }
     },
     created() {
@@ -818,14 +748,12 @@
     mounted() {
       //初始化音量图标
       let muted = localStorage.getItem("muted")
-      console.log(muted);
       if (muted === 'true') {
         this.changeVoiceIcon = 'audio-voice-no'
       } else {
         this.changeVoiceIcon = 'audio-voice'
       }
       //初始化音量滑条
-      console.log("音量：" + localStorage.getItem("volume") * 100);
       this.voiceValue = localStorage.getItem("volume") * 100
 
       for (let i in appData) {
@@ -845,19 +773,57 @@
 
 <style lang="scss">
   .el-popover {
-    height: 200px;
+    height: 189px;
     overflow: scroll;
     overflow-x: auto;
   }
+  .animate{
+    animation: Clickfd 1s ease-in-out;
+  }
+  @keyframes Clickfd {
+    0% {
+      top:0px;
+    }
+    10% {
+      top:-3px;
+    }
+    20% {
+      top:-6px;
+    }
+    30% {
+      top:-9px;
+    }
+    40% {
+      top:-12px;
+      transform: rotate(6deg);
+    }
+    50% {
+      top:-15px;
+      transform: rotate(12deg);
+    }
+    60% {
+      top:-18px;
+      transform: rotate(6deg);
+    }
+    70% {
+      top:-21px;
+      transform: rotate(0deg);
+    }
+    80% {
+      top:-24px;
+      transform: rotate(-6deg);
+    }
+    90% {
+      top:-27px;
+      transform: rotate(-12deg);
+    }
+    100% {
+      top:-30px;
+      transform: rotate(-6deg);
+    }
+  }
 </style>
 <style lang="scss" scoped>
-  .video-js .vjs-icon-placeholder {
-    width: 100%;
-    height: 100%;
-    display: block;
-    border: 1px solid red;
-  }
-
   //emoji表情包
   .emotionList {
     display: flex;

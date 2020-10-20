@@ -2,7 +2,7 @@
   <div id="left3">
     <el-card class="box-card" :body-style="{ padding: '0px' }">
       <transition name="fade" mode="out-in">
-        <router-view></router-view>
+        <router-view @setCount="setCount"></router-view>
       </transition>
     </el-card>
   </div>
@@ -10,7 +10,12 @@
 
 <script>
   export default {
-    name: "left3"
+    name: "left3",
+    methods:{
+      setCount(musicOperation){
+        this.$emit('setCount',musicOperation)
+      }
+    }
   }
 </script>
 

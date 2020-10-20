@@ -1,16 +1,19 @@
 <template>
   <div id="middle3">
-    <div class="bbsMusic-title-wrapper">
-      <div class="bbsMusic-title">
+    <div class="bbs-music-title-wrapper">
+      <div class="bbsm-title">
         {{userInfo.name}} 的音乐空间
+      </div>
+      <div class="bbsm-img">
+        <img src="@/assets/images/bg-my-music1.gif" height="120px">
       </div>
     </div>
     <!--信息内容-->
-    <div class="bbsMusic-content-wrapper">
+    <div class="bbs-music-content-wrapper">
       <!--内容-->
-      <left3></left3>
+      <left3 @setCount="setCount"></left3>
       <!--个人介绍+热门-->
-      <right3 :userInfo="userInfo"></right3>
+      <right3 :userInfo="userInfo" :musicOperation="musicOperation"></right3>
     </div>
   </div>
 </template>
@@ -28,15 +31,18 @@
     },
     data(){
       return {
-        userInfo:{}
+        userInfo:{},
+        musicOperation:{}
       }
     },
     methods:{
       getUser(){
-        getUserById(this.$route.query.id,false).then(response => {
-          console.log(response);
+        getUserById(this.$route.query.uid,false).then(response => {
           this.userInfo = response.data
         })
+      },
+      setCount(musicOperation){
+        this.musicOperation = musicOperation
       }
     },
     created(){

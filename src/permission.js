@@ -3,10 +3,12 @@ import NProgress from 'nprogress'
 import 'nprogress/nprogress.css'
 import store from '@/store'
 import {getToken} from '@/utils/auth'
+import {Message, MessageBox} from 'element-ui'
+
 
 router.beforeEach((to, from, next) => {
   if (getToken()) {
-    console.log(to.meta.isLoadingNprogress);
+    console.log();
     if (to.meta.isLoadingNprogress) {
       //进度条样式
       NProgress.inc(0.2)
@@ -25,8 +27,36 @@ router.beforeEach((to, from, next) => {
       })
     }
   } else {
-    console.log("getToken已过期");
-    next()
+    if(to.path !== '/home'){
+      if(to.matched[0].path === '/usr' || to.matched[0].path === '/manage'){
+        //说明是从主页面home点击的
+        if(from.fullPath === '/'){
+          Message({
+            message: "用户登录信息已失效，正在为您跳转到首页",
+            type: 'success',
+            center: true,
+            offset: 70,
+            duration: 1.5 * 1000
+          })
+          setTimeout(()=>{
+            next('/home')
+          },1500)
+        }else{
+          Message({
+            message: "用户登录信息已失效，正在为您跳转到首页",
+            type: 'success',
+            center: true,
+            offset: 70,
+            duration: 1.5 * 1000
+          })
+          setTimeout(()=>{
+            document.getElementById("nav-logo").click()
+          },1500)
+        }
+      }
+    }
+    else
+      next()
   }
 })
 router.afterEach(() => {

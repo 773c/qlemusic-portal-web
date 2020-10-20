@@ -2,6 +2,7 @@
 @import "./element-ui.scss";
 @import "./variables.scss";
 @import "./ql-audio.scss";
+@import "./video.scss";
 
 body {
   -moz-osx-font-smoothing: grayscale;
@@ -10,8 +11,9 @@ body {
   font-family: Helvetica Neue, Helvetica, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Arial, sans-serif;
   -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
   width: 100% !important;
+  height: 100% !important;
   background-color: #F5F5F5;
-  background-image: url("../assets/images/bg-main.jpg");
+  background-image: url("../assets/images/bg-main.jpg") ;
   //滚动条整体样式
   ::-webkit-scrollbar {
     width: 7px;
@@ -29,6 +31,7 @@ body {
 html {
   box-sizing: border-box;
   width: 100% !important;
+  height: 100% !important;
 }
 
 *,
@@ -80,6 +83,7 @@ a:hover {
     z-index: 998;
   }
   .content-wrapper {
+
     //width: 100%;
     min-height: 100%;
     //第一种格式（home）
@@ -187,40 +191,6 @@ a:hover {
                   width: 40px;
                   float: left;
                   padding-left: 5px;
-                  //头像提示窗口
-                  .bbsm-avatar-popover-wrapper {
-                    .popover-top-content-wrapper {
-                      .pt-avatar-wrapper {
-                        width: 65px;
-                        margin-left: 5px;
-                      }
-                      .pt-user-info-wrapper {
-                        width: auto;
-                        position: absolute;
-                        top: 15px;
-                        left: 100px;
-                        .pt-user-info-name {
-
-                        }
-                      }
-                    }
-                    .popover-bottom-content-wrapper {
-                      .pb-into-home {
-                        float: left;
-                        height: 30px;
-                      }
-                      .pb-attention {
-                        float: right;
-                      }
-                    }
-                  }
-                  //头像
-                  .bbsm-avatar-wrapper{
-                    margin-top: 16px;
-                  }
-                  .bbsm-avatar-wrapper:hover{
-                    cursor: pointer;
-                  }
                 }
                 //名称
                 .bbsm-row-name-wrapper {
@@ -265,6 +235,11 @@ a:hover {
                   float: right;
                   margin-top: 40px;
                 }
+                .lick-after-img-wrapper{
+                  .lick-after-img{
+                  }
+                }
+
                 //评论
                 .comment {
                   width: auto;
@@ -272,11 +247,21 @@ a:hover {
                   margin-top: 40px;
                   margin-right: 15px
                 }
+                .el-popover{
+                  height: 200px;
+                  overflow: scroll;
+                  overflow-x: auto;
+                }
                 //评论抽屉框
                 .bbsm-row-comment-drawer-wrapper{
                   //给抽屉样式加滚动条
                   .el-drawer {
                     overflow: scroll;
+                    overflow-x: auto;
+                  }
+                  .comment-drawer{
+                    .comment-wrapper{
+                    }
                   }
                 }
               }
@@ -343,6 +328,45 @@ a:hover {
               }
             }
           }
+          //发布人
+          .home-right-release-card{
+            .home-right-content-wrapper{
+              .hrrc-wrapper {
+                height: 60px;
+                .hrrc-avatar-wrapper {
+                  float: left;
+                }
+                .hrrc-avatar-wrapper:hover {
+                  cursor: pointer;
+                }
+                .hrrc-info-wrapper {
+                  margin-left: 70px;
+                  .hrrci-name-wrapper {
+                    padding-top: 4px;
+                    .hrrci-name {
+                      font-weight: bold;
+                      font-size: 14px;
+                      float: left;
+                      margin-top: 3px;
+                    }
+                    .hrrci-name:hover {
+                      cursor: pointer;
+                      color: #fe0000;
+                    }
+                    .hrrci-img {
+                      float: left;
+                      margin-left: 5px;
+                    }
+                  }
+                  .hrrci-honor {
+
+                  }
+                }
+              }
+            }
+          }
+
+          //音乐人
           .home-right-author-card {
             margin-top: 10px;
             .home-right-content-wrapper {
@@ -355,21 +379,22 @@ a:hover {
                   cursor: pointer;
                 }
                 .hrac-info-wrapper {
-                  margin-left: 75px;
+                  margin-left: 70px;
                   .hi-name-wrapper {
                     padding-top: 4px;
                     .hi-name {
                       font-weight: bold;
                       font-size: 14px;
                       float: left;
+                      margin-top: 3px;
                     }
                     .hi-name:hover {
                       cursor: pointer;
                       color: #fe0000;
                     }
                     .hi-img {
-                      margin-top: -3px;
-                      margin-left: 46px;
+                      float: left;
+                      margin-left: 5px;
                     }
                   }
                   .hi-honor {
@@ -378,6 +403,9 @@ a:hover {
                 }
               }
             }
+          }
+          .right-hot-official-card{
+            margin-top: 10px;
           }
         }
       }
@@ -481,22 +509,28 @@ a:hover {
 
     //第三种格式（bbsMusic）
     .content-middle-three {
-      .bbsMusic-title-wrapper {
+      .bbs-music-title-wrapper {
         padding: 0px 10vw;
-        .bbsMusic-title {
+        .bbsm-title {
           padding-top: 33px;
+          width: 500px;
           height: 80px;
           color: #fafafa;
           font-size: 21px;
         }
+        .bbsm-img{
+          position: absolute;
+          top: 53px;
+          right: 200px;
+        }
       }
 
-      .bbsMusic-content-wrapper {
+      .bbs-music-content-wrapper {
         margin-left: 10vw;
         margin-top: 10px;
         width: 1200px;
         #left3 {
-          width: 910px;
+          width: 900px;
           float: left;
           //我的音乐
           #myMusic {
@@ -520,8 +554,8 @@ a:hover {
           }
         }
         #right3 {
-          width: 280px;
-          margin-left: 918px;
+          width: 300px;
+          margin-left: 908px;
           .bbs-music-user-info-wrapper {
             //card卡片
             .bbs-music-user-info-card {
@@ -552,17 +586,9 @@ a:hover {
                 .num {
                   font-size: 14px;
                 }
-                .seeNum {
-                  float: left;
-                  text-align: center;
-                  .see-text {
-                    margin-top: 5px;
-                  }
-                }
                 .fanNum {
                   float: left;
                   text-align: center;
-                  margin-left: 23px;
                   .fan-text {
                     margin-top: 5px;
                   }
@@ -583,11 +609,28 @@ a:hover {
                     margin-top: 5px;
                   }
                 }
+                .seeNum {
+                  float: left;
+                  text-align: center;
+                  margin-left: 23px;
+                  .see-text {
+                    margin-top: 5px;
+                  }
+                }
                 .collectNum {
                   float: left;
                   text-align: center;
                   margin-top: 8px;
                   .collect-text {
+                    margin-top: 5px;
+                  }
+                }
+                .playNum{
+                  float: left;
+                  text-align: center;
+                  margin-top: 8px;
+                  margin-left: 23px;
+                  .play-text{
                     margin-top: 5px;
                   }
                 }
@@ -612,7 +655,7 @@ a:hover {
             .title-img {
               position: relative;
               top: -17px;
-              left: 163px;
+              left: 183px;
               z-index: 100;
             }
           }
@@ -620,16 +663,25 @@ a:hover {
           .bbs-music-hot-wrapper {
             margin-top: 8px;
             .bbs-music-hot-card {
-              .hot-content {
-
+              .hot-content-wrapper {
+                .hot-list{
+                  .hot-row-wrapper{
+                    margin-top: 15px;
+                    .hot-row-title{
+                      font-size: 15px;
+                      cursor: pointer;
+                    }
+                    .hot-row-title:hover{
+                      color: #fe0000;
+                    }
+                    .hot-row-like-count{
+                      margin-left: 15px;
+                      font-size: 14px;
+                      color: #bbbbbb;
+                    }
+                  }
+                }
               }
-            }
-          }
-          //最新音乐
-          .bbs-music-new-wrapper {
-            margin-top: 8px;
-            .bbs-music-new-card {
-
             }
           }
           //音乐分类
@@ -689,7 +741,8 @@ a:hover {
                 height: 280px;
                 padding: 20px;
                 .left-manage-footer {
-                  font-size: 12px;
+                  margin-top: -2px;
+                  font-size: 13px;
                   color: #999999;
                 }
                 .left-manage-wx-qrcode {

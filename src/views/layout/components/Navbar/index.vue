@@ -1,7 +1,7 @@
 <template>
   <common-navbar :isUserFormat="isUserFormat">
     <template #logo>
-      <a class="a-logo" href="/"><img class="img-logo" src="@/assets/images/flogo.png" width="70" height="68"></a>
+      <a id="nav-logo" href="/"><img class="img-logo" src="@/assets/images/flogo2.png" width="75"></a>
     </template>
     <template #one>
       <router-link class="nav-router-link" to="/">
@@ -11,15 +11,15 @@
       </router-link>
     </template>
     <template #two>
-      <router-link class="nav-router-link" to="/nav/download">
-        <el-menu-item index="/nav/download">
+      <router-link class="nav-router-link" to="/expectation">
+        <el-menu-item index="/expectation"><!--/nav/download-->
           <span>下载</span>
         </el-menu-item>
       </router-link>
     </template>
     <template #three>
-      <router-link class="nav-router-link" to="/nav/question">
-        <el-menu-item index="/nav/question">
+      <router-link class="nav-router-link" to="/expectation">
+        <el-menu-item index="/expectation"> <!--/nav/question-->
           <span>论坛</span>
         </el-menu-item>
       </router-link>
@@ -28,7 +28,7 @@
     <template #after-one>
       <div class="home-release-button-wrapper" @click="clickForward('/manage/home',false)">
         <el-button class="home-release-button" type="danger">
-          <i class="el-icon-thumb"></i> 发布作品
+          <i class="el-icon-thumb"></i> 发布歌曲
         </el-button>
       </div>
     </template>
@@ -36,11 +36,11 @@
     <template #after-two>
       <el-tooltip class="item" effect="light" content="我的收藏" placement="bottom-start">
         <div class="collect-container">
-          <router-link target="_blank" to="/usr/collect">
-            <div class="collect-wrapper">
-              <svg-icon class="svg-collect" icon-class="nav-collect"></svg-icon>
-            </div>
-          </router-link>
+          <!--<router-link target="_blank" to="/usr/collect">-->
+          <div class="collect-wrapper" @click="clickForward('/usr/collect',false)">
+            <svg-icon class="svg-collect" icon-class="nav-collect"></svg-icon>
+          </div>
+          <!--</router-link>-->
         </div>
       </el-tooltip>
     </template>
@@ -48,9 +48,9 @@
     <template #after-three>
       <el-dropdown class="info-container" placement="top">
         <div class="info-wrapper">
-          <el-badge is-dot class="item">
-            <div class="svg-info">
-              <svg-icon icon-class="nav-info"></svg-icon>
+          <el-badge is-dot class="item" style="width: 20px;">
+            <div class="svg-info-wrapper">
+              <svg-icon class="svg-info" icon-class="nav-info"></svg-icon>
             </div>
           </el-badge>
         </div>
@@ -152,7 +152,7 @@
                 <i class="el-icon-circle-plus-outline"></i>我的关注
               </el-dropdown-item>
             </div>
-            <div @click="clickForward('/',false)">
+            <div @click="clickForward('/usr/set',false)">
               <el-dropdown-item>
                 <i class="el-icon-setting"></i>账号设置
               </el-dropdown-item>
@@ -240,25 +240,29 @@
         this.loading = value
       },
       clickForward(path, flag) {
-        let routeUrl = null
-        if (flag) {
-          routeUrl = this.$router.resolve({
-            path: path,
-            query: {id: this.userInfo.id}
-          })
+        if (this.userInfo.id === undefined || this.userInfo.id === '' || this.userInfo.id === null) {
+          document.getElementById("no-login-btn").click()
         } else {
-          routeUrl = this.$router.resolve({
-            path: path
-          })
-        }
-        if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
-          window.open(routeUrl.href, '_self');
-        } else {
-          window.open(routeUrl.href, '_blank');
+          let routeUrl = null
+          if (flag) {
+            routeUrl = this.$router.resolve({
+              path: path,
+              query: {uid: this.userInfo.id}
+            })
+          } else {
+            routeUrl = this.$router.resolve({
+              path: path
+            })
+          }
+          if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
+            window.open(routeUrl.href, '_self');
+          } else {
+            window.open(routeUrl.href, '_blank');
+          }
         }
       },
       //重置所有文本框内容和其他判断
-      resetAll(){
+      resetAll() {
         //账号密码登录重置
         this.$refs.logTelephonePasswordRef.logTelPwdReset()
         //手机验证码登录重置

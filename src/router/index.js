@@ -7,14 +7,17 @@ const Home = () => import('@/views/home')
 const Download = () => import('@/views/download')
 const PersonalCenter = () => import('@/views/user/personalCenter')
 const Collect = () => import('@/views/user/collect')
+const Set = () => import('@/views/user/set')
 const MyMusic = () => import('@/views/user/myMusic')
 const BbsMusic = () => import('@/views/bbsMusic')
 const ManageHome = () => import('@/views/manage/home')
 const EditMusic = () => import('@/views/manage/editMusic')
+const Expectation = () => import('@/views/Expectation')
 
 Vue.use(VueRouter)
 
 const routes = [
+  {path:'/expectation',component:Expectation},
   {path: '/404', component: Error, meta: {title: '404', icon: '404', isLoadingNprogress: false}},
   {
     path: '/',
@@ -52,6 +55,12 @@ const routes = [
         name: 'collect',
         component: Collect,
         meta: {title: '我的收藏', icon: 'collect', isLoadingNprogress: true,isLevel: 2}
+      },
+      {
+        path: 'set',
+        name: 'set',
+        component: Set,
+        meta: {title: '账户设置', icon: 'set', isLoadingNprogress: true,isLevel: 2}
       }
     ]
   },
@@ -76,7 +85,7 @@ const routes = [
         path: 'home',
         name: 'home',
         component: ManageHome,
-        meta: {title: '管理首页', icon: 'home', isLoadingNprogress: false,isLevel: 3}
+        meta: {title: '管理首页', icon: 'manageHome', isLoadingNprogress: false,isLevel: 3}
       },
       {
         path: 'edit',

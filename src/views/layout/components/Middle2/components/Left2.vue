@@ -13,19 +13,23 @@
           <i class="el-icon-star-off"></i>
           <span>我的收藏</span>
         </el-menu-item>
-        <el-menu-item index="/home">
+        <el-menu-item>
           <i class="el-icon-circle-plus-outline"></i>
           <span>我关注的人</span>
         </el-menu-item>
-        <el-menu-item index="/home">
+        <el-menu-item index="/usr/set">
+          <i class="el-icon-setting"></i>
+          <span>账号设置</span>
+        </el-menu-item>
+        <el-menu-item>
           <i class="el-icon-magic-stick"></i>
           <span>我的粉丝</span>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="/expectation">
           <i class="el-icon-wallet"></i>
           <span>我的钱包</span>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="/expectation">
           <i class="el-icon-paperclip"></i>
           <span>我的标签</span>
         </el-menu-item>
@@ -33,11 +37,11 @@
           <i class="el-icon-aim"></i>
           <span>管理空间</span>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="/expectation">
           <i class="el-icon-download"></i>
           <span>我的下载</span>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="/expectation">
           <i class="el-icon-chat-round"></i>
           <span>我的问答</span>
         </el-menu-item>
