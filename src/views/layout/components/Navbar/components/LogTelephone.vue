@@ -18,10 +18,11 @@
     <br><br>
     <label for="verify" class="tabs-label">验证码</label><br>
     <input type="text" v-model="logVerify" id="verify" class="tabs-verify tabs-input" placeholder="  请输入验证码">
-    <el-button class="verify-button" type="primary" :style="isShowStyle" :disabled="isDisabled"
-               @click="logSendVerifyBtonHandler">
-      {{CountDown}}
-    </el-button>
+    <verify-button
+      :telephone="logTelephone"
+      :isSendSuccessTo="isSendSuccess"
+      @setSendSuccessStatus="setSendSuccessStatus">
+    </verify-button>
     <br><br>
     <el-row style="margin-top:10px;">
       <drag-verify
@@ -55,21 +56,22 @@
 
 <script>
   import DragVerify from '@/components/DragVerify'
-  import {login, sendSms} from "@/api/login";
+  import {login} from "@/api/login";
+  import VerifyButton from '@/components/VerifyButton'
 
   export default {
     name: "logTelephone",
     components: {
-      DragVerify
+      DragVerify,
+      VerifyButton
     },
     data() {
       return {
         logTelephone: '',
         logVerify: '',
-        second: 120,
         isSendSuccess: false,
         btonShow: true,
-        select: '',
+        select: '86',
         region: [{
           value: '86',
           label: '+ 86',
@@ -110,37 +112,6 @@
         get() {
           return false
         }
-      },
-      verifyBtonStyle() {
-        return {
-          backgroundColor: '#fe0000',
-          color: '#ffffff'
-        }
-      },
-      CountDown() {
-        if (this.second === 0) {
-          return "发送验证码"
-        } else if (this.isSendSuccess) {
-          return this.second + "s 后重新发送"
-        } else {
-          return "发送验证码"
-        }
-      },
-      isShowStyle() {
-        if (this.logTelephone === '')
-          return ''
-        else if (this.isSendSuccess === true)
-          return ''
-        else
-          return this.verifyBtonStyle
-      },
-      isDisabled() {
-        if (this.logTelephone === '')
-          return true
-        else if (this.isSendSuccess === true)
-          return true
-        else
-          return false
       }
     },
     methods: {
@@ -150,29 +121,17 @@
       },
       //验证码登录按钮
       telVefLogBtonHandler() {
-        this.$store.dispatch('Login',{telephone:this.logTelephone,verify:this.logVerify}).then(() => {
-          this.$store.dispatch('GetInfo').then(response => {
-            this.$emit('setDialogVisible')
-            console.log(response);
-          })
-        })
-      },
-      //验证码登录发送按钮
-      logSendVerifyBtonHandler(){
-        sendSms(this.logTelephone).then(response => {
-          this.$tip.success('发送成功')
-          //短信发送成功后
-          this.isSendSuccess = true
-          //定时器倒计时
-          let timer = setInterval(() => {
-            if (this.second <= 1) {
-              this.isSendSuccess = false
-              this.second = 120
-              clearInterval(timer)
-              return
-            }
-            this.second = this.second - 1
-          }, 1000)
+        const load = this.$loading({
+          lock: true,
+          background: 'rgba(0, 0, 0, 0.1)'
+        });
+        this.$store.dispatch('Login', {
+          telephone: this.logTelephone,
+          verify: this.logVerify
+        }).then(() => {
+          location.reload()
+        }).catch(() => {
+          load.close()
         })
       },
       //滑块重置
@@ -200,13 +159,19 @@
           }, 2000)
         }
       },
-      logTelReset(){
+      logTelReset() {
         //手机号重置
         this.logTelephone = ''
         //验证码重置
         this.logVerify = ''
+        //发送验证码按钮复原
+        this.isSendSuccess = false
         //滑块重置
         this.reset()
+      },
+      //设置验证码按钮发送状态
+      setSendSuccessStatus(status){
+        this.isSendSuccess = status
       }
     }
   }

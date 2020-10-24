@@ -33,7 +33,7 @@ export function getUserByComment(data,isLoadingNprogress) {
   })
 }
 
-export function getCommentByMusic(params,isLoadingNprogress) {
+export function getCommentByMusicList(params,isLoadingNprogress) {
   return request({
     url: '/comment/getCommentByMusic',
     method: 'get',

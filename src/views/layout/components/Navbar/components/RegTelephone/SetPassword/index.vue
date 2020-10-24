@@ -57,7 +57,9 @@
     },
     methods:{
       regBtonFinalHandler() {
-        if(this.regPassword === this.regRePassword){
+        if(this.regPassword === '' || this.regRePassword === ''){
+          this.$tip.error('密码不能为空')
+        } else if(this.regPassword === this.regRePassword){
           register(this.regTelephone,this.regPassword,this.regRePassword).then(response => {
             console.log(response);
             this.$emit('setDialogVisible')
@@ -66,7 +68,6 @@
         }else {
           this.$tip.error('两次密码不一致')
         }
-
       },
       regPwdReset(){
         //密码重置

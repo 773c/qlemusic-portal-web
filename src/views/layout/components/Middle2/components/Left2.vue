@@ -21,7 +21,7 @@
           <i class="el-icon-setting"></i>
           <span>账号设置</span>
         </el-menu-item>
-        <el-menu-item>
+        <el-menu-item index="/expectation">
           <i class="el-icon-magic-stick"></i>
           <span>我的粉丝</span>
         </el-menu-item>
@@ -113,7 +113,7 @@
     },
     mounted() {
       this.$nextTick(function () {
-        window.addEventListener('scroll', this.load, true)
+        window.addEventListener('scroll', this.load)
       })
     },
     destroyed() { //离开该页面需要移除这个监听的事件

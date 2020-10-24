@@ -19,10 +19,11 @@
       <br><br>
       <label for="regVerify" class="tabs-label">验证码</label><br>
       <input v-model="regVerify" type="text" id="regVerify" class="tabs-verify tabs-input" placeholder="  请输入验证码">
-      <el-button class="verify-button" type="primary" :style="isShowStyle" :disabled="isDisabled"
-                 @click="regSendVerifyBtonHandler">
-        {{CountDown}}
-      </el-button>
+      <verify-button
+        :telephone="regTelephone"
+        :isSendSuccessTo="isSendSuccess"
+        @setSendSuccessStatus="setSendSuccessStatus">
+      </verify-button>
       <br><br>
       <el-row style="margin-top:10px;">
         <drag-verify
@@ -62,23 +63,24 @@
 <script>
   import SetPassword from './SetPassword'
   import DragVerify from '@/components/DragVerify'
-  import {matchVerify, sendSms} from "@/api/login"
+  import {matchVerify} from '@/api/login'
+  import VerifyButton from '@/components/VerifyButton'
 
   export default {
     name: "regTelephone",
     components: {
       SetPassword,
-      DragVerify
+      DragVerify,
+      VerifyButton
     },
     data() {
       return {
         regTelephone: '',
         regVerify: '',
-        second: 120,
         isSendSuccess: false,
         isMatchVerify: false,
         btonShow: true,
-        select: '',
+        select: '86',
         region: [{
           value: '86',
           label: '+ 86',
@@ -119,58 +121,9 @@
         get() {
           return false
         }
-      },
-      verifyBtonStyle() {
-        return {
-          backgroundColor: '#fe0000',
-          color: '#ffffff'
-        }
-      },
-      CountDown() {
-        if (this.second === 0) {
-          return "发送验证码"
-        } else if (this.isSendSuccess) {
-          return this.second + "s 后重新发送"
-        } else {
-          return "发送验证码"
-        }
-      },
-      isShowStyle() {
-        if (this.regTelephone === '')
-          return ''
-        else if (this.isSendSuccess === true)
-          return ''
-        else
-          return this.verifyBtonStyle
-      },
-      isDisabled() {
-        if (this.regTelephone === '')
-          return true
-        else if (this.isSendSuccess === true)
-          return true
-        else
-          return false
       }
     },
     methods: {
-      //注册验证码发送
-      regSendVerifyBtonHandler() {
-        sendSms(this.regTelephone).then(response => {
-          this.$tip.success('发送成功')
-            //短信发送成功后
-            this.isSendSuccess = true
-            //定时器倒计时
-            let timer = setInterval(() => {
-              if (this.second <= 1) {
-                this.isSendSuccess = false
-                this.second = 120
-                clearInterval(timer)
-                return
-              }
-              this.second = this.second - 1
-            }, 1000)
-          })
-      },
       //注册下一步按钮
       regBtonNextHandler() {
         if (this.regTelephone === '') {
@@ -229,6 +182,10 @@
       //调用父组件方法
       setDialogVisible(){
         this.$emit('setDialogVisible')
+      },
+      //设置验证码按钮发送状态
+      setSendSuccessStatus(status){
+        this.isSendSuccess = status
       }
     }
   }

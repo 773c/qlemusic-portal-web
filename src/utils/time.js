@@ -8,6 +8,7 @@ export default {
       let days = cdate.getDate()
       let hours = cdate.getHours()
       let minutes = cdate.getMinutes()
+      let timeSeconds = Math.floor((nowdate.getTime() - cdate.getTime()) / 1000)
       if(mouths < 10)
         mouths = "0" + mouths
       if(days < 10)
@@ -19,10 +20,16 @@ export default {
       //如果同一年
       if(years === nowdate.getFullYear()){
         //如果同一个月
-        if(mouths === nowdate.getMonth()){
+        if(mouths === nowdate.getMonth()+1){
           //如果同一天
           if(days === nowdate.getDate()){
-            return "今天"+" "+hours+":"+minutes
+            if(timeSeconds < 60){
+              return "刚刚"
+            }else if(Math.floor(timeSeconds / 60) < 30){
+              return (Math.floor(timeSeconds / 60)) + "分钟前"
+            }else {
+              return "今天"+" "+hours+":"+minutes
+            }
           }else if(days + 1 === nowdate.getDate()){
             return "昨天"+" "+hours+":"+minutes
           }

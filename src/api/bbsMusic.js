@@ -1,12 +1,13 @@
 import request from '@/utils/request'
 
-export function getRecommendList(isLoadingNprogress) {
+export function getRecommendList(params,isLoadingNprogress) {
   return request({
     url: '/audio/recommend',
     method: 'get',
     headers: {
       isLoadingNprogress: isLoadingNprogress
-    }
+    },
+    params:params
   })
 }
 

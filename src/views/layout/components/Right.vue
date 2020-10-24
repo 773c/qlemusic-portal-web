@@ -70,7 +70,7 @@
       <div class="home-right-content-wrapper">
         <div class="hrac-wrapper">
           <div class="hrac-avatar-wrapper">
-            <el-avatar :size=48 src="http://www.eiqle.com/img/default-avatar.png"></el-avatar>
+            <el-avatar :size=48 src="//pic.xiami.net/images/artistlogo/36/15162027033536.jpg?x-oss-process=image/quality,q_80/format,jpg"></el-avatar>
           </div>
           <div class="hrac-info-wrapper">
             <div class="hi-name-wrapper">
@@ -85,7 +85,7 @@
         </div>
         <div class="hrac-wrapper">
           <div class="hrac-avatar-wrapper">
-            <el-avatar :size=48 src="http://www.eiqle.com/img/default-avatar.png"></el-avatar>
+            <el-avatar :size=48 src="//pic.xiami.net/images/artistlogo/62/15360305894962.jpg?x-oss-process=image/resize,limit_0,m_fill,s_410/quality,q_80/format,jpg"></el-avatar>
           </div>
           <div class="hrac-info-wrapper">
             <div class="hi-name-wrapper">

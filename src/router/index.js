@@ -13,6 +13,7 @@ const BbsMusic = () => import('@/views/bbsMusic')
 const ManageHome = () => import('@/views/manage/home')
 const EditMusic = () => import('@/views/manage/editMusic')
 const Expectation = () => import('@/views/Expectation')
+const MsgComment = () => import('@/views/msg/comment')
 
 Vue.use(VueRouter)
 
@@ -92,6 +93,18 @@ const routes = [
         name: 'edit',
         component: EditMusic,
         meta: {title: '管理空间', icon: 'edit', isLoadingNprogress: true,isLevel: 3}
+      }
+    ]
+  },
+  {
+    path: '/msg',
+    component: Layout,
+    children: [
+      {
+        path: 'comment',
+        name: 'comment',
+        component: MsgComment,
+        meta: {title: '评论消息', icon: 'msgComment', isLoadingNprogress: true,isLevel: 4}
       }
     ]
   },

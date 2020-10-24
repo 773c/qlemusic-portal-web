@@ -60,7 +60,7 @@
               点赞
             </el-dropdown-item>
           </router-link>
-          <router-link to="/">
+          <router-link to="/msg/comment">
             <el-dropdown-item>
               评论
             </el-dropdown-item>
@@ -101,7 +101,6 @@
       <login-register
         :dialogVisible="dialogVisible"
         :isShowLogin="isShowLogin"
-        :loading="loading"
         @resetAll="resetAll"
         @setDialogVisible="setDialogVisible"
         @AccountLogHandler="isShowAccPwdLogin = true"
@@ -112,7 +111,6 @@
             ref="logTelephonePasswordRef"
             v-show="isShowAccPwdLogin"
             @setDialogVisible="setDialogVisible"
-            @openLoading="openLoading"
             @regClickHandler="isShowLogin = false">
           </log-telephone-password>
           <!--手机号验证码登录页面-->
@@ -157,7 +155,7 @@
                 <i class="el-icon-setting"></i>账号设置
               </el-dropdown-item>
             </div>
-            <div @click="clickForward(userInfo.uniqueId,true)">
+            <div @click="clickForward('/'+userInfo.uniqueId,true)">
               <el-dropdown-item divided>
                 <i class="el-icon-service"></i>我的空间
               </el-dropdown-item>
@@ -214,7 +212,6 @@
         dialogVisible: false,
         isShowAccPwdLogin: true,
         isShowLogin: true,
-        loading: false,
       }
     },
     computed: {
@@ -234,16 +231,20 @@
         this.resetAll()
       },
       logoutHandler() {
-        this.$store.dispatch('Logout')
-      },
-      openLoading(value) {
-        this.loading = value
+        this.$loading({
+          lock: true,
+          background: 'rgba(0, 0, 0, 0.1)'
+        });
+        this.$store.dispatch('Logout').then(() => {
+          location.reload()
+        })
       },
       clickForward(path, flag) {
         if (this.userInfo.id === undefined || this.userInfo.id === '' || this.userInfo.id === null) {
           document.getElementById("no-login-btn").click()
         } else {
           let routeUrl = null
+          console.log(path);
           if (flag) {
             routeUrl = this.$router.resolve({
               path: path,
@@ -254,6 +255,7 @@
               path: path
             })
           }
+          console.log("routeUrl",routeUrl);
           if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
             window.open(routeUrl.href, '_self');
           } else {

@@ -92,6 +92,7 @@
           @current-change="currentChangeHanlder"
           :hide-on-single-page="true"
           layout="prev,pager,next"
+          :page-size="5"
           :total="total">
         </el-pagination>
       </div>
@@ -105,7 +106,7 @@
 
   const defaultMyMusic = {
     pageNum: 1,
-    pageSize: 10,
+    pageSize: 5,
     likeCount: 0,
     playCount: 0,
     musicNum: 0,
@@ -164,15 +165,15 @@
         }, false).then(response => {
           console.log(response);
           let data = response.data;
-          this.list = data
-          this.total = this.myMusicQuery.musicNum = data.length
-          if (data === null) {
+          this.list = data.list
+          this.total = this.myMusicQuery.musicNum = data.total
+          if (this.list === null) {
             this.isEmptyList = true
           }
           let likeCountSum = 0
           let playCountSum = 0
           let commentCountSum = 0
-          data.forEach((item, index) => {
+          this.list.forEach((item, index) => {
             if (item.bbsMusicOperation.likeCount === null)
               item.bbsMusicOperation.likeCount = 0
             if (item.bbsMusicOperation.playCount === null)

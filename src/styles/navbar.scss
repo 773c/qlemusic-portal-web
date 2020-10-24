@@ -9,27 +9,30 @@
   width: $fullWidth;
   z-index: 999;
   //菜单按钮
-  .menu-button {
-    display: none;
-  }
   .el-menu-item:not(.is-active):hover {
     background-color: rgba(255, 255, 255, 0) !important;
   }
+  .menu-button{
+    float: left;
+    display: none;
+  }
   .el-menu-item-first {
-    margin-left: 8vw;
+    float: left;
+    margin-left: 9vw;
     height: 65px;
+    line-height: 88px;
     .img-logo {
     }
   }
-  .nav-link {
-    margin-left: 8vw;
+  .nav-link-wrapper {
     width: 360px !important;
+    margin-left: 15vw;
     // 路由链接
     .nav-router-link {
       float: left;
       .el-menu-item {
         height: 65px;
-        line-height: 66px;
+        line-height: 68px;
       }
       .el-menu-item.is-active {
         background-color: $primaryBgColor opacity(0.1) !important;
@@ -45,29 +48,48 @@
     }
   }
   // 搜索框
-  .el-menu-item-select {
+  .nav-search-wrapper {
     height: 65px;
-    line-height: 65px;
-    display: inline;
-    margin-left: 22px;
-    //搜索框
-    .select-box {
-      width: 28vw !important;
-      height: 30px;
-      margin-top: 15px;
-      .el-button {
-        padding: 0px 2px 0px 8px;
+    margin-left: 1.7vw;
+    float: left;
+    input {
+      border: none;
+      outline: none;
+      width: 22vw;
+      height: 28px;
+      color: white;
+      float: left;
+    }
+    .search {
+      padding: 27px 0;
+      float: left;
+    }
+    .bar form {
+      height: 42px;
+      margin-top: -10px;
+    }
+    .bar input {
+      font-size: 14px;
+      border-bottom: 1px solid white;
+      background: transparent;
+      transition: 0.1s linear;
+      z-index: 2;
+    }
+    .search-button{
+      cursor: pointer;
+      i{
+        margin-top: 0.75vw;
+        color: white;
       }
     }
-    //显示内容
-    .select-content {
-      position: absolute;
-      top: 65px;
-      left: 493px;
-      height: 320px;
-      width: 430px !important;
-      background-color: white;
-      z-index: 999;
+    .search-drawer-wrapper{
+      .search-drawer{
+        margin-top: 64px;
+        .el-drawer.ttb{
+          width: 30vw;
+          margin-left: 32vw;
+        }
+      }
     }
   }
   //导航右侧用户区域
@@ -124,12 +146,10 @@
     }
     //用户区域
     .right-user {
-      width: 32px;
-      height: 63px;
       margin-left: 208px;
+      height: 63px;
       //用户未登录
       .login-container {
-        height: 22px;
         cursor: pointer;
         color: white;
         margin-top: 24px;
@@ -222,15 +242,7 @@
             .tabs-verify {
               width: 180px;
             }
-            .verify-button {
-              margin-left: 10px;
-              padding: 8px 0px;
-              width: 110px;
-              background-color: #F7F7F7;
-              border: 1px solid #F7F7F7;
-              color: #C4C4C4;
-              font-size: 12px;
-            }
+
           }
         }
         // 注册
@@ -284,33 +296,34 @@
       display: block;
       float: left;
       z-index: 888;
-      width: 50px;
+      width: 21px;
       height: 65px;
-      margin-left: -5px;
-      margin-top: 1px;
+      line-height: 77px;
+      margin-left: 15px;
     }
     .el-menu-item-first {
-      margin-left: -17px;
-      margin-top: 1px;
+      margin-left: 14px;
+      margin-top: -1px;
       .img-logo {
-        width: 70px !important;
+        width: 67px !important;
       }
     }
-    .nav-link {
+    .nav-link-wrapper {
       display: none;
     }
     //搜索框
-    .el-menu-item-select {
-      position: absolute;
-      top: 2px;
-      left: 110px;
-      .select-box {
+    .nav-search-wrapper {
+      margin-left: 37vw;
+      margin-top: -61px;
+      input {
+        width: 130px !important;
+        height: 23px;
+      }
+      .search {
+        width: 180px !important;
+      }
+      .bar input:focus {
         width: 160px !important;
-        height: 30px;
-        float: left;
-        .el-button {
-          padding: 0px 0px 0px 7px;
-        }
       }
     }
     .home-release-button-wrapper {
@@ -326,7 +339,7 @@
     .login-container {
       position: absolute;
       top: -2px;
-      right: 44vw;
+      right: 33vw;
     }
 
     .el-dialog-user {
@@ -412,6 +425,15 @@
               }
               .home-el-carousel-item {
                 height: 105px !important;
+                .video-content-wrapper{
+                  .video-content-title-wrapper{
+                    .video-content-title{
+                      font-size: 14px;
+                      height: 28px;
+                      padding: 0px 20px;
+                    }
+                  }
+                }
               }
             }
           }
@@ -486,6 +508,16 @@
                       }
                     }
                   }
+                }
+              }
+            }
+            .list-bottom-wrapper{
+              .list-bottom-loading{
+                margin-left: -35px !important;
+              }
+              .list-bottom-empty-wrapper{
+                .list-bottom-empty-text{
+                  margin-left: 125px !important;
                 }
               }
             }

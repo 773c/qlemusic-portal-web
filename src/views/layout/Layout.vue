@@ -7,8 +7,8 @@
     <div v-else class="nav-bg-wrapper"></div>
     <div style="height: 65px"></div>
     <!--内容部分-->
-    <div class="content-wrapper">
-      <!--风格1-->
+    <div class="content-wrapper" >
+      <!--首页风格-->
       <div v-if="formatArr[0]" class="content-middle-one">
         <!--中间内容-->
         <div class="content-middle">
@@ -19,22 +19,28 @@
           <right></right>
         </div>
       </div>
-      <!--风格2-->
+      <!--用户中心风格-->
       <div v-else-if="formatArr[1]" style="width: 100%">
         <div class="content-middle-two">
           <middle2></middle2>
         </div>
       </div>
-      <!--风格3-->
+      <!--我的音乐风格-->
       <div v-else-if="formatArr[2]" style="width: 100%">
         <div class="content-middle-three">
           <middle3></middle3>
         </div>
       </div>
-      <!--风格4管理-->
-      <div v-else="formatArr[3]" style="width: 100%">
+      <!--空间管理风格-->
+      <div v-else-if="formatArr[3]" style="width: 100%">
         <div class="content-middle-manage">
           <manage></manage>
+        </div>
+      </div>
+      <!--消息管理风格-->
+      <div v-else="formatArr[4]" style="width: 100%">
+        <div class="content-middle-msg">
+          <msg></msg>
         </div>
       </div>
     </div>
@@ -42,7 +48,7 @@
 </template>
 
 <script>
-  import {Middle, Right, Navbar, Middle2, Middle3,Manage} from "./index";
+  import {Middle, Right, Navbar, Middle2, Middle3,Manage,Msg} from "./index";
   import ResizeMixin from './mixin/ResizeHandler'
 
   export default {
@@ -53,11 +59,12 @@
       Right,
       Middle2,
       Middle3,
-      Manage
+      Manage,
+      Msg
     },
     data() {
       return {
-        formatArr: [true, false, false, false]
+        formatArr: [true, false, false, false, false]
       }
     },
     mixins: [ResizeMixin],
@@ -73,7 +80,6 @@
           mobile: this.device === 'mobile'
         }
       },
-
       format() {
         if(this.$route.matched[0].path === '/'){
           console.log("风格1");
@@ -81,29 +87,46 @@
           this.formatArr[1] = false
           this.formatArr[2] = false
           this.formatArr[3] = false
+          this.formatArr[4] = false
           return false
         } else if (this.$route.matched[0].path === '/usr') {
-          console.log("风格2");
+          console.log("用户中心风格");
           this.formatArr[1] = true
           this.formatArr[2] = false
           this.formatArr[3] = false
+          this.formatArr[4] = false
           this.formatArr[0] = false
           return true
         } else if (this.$route.matched[0].path === '/:uniqueId'){
-          console.log("风格3");
+          console.log("我的音乐风格");
           this.formatArr[2] = true
           this.formatArr[3] = false
+          this.formatArr[4] = false
           this.formatArr[0] = false
           this.formatArr[1] = false
           return true
         }else if(this.$route.matched[0].path === '/manage') {
-          console.log("风格4管理");
+          console.log("空间管理风格");
           this.formatArr[3] = true
+          this.formatArr[4] = false
           this.formatArr[0] = false
           this.formatArr[1] = false
           this.formatArr[2] = false
           return true
+        }else if(this.$route.matched[0].path === '/msg'){
+          console.log("消息管理风格");
+          this.formatArr[4] = true
+          this.formatArr[0] = false
+          this.formatArr[1] = false
+          this.formatArr[2] = false
+          this.formatArr[3] = false
+          return false
         }
+      }
+    },
+    methods:{
+      sss(){
+        this.isShowContent = false
       }
     },
     created(){

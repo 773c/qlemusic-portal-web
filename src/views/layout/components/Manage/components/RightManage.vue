@@ -5,6 +5,7 @@
         <router-view></router-view>
       </transition>
     </el-card>
+    <div style="width:955px;height: 20px;background-color: white;position: absolute;top: 1023px;left: 403px"></div>
   </div>
 </template>
 

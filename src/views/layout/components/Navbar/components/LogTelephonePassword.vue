@@ -5,7 +5,8 @@
     <input type="text" v-model="logTelephone" id="username" class="tabs-username tabs-input"
            placeholder="  请输入手机号"><br><br>
     <label for="password" class="tabs-label">密码</label><br>
-    <input type="password" v-model="password" id="password" class="tabs-password tabs-input" placeholder="  请输入密码"><br><br>
+    <input type="password" v-model="password" id="password" class="tabs-password tabs-input"
+           placeholder="  请输入密码"><br><br>
     <el-row style="margin-top:10px;">
       <drag-verify
         ref="dragVerify"
@@ -22,7 +23,7 @@
       </drag-verify>
     </el-row>
     <br><br>
-    <el-button class="tabs-log-button" type="danger" round @click="telPwdLogBtonHandler" :disabled="logBtonShow" >登录
+    <el-button class="tabs-log-button" type="danger" round @click="telPwdLogBtonHandler" :disabled="logBtonShow">登录
     </el-button>
     <br><br>
     <el-row class="tabs-reg-forget">
@@ -50,7 +51,7 @@
 
   export default {
     name: "logTelephonePassword",
-    components:{
+    components: {
       DragVerify
     },
     props: {},
@@ -58,7 +59,7 @@
       return {
         logTelephone: '',
         password: '',
-        isNullTelPwd:true,
+        isNullTelPwd: true,
       }
     },
     computed: {
@@ -94,7 +95,7 @@
           setTimeout(() => {
             this.reset()
           }, 2000)
-        } else if (this.password === ''){
+        } else if (this.password === '') {
           this.$tip.error('请输入密码')
           setTimeout(() => {
             this.reset()
@@ -139,14 +140,20 @@
         this.$emit("regClickHandler")
       },
       telPwdLogBtonHandler() {
-        this.$store.dispatch('Login', {telephone: this.logTelephone, password: this.password}).then(() => {
-          this.$store.dispatch('GetInfo').then(response => {
-            console.log(response);
-            this.$emit('setDialogVisible')
-          })
+        const load = this.$loading({
+          lock: true,
+          background: 'rgba(0, 0, 0, 0.1)'
+        });
+        this.$store.dispatch('Login', {
+          telephone: this.logTelephone,
+          password: this.password
+        }).then(() => {
+          location.reload()
+        }).catch(()=>{
+          load.close()
         })
       },
-      logTelPwdReset(){
+      logTelPwdReset() {
         //重置账号文本框
         this.logTelephone = ''
         //重置密码
@@ -156,7 +163,7 @@
       }
     },
     created() {
-      this.qqLogin()
+      // this.qqLogin()
     }
   }
 </script>

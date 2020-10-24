@@ -13,7 +13,7 @@
         infinite-scroll-disabled="disabled"
         style="height: 60%;background-color: #222222;">
         <el-table ref="bbsMusicTable"
-                  :data="(list||[]).slice(0,pageSize)"
+                  :data="list"
                   border>
           <el-table-column>
             <template slot="header" slot-scope="scope">
@@ -71,14 +71,14 @@
                 </div>
                 <!--评论-->
                 <div class="comment div-threeIcon"
-                     @click="openCommentModel(scope.row.id,scope.row.bbsUserCommentList,scope.$index)">
+                     @click="openCommentModel(scope.row.id,scope.row.bbsUserCommentList,scope.$index,scope.row.bbsMusicOperation.commentCount)">
                   <svg-icon class="threeIcon" icon-class="comment"></svg-icon>
                   <br v-if="device==='mobile'?true:false"/>
                   <span>{{scope.row.bbsMusicOperation.commentCount === null?bbsMusic.commentCount:scope.row.bbsMusicOperation.commentCount}}</span>
                 </div>
                 <div class="bbsm-row-comment-drawer-wrapper" @click="hideReplyModel('')">
                   <el-drawer
-                    :title="'评论（1）'"
+                    :title="'评论（'+bbsMusic.commentCount+'）'"
                     class="comment-drawer"
                     :visible.sync="drawer"
                     :modal="false"
@@ -172,7 +172,7 @@
                                        width="21" height="21">
                                 </el-popover>
                                 <el-button class="comment-reply-input-button" type="success"
-                                           @click="replyCommentHandler(comment.userId,comment.createTime,'',comment.rowId)">
+                                           @click="replyCommentHandler(comment.userId,comment.createTime,'',comment.id)">
                                   回复
                                 </el-button>
                               </div>
@@ -249,7 +249,7 @@
                                       reply.userId,
                                       reply.createTime,
                                       reply.umsUser.name,
-                                      comment.rowId)">
+                                      comment.id)">
                                       回复
                                     </el-button>
                                   </div>
@@ -282,8 +282,8 @@
                   <svg-icon
                     class="threeIcon"
                     :icon-class="scope.row.bbsMusicOperation.isLike === true?'like-count-full':'like-count'"
-                    style="width: 23px"
-                    :class="isClickLike === true?'animate':''"
+                    style="width: 22px"
+                    :class="scope.row.bbsMusicOperation.isLike === true?'animate':''"
                     :style="scope.row.bbsMusicOperation.isLike?likeStyle:''"></svg-icon>
                   <br v-if="isMobile"/>
                   <span>
@@ -298,7 +298,16 @@
           </el-table-column>
         </el-table>
       </ul>
-      <div v-if="loading" align="center" style="padding-bottom: 100px;color: white">加载中...</div>
+      <div
+        v-if="isShowloading"
+        align="center"
+        class="list-bottom-wrapper">
+        <div v-show="!isEmptyList" class="list-bottom-loading" v-loading="loading"></div>
+        <div v-show="isEmptyList" class="list-bottom-empty-wrapper">
+          <div class="list-bottom-empty-text">到底了...</div>
+          <img class="list-bottom-empty-img" src="@/assets/images/arrive-bottom.gif" height="70">
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -315,13 +324,15 @@
     userComment,
     replyuserComment,
     getUserByComment,
-    getCommentByMusic
+    getCommentByMusicList
   } from "@/api/comment";
   import AvatarPopover from '@/components/AvatarPopover'
 
   const appData = require("@/assets/json/emoji.json");
 
   const defaultBbsMusic = {
+    pageNum: 1,
+    pageSize: 5,
     likeCount: 0,
     playCount: 0,
     commentCount: 0,
@@ -336,11 +347,14 @@
     },
     data() {
       return {
-        pageSize: 0,
         loading: false,
+        isShowloading: false,
         bbsMusic: Object.assign({}, defaultBbsMusic),
         list: [],
-        musicId: '',
+        listLength: 0,
+        isEmptyList: false,
+        musicId: null,
+        musicIndex: null,
         userLikeIndex: null,
         voiceValue: 50,
         currentCommentValueLength: 0,
@@ -354,19 +368,18 @@
         userAvatarUrl: '',
         isHaveUserComment: false,
         commentList: [],
-        musicIndex: null,
         commentIndex: null,
         replyCommentIndex: null,
         isShowRelpy: false,
         changeVoiceIcon: 'audio-voice',
         prevAudioVueComponent: {},
         isShowCollectModel: false,
-        isClickLike:false
+        total: null
       }
     },
     computed: {
       disabled() {
-        return this.loading
+        return this.isShowloading
       },
       volume() {
         return this.voiceValue / 100
@@ -404,10 +417,17 @@
       },
       //获得默认推荐音乐片段
       recommendList() {
-        getRecommendList(false).then(response => {
+        getRecommendList({
+          pageNum: this.bbsMusic.pageNum,
+          pageSize: this.bbsMusic.pageSize
+        }, false).then(response => {
           console.log(response);
+          this.loading = false
+          this.isShowloading = false
           let data = response.data;
-          this.list = data.bbsMusic
+          data.list.forEach((item, index) => {
+            this.list.splice(this.listLength++, 0, item)
+          })
           this.list.forEach((list, index) => {
             if (list.bbsUserLikeList.length !== 0) {
               list.bbsUserLikeList.forEach((userLike, index2) => {
@@ -417,6 +437,7 @@
               })
             }
           })
+          this.total = data.total
         })
       },
       //当滚动条到达最底端的时候加载新内容
@@ -428,12 +449,23 @@
         // 滚动条的总高度
         let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
         // 判断是否到达底部
-        if (Math.ceil(scrollTop) + windowHeight == scrollHeight) {
-          this.loading = true
-          setTimeout(() => {
-            this.pageSize += 2
-            this.loading = false
-          }, 2000)
+        // alert(scrollTop + "+" + windowHeight +"="+scrollHeight)
+        if ((scrollTop+1) + windowHeight >= scrollHeight) {
+          this.isShowloading = true
+          if ((this.bbsMusic.pageNum + 1) * this.bbsMusic.pageSize <= this.total) {
+            this.loading = true
+            this.bbsMusic.pageNum++
+            setTimeout(() => {
+              this.recommendList()
+            }, 500)
+          } else {
+            this.loading = true
+            setTimeout(() => {
+              this.loading = false
+              this.isEmptyList = true
+            }, 500)
+          }
+
         }
       },
       changeVolume() {
@@ -476,20 +508,9 @@
             isLike: !isLike
           }, false).then(response => {
             console.log(response);
-            if (!isLike) {
-              this.list[index].bbsMusicOperation.likeCount++
-              this.$nextTick(()=>{
-                this.isClickLike = true
-              })
-              this.list[index].bbsMusicOperation.isLike = true
-            } else {
-              this.list[index].bbsMusicOperation.likeCount--
-              this.$nextTick(()=>{
-                this.isClickLike = false
-              })
-              this.list[index].bbsMusicOperation.isLike = false
-            }
-            this.recommendList()
+            let data = response.data
+            this.list[index].bbsMusicOperation.isLike = data.isLike
+            this.list[index].bbsMusicOperation.likeCount = data.likeCount
           })
         }
       },
@@ -552,47 +573,60 @@
       },
       //评论窗口关闭回调
       drawerCloseTrigger() {
+        this.musicId = null
+        this.musicIndex = null
         this.commentValue = ''
         this.replyCommentValue = ''
       },
       //获取对应音乐id的评论
-      commentByMusic(musicId) {
-        getCommentByMusic({musicId: musicId}, false).then(response => {
-          console.log(response);
-          this.commentList = response.data
+      commentByMusicList(musicId) {
+        getCommentByMusicList({musicId:musicId}, false).then(response => {
+          let data = response.data
+          console.log(data);
+          this.setCommentListValue(data)
+          this.commentList = data
+        })
+      },
+      //设置CommentList
+      setCommentListValue(bbsUserCommentList) {
+        bbsUserCommentList.forEach((comment, index) => {
+          comment.userLike = false
+          comment.cusCreateTime = this.timeFormatToCAE(comment.createTime)
+          if (comment.bbsReplyuserCommentList !== undefined) {
+            comment.bbsReplyuserCommentList.forEach((reply2, index2) => {
+              comment.userLike = false
+              reply2.cusCreateTime = this.timeFormatToCAE(reply2.createTime)
+              //如果回复的不是用户评论
+              if (comment.userId !== reply2.replyuserId) {
+                //如果是自己回复自己
+                if (reply2.userId === reply2.replyuserId) {
+                  this.$set(reply2, "isReplyTwo", true)
+                  this.$set(reply2, "replyName", reply2.umsUser.name)
+                } else {
+                  comment.bbsReplyuserCommentList.forEach((reply3, index3) => {
+                    if (reply2.replyuserId === reply3.userId) {
+                      this.$set(reply2, "isReplyTwo", true)
+                      this.$set(reply2, "replyName", reply3.umsUser.name)
+                      return
+                    }
+                  })
+                }
+              }
+            })
+          }
         })
       },
       //打开评论窗口(进行赋值)
-      openCommentModel(musicId, bbsUserCommentList, musicIndex) {
+      openCommentModel(musicId, bbsUserCommentList, musicIndex,commentCount) {
         this.drawer = true
         //将打开的音乐id赋值
         this.musicId = musicId
         //将打开的音乐索引位置赋值
         this.musicIndex = musicIndex
-        if (bbsUserCommentList.length !== 0) {
-          bbsUserCommentList.forEach((comment, index) => {
-            comment.userLike = false
-            comment.cusCreateTime = this.timeFormatToCAE(comment.createTime)
-            if (comment.bbsReplyuserCommentList !== undefined) {
-              comment.bbsReplyuserCommentList.forEach((reply2, index2) => {
-                comment.userLike = false
-                reply2.cusCreateTime = this.timeFormatToCAE(reply2.createTime)
-                if (comment.userId !== reply2.replyuserId) {
-                  comment.bbsReplyuserCommentList.forEach((reply3, index3) => {
-                    if (reply2.replyuserId === reply3.userId) {
-                      this.$set(reply2, "isReplyTwo", true)
-                      this.$set(reply2, "replyName", reply3.umsUser.name)
-                    }
-                    else
-                      this.$set(reply2, "isReplyTwo", false)
-                  })
-                }
-              })
-            }
-          })
-        }
-        this.commentList = bbsUserCommentList
-        console.log(bbsUserCommentList);
+        //将打开的音乐评论数量赋值
+        this.bbsMusic.commentCount = commentCount
+        //获取评论用户集合
+        this.commentByMusicList(musicId)
       },
       //发表评论
       sendCommentHandler() {
@@ -611,13 +645,7 @@
           }, false).then(response => {
             console.log(response);
             if (response !== undefined) {
-              //第一个参数：添加的位置，第二个：删除数量，第三个，元素
-              this.commentList.splice(0, 0, {
-                umsUser: umsUser,
-                content: this.commentValue,
-                cusCreateTime: "刚刚"
-              })
-              this.recommendList()
+              this.commentByMusicList(this.musicId)
               this.commentValue = ''
               this.list[this.musicIndex].bbsMusicOperation.commentCount++
               this.$tip.success("评论成功")
@@ -690,28 +718,8 @@
             replyuserCreateTime: replyuserCreateTime,
             umsUser: umsUser
           }, false).then(response => {
-            console.log(response);
             if (response !== undefined) {
-              this.recommendList()
-              //如果是子回复
-              if (this.replyCommentIndex !== '') {
-                this.commentList[this.commentIndex].bbsReplyuserCommentList.splice(this.commentList[this.commentIndex].bbsReplyuserCommentList.length, 0, {
-                  content: this.replyCommentValue,
-                  cusCreateTime: "刚刚",
-                  umsUser: umsUser,
-                  replyName: replyName,
-                  isReplyTwo: true
-                })
-              } else {
-                //第一个参数：添加的位置，第二个：删除数量，第三个，元素
-                this.commentList[this.commentIndex].bbsReplyuserCommentList.splice(0, 0, {
-                  content: this.replyCommentValue,
-                  createTime: "刚刚",
-                  umsUser: umsUser,
-                  isReplyTwo: false
-                })
-              }
-              this.recommendList()
+              this.commentByMusicList(this.musicId)
               this.replyCommentValue = ''
               this.$set(this.commentList[this.commentIndex], "isShowRelpy", false)
               this.commentList[this.commentIndex].bbsReplyuserCommentList.forEach((reply, rindex) => {
@@ -738,10 +746,6 @@
     },
     created() {
       this.recommendList()
-      if (this.bbsMusic.total < 15)
-        this.pageSize = this.bbsMusic.total
-      else
-        this.pageSize = 15
       //初始化audio
       this.initAudio()
     },
@@ -761,7 +765,7 @@
       }
 
       this.$nextTick(function () {
-        window.addEventListener('scroll', this.load, true)
+        window.addEventListener('scroll', this.load)
       })
 
     },
@@ -777,49 +781,23 @@
     overflow: scroll;
     overflow-x: auto;
   }
-  .animate{
-    animation: Clickfd 1s ease-in-out;
+
+  .animate {
+    animation: scaleDraw 2s ease-in-out;
   }
-  @keyframes Clickfd {
+
+  @keyframes scaleDraw {
     0% {
-      top:0px;
+      transform: scale(1); /*开始为原始大小*/
     }
-    10% {
-      top:-3px;
-    }
-    20% {
-      top:-6px;
-    }
-    30% {
-      top:-9px;
-    }
-    40% {
-      top:-12px;
-      transform: rotate(6deg);
+    25% {
+      transform: scale(1.2); /*放大1.1倍*/
     }
     50% {
-      top:-15px;
-      transform: rotate(12deg);
+      transform: scale(1);
     }
-    60% {
-      top:-18px;
-      transform: rotate(6deg);
-    }
-    70% {
-      top:-21px;
-      transform: rotate(0deg);
-    }
-    80% {
-      top:-24px;
-      transform: rotate(-6deg);
-    }
-    90% {
-      top:-27px;
-      transform: rotate(-12deg);
-    }
-    100% {
-      top:-30px;
-      transform: rotate(-6deg);
+    75% {
+      transform: scale(1.2);
     }
   }
 </style>
@@ -839,9 +817,6 @@
 
   //评论抽屉框
   .comment-drawer {
-    .el-drawer__header {
-      font-size: 18px;
-    }
     .comment-wrapper {
       height: 100%;
       //发表评论框

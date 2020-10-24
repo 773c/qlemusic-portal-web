@@ -4,20 +4,20 @@
       :default-active="$route.path"
       class="navbar"
       mode="horizontal"
-      style="border-bottom-color: #999999;"
+      style="border-bottom-color: #888888;width: 100%"
       :style="userFormatStyle"
       text-color="#fff"
       active-text-color="#ff2a00">
       <!--mobile菜单按钮-->
-      <el-menu-item class="menu-button">
-        <img src="@/assets/images/menu.png" width="22" height="22">
-      </el-menu-item>
+      <div class="menu-button">
+        <img src="@/assets/images/menu.png" width="23" height="23">
+      </div>
       <!--logo图标-->
-      <el-menu-item class="el-menu-item-first">
+      <div class="el-menu-item-first">
         <slot name="logo"></slot>
-      </el-menu-item>
+      </div>
       <!--导航链接-->
-      <div class="nav-link">
+      <div class="nav-link-wrapper">
         <slot name="one"></slot>
         <slot name="two"></slot>
         <slot name="three"></slot>
@@ -29,19 +29,32 @@
         <slot name="nine"></slot>
       </div>
       <!--搜索框-->
-      <div class="el-menu-item-select">
-        <el-input
-          placeholder="请输入内容"
-          v-model="selectBox"
-          class="select-box"
-          size="small"
-          @focus="showContent"
-          @blur="hideContent">
-          <el-button type="danger" slot="append" icon="el-icon-search"></el-button>
-        </el-input>
-        <el-card class="select-content" v-show="isShowContent">
-          asdas
-        </el-card>
+      <div class="nav-search-wrapper" >
+        <div class="search bar">
+          <form class="search-form">
+            <input
+              class="search-input"
+              v-model="selectBox"
+              type="text"
+              :style="inputStyle"
+              placeholder="南方姑娘姓邱"
+              @click="showContent">
+            <span class="search-button" >
+              <i class="el-icon-search"></i>
+            </span>
+          </form>
+        </div>
+        <div v-if="device === 'mobile'?false:true" class="search-drawer-wrapper">
+          <el-drawer
+            class="search-drawer"
+            :visible.sync="drawer"
+            :modal="false"
+            direction="ttb"
+            :size="'40%'"
+            :show-close="false"
+            :withHeader="false">
+          </el-drawer>
+        </div>
       </div>
 
       <div class="nav-right-user">
@@ -54,19 +67,19 @@
         </div>
 
         <!--用户-->
-        <div class="right-user"><slot name="user"></slot></div>
+        <div class="right-user">
+          <slot name="user"></slot>
+        </div>
       </div>
     </el-menu>
   </div>
 </template>
 
 <script>
-  import Drawer from '@/components/Drawer'
 
   export default {
     name: "index",
     components: {
-      Drawer
     },
     props: {
       isUserFormat: {
@@ -77,13 +90,30 @@
     data() {
       return {
         selectBox: '',
-        isShowContent: false
+        isShowContent: false,
+        drawer:false
       }
     },
     computed: {
+      device() {
+        return this.$store.state.app.device
+      },
       userFormatStyle() {
         return {
-          backgroundColor: 'rgba(100,100,100,0.1)'
+          backgroundColor: 'rgba(10,10,10,0.1)'
+        }
+      },
+      inputStyle(){
+        if(this.drawer){
+          return {
+            width:'30vw',
+            borderBottom: '2px solid white'
+          }
+        }else {
+          return {
+            width:'22vw',
+            borderBottom: '1px solid white'
+          }
         }
       }
     },
@@ -102,17 +132,11 @@
           this.options = [];
         }
       },
-      //当为移动端时的显示
       showContent() {
-        if (this.$store.state.app.device === 'mobile') {
-          this.isShowContent = false;
-        } else {
-          this.isShowContent = true;
-        }
+        this.drawer = true
       },
-      //当为移动端时的隐藏
-      hideContent() {
-        this.isShowContent = false;
+      drawerCloseTrigger(){
+        this.drawer = false
       }
     }
   }

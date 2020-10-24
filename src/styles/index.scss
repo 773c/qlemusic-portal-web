@@ -83,8 +83,6 @@ a:hover {
     z-index: 998;
   }
   .content-wrapper {
-
-    //width: 100%;
     min-height: 100%;
     //第一种格式（home）
     .content-middle-one {
@@ -197,7 +195,7 @@ a:hover {
                   float: left;
                   width: 90px;
                   padding-left: 0.3vw;
-                  margin-top: 22px;
+                  margin-top: 20px;
                   .publisher {
                     cursor: pointer;
                   }
@@ -260,9 +258,33 @@ a:hover {
                     overflow-x: auto;
                   }
                   .comment-drawer{
+                    .el-drawer__header {
+                      font-size: 15px;
+                      font-weight: bold;
+                    }
                     .comment-wrapper{
                     }
                   }
+                }
+              }
+            }
+            .list-bottom-wrapper{
+              margin-top:-10px;
+              height: 50px;
+              .list-bottom-loading{
+                margin-top: -7px;
+              }
+              .list-bottom-empty-wrapper{
+                color: #e9e9eb;
+                .list-bottom-empty-text{
+                  float:left;
+                  margin-left: 390px;
+                  margin-top: 15px
+                }
+                .list-bottom-empty-img{
+                  float:left;
+                  margin-left: 20px;
+                  margin-top: -10px
                 }
               }
             }
@@ -272,11 +294,11 @@ a:hover {
       //右侧
       .content-right {
         margin-top: 10px;
-        width: 290px !important;
+        width: 295px !important;
         float: left;
         margin-left: 10px;
         .el-card {
-          border: 1px solid #999999;
+          border: 1px solid #888888;
         }
         .el-card__header {
           background-color: #343434;
@@ -330,6 +352,7 @@ a:hover {
           }
           //发布人
           .home-right-release-card{
+            margin-top: 10px;
             .home-right-content-wrapper{
               .hrrc-wrapper {
                 height: 60px;
@@ -471,13 +494,10 @@ a:hover {
           //transform: translate(0%, -84%);
           float: left;
           .left2-card {
-
             border-radius: 0;
             overflow-y: auto;
             .el-menu-item {
               font-size: 15px;
-              height: 50px;
-              line-height: 50px;
             }
             .el-menu-item.is-active {
               background-color: #fe0000 !important;
@@ -489,7 +509,7 @@ a:hover {
           }
         }
         #right2 {
-          width: 945px !important;
+          width: 955px !important;
           margin-left: 250px;
           //收藏
           #collect {
@@ -509,6 +529,7 @@ a:hover {
 
     //第三种格式（bbsMusic）
     .content-middle-three {
+      width: $fullWidth;
       .bbs-music-title-wrapper {
         padding: 0px 10vw;
         .bbsm-title {
@@ -528,7 +549,6 @@ a:hover {
       .bbs-music-content-wrapper {
         margin-left: 10vw;
         margin-top: 10px;
-        width: 1200px;
         #left3 {
           width: 900px;
           float: left;
@@ -555,7 +575,8 @@ a:hover {
         }
         #right3 {
           width: 300px;
-          margin-left: 908px;
+          float: left;
+          margin-left: 8px;
           .bbs-music-user-info-wrapper {
             //card卡片
             .bbs-music-user-info-card {
@@ -694,7 +715,7 @@ a:hover {
         }
       }
     }
-    //管理格式
+    //空间管理格式
     .content-middle-manage {
       #manage {
         .manage-content-wrapper {
@@ -752,7 +773,7 @@ a:hover {
             }
           }
           #right-manage {
-            width: 940px;
+            width: 955px;
             margin-left: 250px;
             .right-manage-card {
               border-radius: 0;
@@ -761,7 +782,40 @@ a:hover {
         }
       }
     }
-
+    //消息管理风格
+    .content-middle-msg{
+      #msg{
+        .msg-content-wrapper{
+          margin-left: 10vw;
+          width: 1205px;
+          //左侧
+          #left-msg{
+            width: 250px;
+            position: fixed;
+            .left-msg-card{
+              border-radius: 0;
+              overflow-y: auto;
+              height: 690px;
+              .el-menu-item {
+                font-size: 15px;
+              }
+              .el-menu-item.is-active {
+                background-color: #fe0000 !important;
+                color: white;
+              }
+              .el-menu-item:not(.is-active):hover {
+                background-color: #f0f0f0 !important;
+              }
+            }
+          }
+          //右侧
+          #right-msg{
+            width: 955px !important;
+            margin-left: 250px;
+          }
+        }
+      }
+    }
   }
 }
 

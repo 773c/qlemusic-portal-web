@@ -210,6 +210,7 @@
           @current-change="currentChangeHanlder"
           :hide-on-single-page="true"
           layout="prev,pager,next"
+          :page-size="10"
           :total="total">
         </el-pagination>
       </div>
