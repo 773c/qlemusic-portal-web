@@ -13,7 +13,7 @@
             <i class="el-icon-house"></i>
             <span style="font-size: 16px;font-weight: bold;">首页</span>
           </el-menu-item>
-          <el-menu-item>
+          <el-menu-item index="#">
             <div style="border-top: 1px solid #f0f0f0"></div>
             <i class="el-icon-aim"></i>
             <span style="font-size: 16px;font-weight: bold;">综合管理</span>
@@ -34,7 +34,7 @@
             <i></i>
             <span style="margin-left: 35px">音乐设置</span>
           </el-menu-item>
-          <el-menu-item>
+          <el-menu-item index="#">
             <div style="border-top: 1px solid #f0f0f0"></div>
             <i class="el-icon-download"></i>
             <span style="font-size: 16px;font-weight: bold;">下载管理</span>

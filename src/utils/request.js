@@ -10,7 +10,6 @@ const service = axios.create({
   timeout: 15000
 })
 
-
 // 请求拦截
 service.interceptors.request.use(config => {
   if (config.headers.isLoadingNprogress || config.headers.isLoadingNprogress == null) {
@@ -49,11 +48,7 @@ service.interceptors.response.use(response => {
   }
 }, error => {
   console.log(error);
-  if (error.response.status == 403) {
-    removeToken()
-    // router.push('/')
-    document.getElementById("no-login-btn").click()
-  } else if (router.app.$route.name !== 'home') {
+  if (router.app.$route.meta.isNeedUserAuth) {
     router.push('/404')
   } else {
     Message({
@@ -64,6 +59,7 @@ service.interceptors.response.use(response => {
       duration: 2 * 1000
     })
   }
+  return Promise.reject(error)
 })
 
 export default service

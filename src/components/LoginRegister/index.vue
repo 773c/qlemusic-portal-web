@@ -1,43 +1,45 @@
 <template>
   <el-dialog
     ref="logRegDialogRef"
+    class="log-reg-dialog"
     :visible.sync="innerVisible"
-    class="el-dialog-user"
-    :width="logDiaLogWidth"
-    @closed="setDialogVisible"
+    :width="'440px'"
+    :fullscreen="device === 'mobile'?true:false"
     :close-on-click-modal="false"
     :modal-append-to-body="false"
-    :close-on-press-escape="false">
-    <div slot="title" class="el-dialog-title">
+    :close-on-press-escape="false"
+    @closed="setDialogVisible">
+    <div slot="title" class="lr-title-icon-wrapper">
       <slot name="title">
         <svg-icon icon-class="dialog-user"></svg-icon>
       </slot>
     </div>
     <!--登录-->
     <div
-      v-show="isShowLogin"
-      class="el-dialog-tabs"
+      v-if="isShowLogin"
+      class="log-tabs-wrapper"
+      :style="device === 'mobile'?{paddingLeft:'10px'}:''"
       element-loading-background="rgba(100, 100, 100, 0.6)">
       <!--登录方式-->
-      <div class="tabs-title" @click="AccountLogHandler" >
+      <div class="log-tabs-title" @click="AccountLogHandler">
         <slot name="log-way-one">账号登录</slot>
       </div>
-      <div class="tabs-title" @click="VerifyLogHandler">
+      <div class="log-tabs-title" @click="VerifyLogHandler" align="center">
         <slot name="log-way-two">手机验证码</slot>
       </div>
       <!--登录内容-->
-      <div class="tabs-content">
+      <div class="lr-tabs-content-wrapper">
         <slot name="log-content"></slot>
       </div>
     </div>
     <!--注册-->
-    <div class="el-dialog-tabs el-dialog-tabs-reg" v-show="!isShowLogin" >
+    <div v-else class="reg-tabs-wrapper" :style="device === 'mobile'?{paddingLeft:'10px'}:''">
       <!--注册标题-->
       <div class="reg-tabs-title">
         <slot name="reg-title">新用户注册</slot>
       </div>
       <!--注册内容-->
-      <div class="tabs-content">
+      <div class="lr-tabs-content-wrapper">
         <slot name="reg-content"></slot>
       </div>
     </div>
@@ -68,6 +70,9 @@
       };
     },
     computed: {
+      device() {
+        return this.$store.state.app.device
+      },
       //窗口可见
       innerVisible:{
         get(){
@@ -147,40 +152,4 @@
 </script>
 
 <style rel="stylesheet/scss" lang="scss" scoped>
-  .el-dialog-user {
-    .el-dialog-title {
-      position: absolute;
-      top: 15px;
-      left: 20px;
-      height: 36px;
-      width: 36px;
-      cursor: pointer;
-    }
-    .el-dialog-tabs {
-      padding-left: 47px;
-      height: 370px;
-      width: 400px;
-      .tabs-title {
-        display: inline-block;
-        width: 140px;
-        font-weight: bold;
-        font-size: 19px;
-        color: #fe0000;
-        cursor: pointer;
-      }
-      .tabs-content {
-        margin-top: 20px;
-      }
-    }
-  }
-
-  .el-dialog-tabs-reg {
-    .reg-tabs-title {
-      display: inline-block;
-      width: 140px;
-      font-weight: bold;
-      color: #fe0000;
-      font-size: 19px;
-    }
-  }
 </style>

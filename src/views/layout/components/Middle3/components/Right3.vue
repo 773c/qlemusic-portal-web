@@ -2,10 +2,10 @@
   <div id="right3">
     <!--个人信息-->
     <div class="bbs-music-user-info-wrapper">
-      <el-card class="bbs-music-user-info-card">
+      <el-card class="bbs-music-user-info-card" shadow="never">
         <div class="user-info-one-wrapper">
           <div class="user-info-avatar-wrapper">
-            <el-avatar :size=52 :src="userInfo.headIcon"></el-avatar>
+            <el-avatar :size=52 :src="userInfo.avatar"></el-avatar>
           </div>
           <div class="user-info-name-wrapper">
             {{userInfo.name}}
@@ -54,15 +54,16 @@
         </div>
         <div class="user-info-three-wrapper">
           <el-button plain style="font-size: 14px;padding: 6px 15px" @click="userHomeForward">TA的主页</el-button>
-          <el-button plain style="font-size: 14px;padding: 6px 13px" @click="userHomeForward">私信</el-button>
-          <el-button type="danger" style="font-size: 14px;padding: 6px 20px">关注</el-button>
+          <el-button plain style="font-size: 14px;padding: 6px 15px" @click="userHomeForward">私信</el-button>
+          <el-button type="danger" style="font-size: 14px;padding: 6px 28px">关注</el-button>
         </div>
       </el-card>
     </div>
     <!--热门音乐-->
     <div class="bbs-music-hot-wrapper">
-      <el-card class="bbs-music-hot-card" body-style="padding-top:10px">
+      <el-card class="bbs-music-hot-card" shadow="never" body-style="padding-top:10px">
         <div class="title">
+          <div class="div-embellish"></div>
           <span>热门音乐</span>
           <img class="title-img" src="@/assets/images/flow1.png" width="48" height="40">
         </div>
@@ -86,8 +87,9 @@
     </div>
     <!--音乐分类-->
     <div class="bbs-music-sort-wrapper">
-      <el-card class="bbs-music-sort-card" body-style="padding-top:10px">
+      <el-card class="bbs-music-sort-card" shadow="never" body-style="padding-top:10px">
         <div class="title">
+          <div class="div-embellish"></div>
           <span>音乐分类</span>
           <img class="title-img" src="@/assets/images/flow1.png" width="48" height="40">
         </div>

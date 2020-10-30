@@ -6,7 +6,7 @@ export default{
       let audio = this.$qlAudio
       let muted = localStorage.getItem("muted")
       let volume = localStorage.getItem("volume")
-      console.log("全局getAudio");
+      // console.log("全局getAudio");
       audio.setAttribute("class","bbs-audio")
       audio.autoplay = false
       audio.preload = true

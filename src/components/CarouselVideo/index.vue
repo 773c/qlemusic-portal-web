@@ -87,8 +87,7 @@
               fullscreenToggle: true  //全屏按钮
             },
             isShowTitle: false,
-            contentTitle: '《疯人院-华晨宇》不一样的味道，极致的疯狂。火星人的世界你怎么能懂。\n' +
-            '              《疯人院-华晨宇》不一样的味道，极致的疯狂。火星人的世界你怎么能懂。',
+            contentTitle: '《疯人院-华晨宇》不一样的味道，极致的疯狂。火星人的世界怎么能懂。风格多重让人回味无穷'
           },
           {
             muted: false,

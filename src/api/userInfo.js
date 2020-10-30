@@ -2,23 +2,23 @@ import request from '@/utils/request'
 
 export function updateAccountInfo(data) {
   return request({
-    url:'/portal/updateInfo',
+    url:'/user/updateInfo',
     method:'post',
     data:data
   })
 }
 
-export function updateUniqueId(params) {
+export function updateUniqueId(data) {
   return request({
-    url:'/portal/updateUniqueId',
-    method:'get',
-    params: params
+    url:'/user/updateUniqueId',
+    method:'post',
+    data: data
   })
 }
 
 export function isUpdateUniqueId(id,isLoadingNprogress) {
   return request({
-    url:'/portal/isUpdateUniqueId',
+    url:'/user/isUpdateUniqueId',
     method:'get',
     headers:{
       isLoadingNprogress:isLoadingNprogress
@@ -31,7 +31,7 @@ export function isUpdateUniqueId(id,isLoadingNprogress) {
 
 export function updateAvatar(data) {
   return request({
-    url:'/portal/updateAvatar',
+    url:'/user/updateAvatar',
     method:'post',
     headers:{'Content-type': 'multipart/form-data;boundary = ' + new Date().getTime()},
     data: data
@@ -40,7 +40,7 @@ export function updateAvatar(data) {
 
 export function getUserById(id,isLoadingNprogress) {
   return request({
-    url:'/portal/getUserById',
+    url:'/user/getUserById',
     method:'get',
     headers:{
       isLoadingNprogress:isLoadingNprogress

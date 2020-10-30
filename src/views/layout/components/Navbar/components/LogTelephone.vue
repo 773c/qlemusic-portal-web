@@ -43,14 +43,12 @@
     <el-button class="tabs-log-button" type="danger" round @click="telVefLogBtonHandler" :disabled="btonShow">登录
     </el-button>
     <br><br>
-    <el-row class="tabs-reg-forget">
-      <el-col :span="17">
-        <div class="tabs-reg" @click="regClickHandler()">注册</div>
-      </el-col>
-      <el-col :span="7">
+    <div class="reg-forget-btn-wrapper">
+      <div class="left-btn" @click="regClickHandler()">注册</div>
+      <div class="right-btn">
         <a href="#" @click="regClickHandler()">联系客服</a>
-      </el-col>
-    </el-row>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -71,6 +69,7 @@
         logVerify: '',
         isSendSuccess: false,
         btonShow: true,
+        credentialType: 'verify',
         select: '86',
         region: [{
           value: '86',
@@ -117,6 +116,7 @@
     methods: {
       //验证码登录注册按钮
       regClickHandler() {
+        this.logTelReset()
         this.$emit("regClickHandler")
       },
       //验证码登录按钮
@@ -127,7 +127,8 @@
         });
         this.$store.dispatch('Login', {
           telephone: this.logTelephone,
-          verify: this.logVerify
+          verify: this.logVerify,
+          credentialType: this.credentialType
         }).then(() => {
           location.reload()
         }).catch(() => {
@@ -136,7 +137,6 @@
       },
       //滑块重置
       reset() {
-        console.log("重置滑块");
         this.isPassing = false;
         if (this.$refs.dragVerify != undefined) {
           this.$refs.dragVerify.reset();
@@ -144,7 +144,6 @@
       },
       //滑块成功调用
       passCallBack() {
-        console.log("滑块验证成功走的方法");
         if (this.isSendSuccess)
           this.btonShow = false
         else if (this.logTelephone === '') {
@@ -170,7 +169,7 @@
         this.reset()
       },
       //设置验证码按钮发送状态
-      setSendSuccessStatus(status){
+      setSendSuccessStatus(status) {
         this.isSendSuccess = status
       }
     }

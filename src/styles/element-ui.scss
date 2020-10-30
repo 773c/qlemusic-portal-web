@@ -127,7 +127,7 @@
 //el-dropdown
 .el-dropdown-menu__item:not(.is-disabled):hover {
   background-color: #fe0000;
-  color: #ffffff
+  color: #ffffff;
 }
 
 //el-pagination
@@ -258,3 +258,15 @@
   border-radius: 0;
 }
 
+//drawer抽屉
+.el-drawer__header > span:focus{
+  outline: none;
+}
+.el-drawer:focus{
+  outline: none;
+}
+
+//upload
+.el-upload-list__item-thumbnail{
+  content:url('../assets/images/ficon108.png') !important;
+}

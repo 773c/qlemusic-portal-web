@@ -1,10 +1,10 @@
 <template>
   <div id="right">
     <!--热门说唱音乐人-->
-    <el-card class="home-right-new-message-card" body-style="color:#000;padding-top:10px">
+    <el-card class="home-right-new-message-card" shadow="never" body-style="color:#000;padding-top:10px">
       <div slot="header" class="clearfix">
         <div class="div-embellish"></div>
-        <span style="margin-left: 5px;color: white">最新消息</span>
+        <span style="margin-left: 5px;color: black">最新消息</span>
         <el-button class="right-button" plain>查看更多</el-button>
       </div>
       <div class="home-right-content-wrapper">
@@ -22,16 +22,16 @@
         </div>
       </div>
     </el-card>
-    <el-card class="home-right-release-card" body-style="color:#000;padding-top:10px">
+    <el-card class="home-right-release-card" shadow="never" body-style="color:#000;padding-top:10px">
       <div slot="header" class="clearfix">
         <div class="div-embellish"></div>
-        <span style="margin-left: 5px;color: white">推荐发布人</span>
+        <span style="margin-left: 5px;color: black">推荐发布人</span>
         <el-button class="right-button" plain>查看更多</el-button>
       </div>
       <div class="home-right-content-wrapper">
         <div class="hrrc-wrapper">
           <div class="hrrc-avatar-wrapper">
-            <el-avatar :size=48 src="http://www.eiqle.com/img/ficon108.png"></el-avatar>
+            <el-avatar :size=48 src="https://qlmusic-oss1.oss-cn-zhangjiakou.aliyuncs.com/qlemusic/images/default/ficon108.png"></el-avatar>
           </div>
           <div class="hrrc-info-wrapper">
             <div class="hrrci-name-wrapper">
@@ -61,10 +61,10 @@
         </div>
       </div>
     </el-card>
-    <el-card class="home-right-author-card" body-style="color:#000;padding-top:10px">
+    <el-card class="home-right-author-card" shadow="never" body-style="color:#000;padding-top:10px">
       <div slot="header" class="clearfix">
         <div class="div-embellish"></div>
-        <span style="margin-left: 5px;color: white">音乐人</span>
+        <span style="margin-left: 5px;color: black">音乐人</span>
         <el-button class="right-button" plain>查看更多</el-button>
       </div>
       <div class="home-right-content-wrapper">
@@ -100,7 +100,7 @@
         </div>
       </div>
     </el-card>
-    <el-card class="right-hot-official-card">
+    <el-card class="right-hot-official-card" shadow="never">
       <div class="left-manage-footer-wrapper">
         <div class="left-manage-footer" style="color: #999999;font-size: 13px">
           <div>版权归个人方所有 @2019-2020</div>

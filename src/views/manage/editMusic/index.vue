@@ -1,6 +1,6 @@
 <template>
   <div id="edit-music">
-    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="120px" class="demo-ruleForm">
+    <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="90px" class="demo-ruleForm">
       <el-form-item label="标题名称" prop="title">
         <el-input v-model="ruleForm.title" style="width: 550px"></el-input>
       </el-form-item>
@@ -31,8 +31,8 @@
         </ql-audio>
       </el-form-item>
       <el-form-item v-if="audioUrl !== ''">
-        <el-col :span="9" style="margin-left: -13px">
-          <el-form-item label="截取开始时间" prop="startTime">
+        <el-col :span="10" style="margin-left: -13px">
+          <el-form-item label="开始时间" prop="startTime">
             <el-select v-model="ruleForm.startTime" filterable placeholder="请选择">
               <el-option
                 v-for="item in startTimeOptions"
@@ -43,8 +43,8 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :span="9" style="margin-left: 10px">
-          <el-form-item label="填写播放时长" prop="playTime">
+        <el-col :span="10" style="margin-left: 10px">
+          <el-form-item label="播放时长" prop="playTime">
             <el-input v-model="ruleForm.playTime" placeholder="播放时长">
               <template slot="append">s</template>
             </el-input>
@@ -129,7 +129,6 @@
       release(formName) {
         this.$refs[formName].validate((valid) => {
           if (valid) {
-            console.log("1");
             this.$refs.audioSingleUpload.submit()
             this.$refs.singleUpload.submit()
           } else {
@@ -155,7 +154,10 @@
         }
       },
       releaseHandler(fileList) {
-        console.log(fileList.get("file"));
+        const load = this.$loading({
+          lock: true,
+          background: 'rgba(0, 0, 0, 0.1)'
+        })
         this.fileList.push({
           file: fileList.get("file"),
           ossUploadUrl: fileList.get("ossUploadUrl")
@@ -164,7 +166,6 @@
         this.fileList.forEach(item => {
           formData.append("file", item.file)
         })
-        console.log(formData.get("userId"));
         if (formData.get("title") === null) {
           formData.append("title", this.ruleForm.title)
         }
@@ -187,11 +188,15 @@
             }
           }, 1)
           release(formData).then(response => {
-            console.log(response);
             this.percentage = 100;
             this.progressStatus = 'success'
             this.customColor = ''
             clearInterval(timer)
+            load.close()
+            this.$tip.success('发布成功')
+            this.resetForm('ruleForm')
+          }).catch(() => {
+            load.close()
           })
         }
       },
@@ -207,6 +212,6 @@
 
 <style lang="scss" scoped>
   #edit-music {
-    padding: 40px 60px;
+    padding: 40px 120px;
   }
 </style>

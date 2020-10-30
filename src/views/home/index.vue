@@ -1,17 +1,12 @@
 <template>
   <div id="home">
-    <!--走马灯-->
-    <div class="home-carousel-wrapper">
-      <carousel-video></carousel-video>
-    </div>
     <collect-model :isShowCollectModel="isShowCollectModel" @addFavoriteHandler="addFavoriteHandler"></collect-model>
     <!--音频文章区域-->
     <div class="infinite-list-wrapper middle-bbs-music-wrapper">
       <ul
         class="list"
         v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled"
-        style="height: 60%;background-color: #222222;">
+        infinite-scroll-disabled="disabled">
         <el-table ref="bbsMusicTable"
                   :data="list"
                   border>
@@ -37,14 +32,14 @@
                 </div>
                 <div class="bbsm-row-avatar-wrapper">
                   <avatar-popover
-                    :avatarUrl="scope.row.umsUser.headIcon"
-                    :name="scope.row.umsUser.name">
+                    :avatarUrl="scope.row.umsUserInfo.avatar"
+                    :name="scope.row.umsUserInfo.name">
                   </avatar-popover>
                 </div>
                 <!--名称-->
                 <div class="bbsm-row-name-wrapper"
-                     @click="seeUserSendMusic(scope.row.umsUser.id,scope.row.umsUser.uniqueId)">
-                  <span class="publisher">{{scope.row.umsUser === null?'':scope.row.umsUser.name}}</span>
+                     @click="seeUserSendMusic(scope.row.umsUserInfo.id,scope.row.umsUserInfo.uniqueId)">
+                  <div class="publisher">{{scope.row.umsUserInfo.name | nameFormat(isMobile)}}</div>
                 </div>
                 <!--播放器-->
                 <div class="bbsm-row-audio-wrapper">
@@ -103,7 +98,7 @@
                           </el-input>
                         </div>
                         <div class="comment-input-button-wrapper">
-                          <el-popover placement="bottom-start" width="350" trigger="click" class="emojiBox"
+                          <el-popover placement="bottom-start" width="350" trigger="click" popper-class="emojiBox"
                                       @show="showEmojiPopover('textareaRef')">
                             <div class="emotionList">
                               <a href="javascript:void(0);" @click="getEmoji(index)" v-for="(item1,index) in faceList"
@@ -128,10 +123,10 @@
                           v-for="(comment,index) in commentList" :key="index">
                           <div class="cc-avatar-wrapper">
                             <div class="cc-avatar">
-                              <el-avatar :size=34 :src="comment.umsUser.headIcon"></el-avatar>
+                              <el-avatar :size=34 :src="comment.umsUserInfo.avatar"></el-avatar>
                             </div>
                             <div class="cc-name-wrapper">
-                              <span class="cc-name">{{comment.umsUser.name}}：</span>
+                              <span class="cc-name">{{comment.umsUserInfo.name}}：</span>
                               <span>{{comment.content}}</span>
                               <span><el-button
                                 class="cc-button"
@@ -160,7 +155,7 @@
                                 </el-input>
                               </div>
                               <div class="comment-reply-input-button-wrapper">
-                                <el-popover placement="bottom-start" width="350" trigger="click" class="emojiBox"
+                                <el-popover placement="bottom-start" width="350" trigger="click" popper-class="emojiBox"
                                             @show="replyShowEmojiPopover">
                                   <div class="emotionList">
                                     <a href="javascript:void(0);" @click="getReplyEmoji(1,index,index2)"
@@ -192,10 +187,10 @@
                               :key="rindex">
                               <div class="ccou-content-wrapper">
                                 <div class="ccou-avatar">
-                                  <el-avatar :size=30 :src="reply.umsUser.headIcon"></el-avatar>
+                                  <el-avatar :size=30 :src="reply.umsUserInfo.avatar"></el-avatar>
                                 </div>
                                 <div class="ccou-name-wrapper">
-                                  <span class="ccou-name">{{reply.umsUser.name}}：</span>
+                                  <span class="ccou-name">{{reply.umsUserInfo.name}}：</span>
                                   <span>
                                     <span v-if="reply.isReplyTwo" class="ccou-reply-content-wrapper">
                                       <span style="font-size: 13px">回复</span>
@@ -231,7 +226,7 @@
                                     </el-input>
                                   </div>
                                   <div class="comment-reply2-input-button-wrapper">
-                                    <el-popover placement="bottom-start" width="320" trigger="click" class="emojiBox"
+                                    <el-popover placement="bottom-start" width="320" trigger="click" popper-class="emojiBox"
                                                 @show="replyShowEmojiPopover">
                                       <div class="emotionList">
                                         <a href="javascript:void(0);" @click="getReplyEmoji(2,rindex,index3)"
@@ -248,7 +243,7 @@
                                       @click="replyCommentHandler(
                                       reply.userId,
                                       reply.createTime,
-                                      reply.umsUser.name,
+                                      reply.umsUserInfo.name,
                                       comment.id)">
                                       回复
                                     </el-button>
@@ -313,7 +308,7 @@
 </template>
 
 <script>
-  import CarouselVideo from '@/components/CarouselVideo'
+
   import {getRecommendList} from '@/api/bbsMusic';
   import CollectModel from '@/components/CollectModel'
   import {addCollect} from '@/api/collect';
@@ -335,14 +330,12 @@
     pageSize: 5,
     likeCount: 0,
     playCount: 0,
-    commentCount: 0,
-    total: 300
+    commentCount: 0
   }
   export default {
     name: "home",
     components: {
       CollectModel,
-      CarouselVideo,
       AvatarPopover
     },
     data() {
@@ -379,7 +372,7 @@
     },
     computed: {
       disabled() {
-        return this.isShowloading
+        return this.loading
       },
       volume() {
         return this.voiceValue / 100
@@ -395,18 +388,12 @@
         }
       },
       direction() {
-        if (this.device !== 'mobile') {
-          return 'rtl'
-        } else {
-          return 'btt'
-        }
+        if (this.device !== 'mobile') return 'rtl'
+        else return 'btt'
       },
       isMobile() {
-        if (this.device === 'mobile') {
-          return true
-        } else {
-          return false
-        }
+        if (this.device === 'mobile') return true
+        else return false
       }
     },
     methods: {
@@ -417,10 +404,7 @@
       },
       //获得默认推荐音乐片段
       recommendList() {
-        getRecommendList({
-          pageNum: this.bbsMusic.pageNum,
-          pageSize: this.bbsMusic.pageSize
-        }, false).then(response => {
+        getRecommendList({pageNum: this.bbsMusic.pageNum, pageSize: this.bbsMusic.pageSize}, false).then(response => {
           console.log(response);
           this.loading = false
           this.isShowloading = false
@@ -431,9 +415,7 @@
           this.list.forEach((list, index) => {
             if (list.bbsUserLikeList.length !== 0) {
               list.bbsUserLikeList.forEach((userLike, index2) => {
-                if (userLike.userId === this.userInfo.id) {
-                  this.list[index].bbsMusicOperation.isLike = userLike.isLike
-                }
+                if (userLike.userId === this.userInfo.id) this.list[index].bbsMusicOperation.isLike = userLike.isLike
               })
             }
           })
@@ -449,14 +431,18 @@
         // 滚动条的总高度
         let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
         // 判断是否到达底部
-        // alert(scrollTop + "+" + windowHeight +"="+scrollHeight)
-        if ((scrollTop+1) + windowHeight >= scrollHeight) {
+        // console.log(Math.floor(scrollTop) + "+" + windowHeight + "=" + scrollHeight);
+        if (Math.floor(scrollTop) + windowHeight == scrollHeight) {
           this.isShowloading = true
-          if ((this.bbsMusic.pageNum + 1) * this.bbsMusic.pageSize <= this.total) {
+          console.log(this.bbsMusic.pageNum +"*"+ this.bbsMusic.pageSize +"<="+ this.total);
+          if (this.bbsMusic.pageNum * this.bbsMusic.pageSize <= this.total) {
             this.loading = true
             this.bbsMusic.pageNum++
             setTimeout(() => {
               this.recommendList()
+              this.$nextTick(()=>{
+                window.removeEventListener('scroll', this.load)
+              })
             }, 500)
           } else {
             this.loading = true
@@ -465,7 +451,6 @@
               this.isEmptyList = true
             }, 500)
           }
-
         }
       },
       changeVolume() {
@@ -491,23 +476,15 @@
           path: uniqueId,
           query: {uid: userId, uniqueId: uniqueId}
         })
-        if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
-          window.open(routeUrl.href, '_self');
-        } else {
-          window.open(routeUrl.href, '_blank');
-        }
+        if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) window.open(routeUrl.href, '_self');
+        else window.open(routeUrl.href, '_blank');
       },
       //点赞
       likeHandler(musicId, index, isLike) {
         if (this.userInfo.id === undefined || this.userInfo.id === null) {
           document.getElementById("no-login-btn").click()
         } else {
-          like({
-            musicId: musicId,
-            userId: this.userInfo.id,
-            isLike: !isLike
-          }, false).then(response => {
-            console.log(response);
+          like({musicId: musicId, userId: this.userInfo.id, isLike: !isLike}, false).then(response => {
             let data = response.data
             this.list[index].bbsMusicOperation.isLike = data.isLike
             this.list[index].bbsMusicOperation.likeCount = data.likeCount
@@ -544,13 +521,11 @@
         if (window.getSelection) {
           this.commentValue = value.substring(0, currentPostion) + this.faceList[index] + value.substring(endPostion)
           this.$refs.textareaRef.$refs.textarea.selectionStart += this.faceList[index].length
-          // this.$refs.textareaRef.focus()
         }
         // IE浏览器
         else if (document.selection) {
         }
         this.currentCommentValueLength = this.$refs.textareaRef.$refs.textarea.selectionStart
-        console.log(this.$refs.textareaRef);
         return;
       },
       getReplyEmoji(prefix, index, index2) {
@@ -564,7 +539,6 @@
         if (window.getSelection) {
           this.replyCommentValue = value.substring(0, currentPostion) + this.faceList[index2] + value.substring(endPostion)
           textareaReply.selectionStart += this.faceList[index2].length
-          // this.$refs.textareaRef.focus()
         }
         // IE浏览器
         else if (document.selection) {
@@ -580,9 +554,8 @@
       },
       //获取对应音乐id的评论
       commentByMusicList(musicId) {
-        getCommentByMusicList({musicId:musicId}, false).then(response => {
+        getCommentByMusicList({musicId: musicId}, false).then(response => {
           let data = response.data
-          console.log(data);
           this.setCommentListValue(data)
           this.commentList = data
         })
@@ -601,12 +574,12 @@
                 //如果是自己回复自己
                 if (reply2.userId === reply2.replyuserId) {
                   this.$set(reply2, "isReplyTwo", true)
-                  this.$set(reply2, "replyName", reply2.umsUser.name)
+                  this.$set(reply2, "replyName", reply2.umsUserInfo.name)
                 } else {
                   comment.bbsReplyuserCommentList.forEach((reply3, index3) => {
                     if (reply2.replyuserId === reply3.userId) {
                       this.$set(reply2, "isReplyTwo", true)
-                      this.$set(reply2, "replyName", reply3.umsUser.name)
+                      this.$set(reply2, "replyName", reply3.umsUserInfo.name)
                       return
                     }
                   })
@@ -617,39 +590,37 @@
         })
       },
       //打开评论窗口(进行赋值)
-      openCommentModel(musicId, bbsUserCommentList, musicIndex,commentCount) {
+      openCommentModel(musicId, bbsUserCommentList, musicIndex, commentCount) {
+        for (let i in appData) this.faceList.push(appData[i].char);
         this.drawer = true
         //将打开的音乐id赋值
         this.musicId = musicId
         //将打开的音乐索引位置赋值
         this.musicIndex = musicIndex
         //将打开的音乐评论数量赋值
-        this.bbsMusic.commentCount = commentCount
+        if (commentCount !== null) this.bbsMusic.commentCount = commentCount
         //获取评论用户集合
         this.commentByMusicList(musicId)
       },
       //发表评论
       sendCommentHandler() {
-        if (this.commentValue === '') {
-          this.$tip.error("评论内容不能为空")
-        } else if (this.userInfo.id === undefined || this.userInfo.id === null) {
+        if (this.commentValue === '') this.$tip.error("评论内容不能为空")
+        else if (this.userInfo.id === undefined || this.userInfo.id === null) {
+          this.drawer = false
           document.getElementById("no-login-btn").click()
         } else {
-          let umsUser = this.userInfo
-          umsUser.createTime = new Date(umsUser.createTime)
+          let umsUserInfo = this.userInfo
+          umsUserInfo.createTime = new Date(umsUserInfo.createTime)
           userComment({
             userId: this.userInfo.id,
             musicId: this.musicId,
             content: this.commentValue,
-            umsUser: umsUser
+            umsUserInfo: umsUserInfo
           }, false).then(response => {
-            console.log(response);
-            if (response !== undefined) {
-              this.commentByMusicList(this.musicId)
-              this.commentValue = ''
-              this.list[this.musicIndex].bbsMusicOperation.commentCount++
-              this.$tip.success("评论成功")
-            }
+            this.commentByMusicList(this.musicId)
+            this.commentValue = ''
+            this.list[this.musicIndex].bbsMusicOperation.commentCount++
+            this.$tip.success("评论成功")
           })
         }
       },
@@ -663,9 +634,7 @@
             })
           } else {
             if (rindex === '') {
-              if (!comment.isShowRelpy) {
-                this.$set(comment, "isShowRelpy", true)
-              }
+              if (!comment.isShowRelpy) this.$set(comment, "isShowRelpy", true)
               comment.bbsReplyuserCommentList.forEach((reply) => {
                 this.$set(reply, "isShowRelpy", false)
               })
@@ -677,9 +646,7 @@
                     this.$set(reply2, "isShowRelpy", true)
                     this.replyCommentValue = ''
                   }
-                } else {
-                  this.$set(reply2, "isShowRelpy", false)
-                }
+                } else this.$set(reply2, "isShowRelpy", false)
               })
             }
           }
@@ -702,13 +669,13 @@
       },
       //回复评论
       replyCommentHandler(replyuserId, replyuserCreateTime, replyName, rowId) {
-        if (this.replyCommentValue === '') {
-          this.$tip.error("评论内容不能为空")
-        } else if (this.userInfo.id === undefined || this.userInfo.id === null) {
+        if (this.replyCommentValue === '') this.$tip.error("评论内容不能为空")
+        else if (this.userInfo.id === undefined || this.userInfo.id === null) {
+          this.drawer = false
           document.getElementById("no-login-btn").click()
         } else {
-          let umsUser = this.userInfo
-          umsUser.createTime = new Date(umsUser.createTime)
+          let umsUserInfo = this.userInfo
+          umsUserInfo.createTime = new Date(umsUserInfo.createTime)
           replyuserComment({
             userId: this.userInfo.id,
             replyuserId: replyuserId,
@@ -716,18 +683,16 @@
             rowId: rowId,
             content: this.replyCommentValue,
             replyuserCreateTime: replyuserCreateTime,
-            umsUser: umsUser
+            umsUserInfo: umsUserInfo
           }, false).then(response => {
-            if (response !== undefined) {
-              this.commentByMusicList(this.musicId)
-              this.replyCommentValue = ''
-              this.$set(this.commentList[this.commentIndex], "isShowRelpy", false)
-              this.commentList[this.commentIndex].bbsReplyuserCommentList.forEach((reply, rindex) => {
-                this.$set(reply, "isShowRelpy", false)
-              })
-              this.list[this.musicIndex].bbsMusicOperation.commentCount++
-              this.$tip.success("回复成功")
-            }
+            this.commentByMusicList(this.musicId)
+            this.replyCommentValue = ''
+            this.$set(this.commentList[this.commentIndex], "isShowRelpy", false)
+            this.commentList[this.commentIndex].bbsReplyuserCommentList.forEach((reply, rindex) => {
+              this.$set(reply, "isShowRelpy", false)
+            })
+            this.list[this.musicIndex].bbsMusicOperation.commentCount++
+            this.$tip.success("回复成功")
           })
         }
       },
@@ -744,7 +709,20 @@
         // }
       }
     },
+    filters: {
+      nameFormat(val, isMobile) {
+        if (!isMobile) {
+          if (val.length > 7) return val.substring(0, 7) + "..."
+          else return val
+        } else {
+          if (val.length > 4) return val.substring(0, 4) + "..."
+          else return val
+        }
+
+      }
+    },
     created() {
+      //获取默认音乐列表
       this.recommendList()
       //初始化audio
       this.initAudio()
@@ -759,29 +737,23 @@
       }
       //初始化音量滑条
       this.voiceValue = localStorage.getItem("volume") * 100
-
-      for (let i in appData) {
-        this.faceList.push(appData[i].char);
-      }
-
       this.$nextTick(function () {
         window.addEventListener('scroll', this.load)
       })
-
     },
-    destroyed() { //离开该页面需要移除这个监听的事件
+    //离开该页面需要移除这个监听的事件
+    destroyed() {
       window.removeEventListener('scroll', this.load)
     },
   }
 </script>
 
 <style lang="scss">
-  .el-popover {
-    height: 189px;
+  .emojiBox{
+    height: 189px !important;
     overflow: scroll;
     overflow-x: auto;
   }
-
   .animate {
     animation: scaleDraw 2s ease-in-out;
   }

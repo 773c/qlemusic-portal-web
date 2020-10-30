@@ -15,3 +15,11 @@ export function updateTelephone(data) {
     data:data
   })
 }
+
+export function bindTelephone(data) {
+  return request({
+    url:'/usrset/bindTelephone',
+    method:'post',
+    data:data
+  })
+}

@@ -163,14 +163,21 @@
             <el-divider content-position="left"><span>修改手机</span></el-divider>
           </div>
           <div v-if="!isNextByUpdateTel" class="us-telephone-wrapper">
+            <div v-if="userInfo.telephone === ''" class="us-telephone-tip">
+              Tip：您当前未绑定手机，请立即绑定提高安全吧 🥶
+            </div>
+            <div v-else class="us-telephone-tip">
+              Tip：您当前已绑定手机，如需修改请完成以下操作 😁
+            </div>
             <el-form label-width="100px">
               <el-form-item label="绑定手机号">
                 <el-input type="text" :placeholder="userInfo.telephone | telephoneFormat" style="width: 200px"
-                          disabled></el-input>
+                          :disabled="userInfo.telephone === ''?false:true"></el-input>
               </el-form-item>
               <el-form-item label="验证码">
                 <el-input type="text" v-model="setVerify" placeholder="输入验证码" style="width: 100px"></el-input>
                 <verify-button
+                  ref="prevVerifyBtnRef"
                   :telephone="userInfo.telephone"
                   :isSendSuccessTo="isSendSuccess"
                   :vbwidth="92"
@@ -179,7 +186,9 @@
                 </verify-button>
               </el-form-item>
               <el-form-item style="padding-top: 10px">
-                <el-button type="danger" @click="updateTelNextHandler" style="padding: 8px 20px;margin-left: 30px">下一步
+                <el-button v-if="userInfo.telephone !== ''" type="danger" @click="updateTelNextHandler" style="padding: 8px 20px;margin-left: 30px">下一步
+                </el-button>
+                <el-button v-else type="danger" @click="bindTelHandler" style="padding: 8px 20px;margin-left: 30px">绑定
                 </el-button>
               </el-form-item>
             </el-form>
@@ -192,6 +201,7 @@
               <el-form-item label="验证码">
                 <el-input type="text" v-model="setVerify" placeholder="输入验证码" style="width: 100px"></el-input>
                 <verify-button
+                  v-if="isNextByUpdateTel"
                   :telephone="setTelephone"
                   :isSendSuccessTo="isSendSuccess"
                   :vbwidth="92"
@@ -362,18 +372,21 @@
       resetPwd(formName) {
         this.$refs[formName].resetFields();
       },
+      //绑定手机号
+      bindTelHandler(){
+        this.$tip.error('该功能未上线')
+      },
       //修改手机号下一步
       updateTelNextHandler() {
-        if (!this.isSendSuccess) {
-          this.$tip.error('请发送验证码')
-        } else if (this.setVerify === '') {
-          this.$tip.error('验证码不能为空')
-        } else {
+        if(this.userInfo.telephone === '') this.$tip.error('请绑定手机号')
+        else if (!this.isSendSuccess) this.$tip.error('请发送验证码')
+        else if (this.setVerify === '') this.$tip.error('验证码不能为空')
+        else {
           this.isNextByUpdateTel = true
           this.isSendSuccess = false
           this.setVerify = ''
+          this.$refs.prevVerifyBtnRef.closeTimer()
         }
-
       },
       //修改手机号
       updateTelHandler() {
@@ -402,7 +415,11 @@
     },
     filters: {
       telephoneFormat(val) {
-        return val.substring(0, 3) + "****" + val.substring(7)
+        if(val !== null){
+          return val.substring(0, 3) + "****" + val.substring(7)
+        }else {
+          return val
+        }
       }
     }
   }
@@ -486,6 +503,13 @@
       padding: 0px 20px;
       .us-telephone-wrapper {
         padding: 30px 200px 0 170px;
+        .us-telephone-tip{
+          margin-top: -10px;
+          text-align: center;
+          font-size: 13px;
+          color: #bbbbbb;
+          margin-bottom: 40px;
+        }
         .us-verify-button {
           margin-left: 10px;
           padding: 8px 0px;

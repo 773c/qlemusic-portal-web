@@ -1,26 +1,8 @@
 import request from '@/utils/request'
 
-export function login(data) {
-  return request({
-    url:'/portal/login',
-    method:'post',
-    data:data
-  })
-}
-
-export function getInfo(isLoadingNprogress) {
-  return request({
-    url:'/portal/info',
-    method:'get',
-    headers:{
-      isLoadingNprogress:isLoadingNprogress
-    }
-  })
-}
-
 export function sendSms(telephone) {
   return request({
-    url:'/portal/sendSms',
+    url:'/user/sendSms',
     method:'post',
     params:{
       telephone:telephone
@@ -28,32 +10,43 @@ export function sendSms(telephone) {
   })
 }
 
-export function register(telephone,password,rePassword){
+export function register(data){
   return request({
-    url:'/portal/telRegister',
+    url:'/user/telRegister',
     method:'post',
-    data:{
-      telephone:telephone,
-      password:password,
-      rePassword:rePassword
-    }
+    data:data
   })
 }
 
-export function matchVerify(telephone,verify) {
+export function matchVerify(data) {
   return request({
-    url:'/portal/matchVerify',
+    url:'/user/matchVerify',
     method:'post',
-    data:{
-      telephone:telephone,
-      verify:verify
+    data:data
+  })
+}
+
+export function login(data) {
+  return request({
+    url:'/user/login',
+    method:'post',
+    data:data
+  })
+}
+
+export function getInfo(isLoadingNprogress) {
+  return request({
+    url:'/user/info',
+    method:'get',
+    headers:{
+      isLoadingNprogress:isLoadingNprogress
     }
   })
 }
 
 export function logout() {
   return request({
-    url:'/portal/logout',
+    url:'/user/logout',
     method:'post'
   })
 }

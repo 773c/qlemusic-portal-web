@@ -21,6 +21,7 @@
 <style lang="scss" scoped>
   #expectation{
     background: url("../assets/images/bg-expectation.jpg");
+    background-size: cover;
     height: 100%;
     padding: 15% 40%;
     img{

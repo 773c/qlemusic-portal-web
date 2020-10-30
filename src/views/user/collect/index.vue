@@ -287,25 +287,26 @@
         getFavoriteList(this.userInfo.id).then(response => {
           let data = response.data
           let item = null
-          for (item of data) {
-            //tab标签索引自增
-            let newTabName = ++this.tabIndex + '';
-            //收藏夹描述超出长度修饰
-            let description = item.description
-            if (description !== null && description.length > 47) {
-              let prefix = description.substring(0, 45)
-              description = prefix + '...'
-            }
-            //存入数组中
-            this.favoriteTabs.push({
-              id: item.id,
-              title: item.name,
-              name: newTabName,
-              description: item.description === null ? this.defaultFavoriteDescription : description
-            });
+          if(data.length > 0){
+            for (item of data) {
+              //tab标签索引自增
+              let newTabName = ++this.tabIndex + '';
+              //收藏夹描述超出长度修饰
+              let description = item.description
+              if (description !== null && description.length > 47) {
+                let prefix = description.substring(0, 45)
+                description = prefix + '...'
+              }
+              //存入数组中
+              this.favoriteTabs.push({
+                id: item.id,
+                title: item.name,
+                name: newTabName,
+                description: item.description === null ? this.defaultFavoriteDescription : description
+              });
+            }//初始化默认收藏夹内容
+            this.collectMusicList(0)
           }
-          //初始化默认收藏夹内容
-          this.collectMusicList(0)
         })
       },
       //新建收藏夹模块内容打开重置

@@ -1,6 +1,6 @@
 <template>
   <div id="left2">
-    <el-card class="left2-card" shadow="never" :style="heightStyle">
+    <el-card v-if="device !== 'mobile'?true:false" class="left2-card" shadow="never" :style="heightStyle">
       <el-menu
         :default-active="$route.path"
         :router="true"
@@ -55,6 +55,8 @@
 
   export default {
     name: "left2",
+    components:{
+    },
     computed: {
       ...mapGetters([
         'userInfo'
@@ -68,6 +70,9 @@
       }
     },
     computed: {
+      device() {
+        return this.$store.state.app.device
+      },
       heightStyle() {
         return {
           height: this.height + 'px',

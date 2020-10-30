@@ -1,20 +1,19 @@
 <template>
-  <div id="personal-center-info">
-    <div class="title">
+  <div id="personal-center-info-wrapper">
+    <div class="pci-title-wrapper">
       <el-divider content-position="left">
-        <div class="title-name">
+        <div class="pci-title-name">
           <span>账号信息 <i class="el-icon-edit-outline"></i></span>
         </div>
       </el-divider>
     </div>
     <br>
-    <div class="account-info-wrapper">
+    <div class="pci-account-info-wrapper">
       <el-form :model="ruleForm" status-icon :rules="rules" ref="ruleForm" label-width="40px"
                class="demo-ruleForm">
-        <div class="account-uniqueId">
+        <div class="pci-ai-uniqueId-wrapper">
           <div v-show="!isUpdate">
-            <span v-if="ruleForm.uniqueId === ''">ID： {{userInfo.uniqueId}}</span>
-            <span v-else>ID： {{ruleForm.uniqueId}}</span>
+            <span>ID： {{userInfo.uniqueId}}</span>
             <span style="color: #8c939d;font-size: 12px">（注：注册之后只能修改一次）</span>&nbsp;
             <el-tooltip class="item" effect="light" content="修改 ID" placement="top">
               <i class="el-icon-edit" style="color: #fe0000;cursor: pointer;font-size: 14px"
@@ -23,22 +22,23 @@
           </div>
           <el-dialog
             :visible.sync="dialogVisible"
-            class="el-dialog-uniqueId"
+            class="pci-ai-uniqueId-dialog"
             width="435px"
             :close-on-click-modal="false"
             :modal-append-to-body="false"
-            :close-on-press-escape="false">
+            :close-on-press-escape="false"
+            @close="closeUniqueIdDialogTrigger">
             <el-form-item label="ID" prop="uniqueId">
-              <el-input type="text" v-model="ruleForm.uniqueId" autocomplete="off"
+              <el-input type="text" v-model="uniqueId" autocomplete="off"
                         style="width: 300px;margin-left: 10px" placeholder="请输入唯一ID号"></el-input>
             </el-form-item>
-            <el-button class="account-info-uniqueId-button" type="danger" round @click="updateUniqueIdHandler">
+            <el-button class="pci-ai-uniqueId-button" type="danger" round @click="updateUniqueIdHandler">
               修改
             </el-button>
           </el-dialog>
         </div>
         <br>
-        <div class="account-name">
+        <div class="pci-ai-name-wrapper">
           <div v-show="!isUpdate">
             昵称： {{userInfo.name}}
           </div>
@@ -50,7 +50,7 @@
           </div>
         </div>
         <br>
-        <div class="account-sex">
+        <div class="pci-ai-sex-wrapper">
           <div v-show="!isUpdate">
             性别： {{userInfo.sex}}
           </div>
@@ -64,21 +64,21 @@
           </div>
         </div>
         <br>
-        <div class="account-create-time">
+        <div class="pci-ai-create-time-wrapper">
           <div v-show="!isUpdate">
             注册日期： {{userInfo.createTime}}
           </div>
         </div>
         <br>
-        <div class="account-description">
-          <div v-show="!isUpdate">
-            <div style="float: left">简介：</div>
-            <div style="float: left;width: 700px;height:100px;word-wrap:break-word;">
+        <div class="pci-ai-description-wrapper">
+          <div v-show="!isUpdate" class="pci-ai-description">
+            <div class="description-label">简介：</div>
+            <div class="description-text">
               {{userInfo.description}}
             </div>
           </div>
           <div v-show="isUpdate">
-            <el-form-item label="简介" prop="description" style="margin-top: -50px">
+            <el-form-item label="简介" prop="description" style="margin-top: -50px;">
               <el-input type="textarea" v-model="description = userInfo.description" maxlength="255" rows="6"
                         show-word-limit style="width: 700px;margin-left: 10px"></el-input>
             </el-form-item>
@@ -86,15 +86,16 @@
         </div>
         <br>
       </el-form>
+      <div class="pci-ai-save-btn-wrapper" align="center">
+        <el-button v-show="!isUpdate" type="success" icon="el-icon-edit" circle plain
+                   @click="isUpdate = true"></el-button>
+        <el-button v-show="isUpdate" type="success" style="font-size: 13px;margin-top: -30px"
+                   size="small"
+                   @click="updateAccountInfoHandler">保存
+        </el-button>
+      </div>
     </div>
-    <div align="center" style="clear: both">
-      <el-button v-show="!isUpdate" type="success" icon="el-icon-edit" circle plain
-                 @click="isUpdate = true"></el-button>
-      <el-button v-show="isUpdate" type="success" style="font-size: 13px;margin-top: -30px"
-                 size="small"
-                 @click="updateAccountInfoHandler">保存
-      </el-button>
-    </div>
+    <div style="clear: both"></div>
     <div></div>
     <br>
     <br>
@@ -143,20 +144,11 @@
 
 <script>
   import {mapGetters} from 'vuex'
-  import {updateAccountInfo, updateUniqueId, isUpdateUniqueId} from "@/api/user";
+  import {updateAccountInfo, updateUniqueId, isUpdateUniqueId} from "@/api/userInfo";
 
   export default {
     name: "personalCenter",
     data() {
-      //自定义唯一ID判断
-      var validateUniqueId = (rule, value, callback) => {
-        if (value === '') {
-          callback(new Error('唯一ID不能为空'));
-        } else {
-          //判断唯一ID是否合法
-          callback();
-        }
-      };
       //自定义昵称判断
       var validateName = (rule, value, callback) => {
         if (value === '') {
@@ -168,21 +160,16 @@
       };
       return {
         isUpdate: false,
+        uniqueId: '',
+        dialogVisible: false,
+        sex: '',
+        description: '',
         ruleForm: {
-          uniqueId: '',
           name: ''
         },
         rules: {
-          uniqueId: [
-            {validator: validateUniqueId, trigger: 'blur'}
-          ],
-          name: [
-            {validator: validateName, trigger: 'blur'}
-          ]
+          name: [{validator: validateName, trigger: 'blur'}]
         },
-        dialogVisible: false,
-        sex: '',
-        description: ''
       }
     },
     computed: {
@@ -191,15 +178,13 @@
       ]),
     },
     methods: {
+      //获取用户信息
+      getUserInfo(){
+        this.$store.dispatch('GetInfo',true)
+      },
       //修改用户信息
       updateAccountInfoHandler() {
-        updateAccountInfo({
-          id: this.userInfo.id,
-          name: this.ruleForm.name,
-          sex: this.sex,
-          description: this.description
-        })
-          .then(response => {
+        updateAccountInfo({id: this.userInfo.id, name: this.ruleForm.name, sex: this.sex, description: this.description}).then(response => {
             console.log(response);
             this.isUpdate = false
           })
@@ -213,25 +198,33 @@
       },
       //修改唯一ID
       updateUniqueIdHandler() {
-        updateUniqueId({
-          id: this.userInfo.id,
-          uniqueId: this.ruleForm.uniqueId
-        })
-          .then(response => {
-            console.log(response);
+        if(this.uniqueId === '') this.$tip.error('唯一ID不能为空')
+        else {
+          updateUniqueId({id: this.userInfo.id, uniqueId: this.uniqueId}).then(response => {
             this.dialogVisible = false
             this.$tip.success('操作成功')
+            this.getUserInfo()
           })
+        }
       },
+      //关闭修改唯一ID框触发
+      closeUniqueIdDialogTrigger(){
+        this.uniqueId = ''
+        this.resetForm()
+      },
+      //重置Form验证效果
+      resetForm() {
+        this.$refs.ruleForm.resetFields();
+      }
     }
   }
 </script>
 
 <style lang="scss" scoped>
   //个人信息
-  #personal-center-info {
-    .title {
-      .title-name {
+  #personal-center-info-wrapper {
+    .pci-title-wrapper {
+      .pci-title-name {
         width: 150px;
         height: 30px;
         line-height: 31px;
@@ -243,10 +236,11 @@
         }
       }
     }
-    .account-info-wrapper {
+    .pci-account-info-wrapper {
       padding-left: 50px;
-      .account-uniqueId {
-        .el-dialog-uniqueId {
+      //唯一ID
+      .pci-ai-uniqueId-wrapper {
+        .pci-ai-uniqueId-dialog {
           margin-top: 100px;
           .account-info-uniqueId-button {
             width: 250px;
@@ -256,6 +250,29 @@
             margin-top: 10px;
           }
         }
+      }
+      //名称
+      .pci-ai-name-wrapper{}
+      //性别
+      .pci-ai-sex-wrapper{}
+      //创建时间
+      .pci-ai-create-time-wrapper{}
+      //简介
+      .pci-ai-description-wrapper{
+        .pci-ai-description{
+          .description-label{
+            float: left;
+          }
+          .description-text{
+            width: 580px;
+            margin-left: 50px;
+            line-height: 20px;
+          }
+        }
+      }
+      //保存按钮
+      .pci-ai-save-btn-wrapper{
+        margin-top: 4vw;
       }
     }
   }

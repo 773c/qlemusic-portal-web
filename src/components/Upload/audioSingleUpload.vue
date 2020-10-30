@@ -4,6 +4,7 @@
       ref="audioSingleUpload"
       action="useOss?ossUploadUrl:minioUploadUrl"
       list-type="picture"
+      drag
       :data="useOss?dataObj:null"
       :http-request="uploadHandler"
       :file-list="fileList"
@@ -13,7 +14,6 @@
       :on-preview="previewHandler"
       :on-success="uploadSuccessHandler"
       :limit="2"
-      drag
       :auto-upload="false">
       <i class="el-icon-upload"></i>
       <div class="el-upload__text">将文件拖到此处，或<em> 点击上传</em></div>
@@ -58,7 +58,6 @@
       },
       //选择文件后触发
       changeHandler(file, fileList) {
-        console.log(file);
         const isAudio = file.raw.type === 'audio/mpeg';
         const isLt20M = file.raw.size / 1024 / 1024 < 20;
 
@@ -107,8 +106,6 @@
       },
       //自定义上传
       uploadHandler() {
-
-        console.log("上传音频文件");
         let formData = new FormData();
         this.fileList.forEach(file => {
           formData.append("file", file.raw)
@@ -118,11 +115,10 @@
       },
       //上传文件之前触发
       beforeUploadHandler(file) {
-        console.log('beforeUploadHandler');
+
       },
       //上传文件成功后触发(自定义网络请求则会失效)
       uploadSuccessHandler(res, file) {
-        console.log("上传成功");
         //图片oss地址
         let url = this.dataObj.host + '/' + this.dataObj.dir + '/' + file.name;
         if (!this.useOss) {
@@ -132,9 +128,6 @@
         this.fileList.push({name: file.name, url: url});
         // this.$emit('updateAvatarHandler', url)
       }
-    },
-    activated(){
-      console.log("1");
     }
   }
 </script>

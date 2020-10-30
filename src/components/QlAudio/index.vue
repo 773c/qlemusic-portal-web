@@ -29,7 +29,6 @@
             src="@/assets/images/audio-pause.png"
             @click="pauseHandler">
         </div>
-
       </div>
     </div>
     <div v-if="isShowLineProgress" class="audio-progress-wrapper">
@@ -41,8 +40,9 @@
       <div class="audio-start-time">{{audioValue.currentTime}}</div>
       <div class="audio-end-time">{{audioValue.formatDuration}}</div>
     </div>
-    <div v-else class="audio-progress-effect-wrapper">
-      <img class="audio-progress-effect-img" :src="showProgressEffect">
+    <div v-else class="audio-progress-effect-wrapper" >
+      <img v-if="isShowPlayEffect" class="audio-progress-effect-img" src="@/assets/images/bbs-music-effect.gif" >
+      <img v-else class="audio-progress-effect-img-static" src="@/assets/images/bbs-music-effect-static.jpg" >
     </div>
   </div>
 </template>
@@ -122,7 +122,6 @@
         let audio = this.getAudio(newVal)
         //这里必须用箭头函数
         audio.addEventListener("canplay", () => {
-          console.log("监听audioUrl");
           this.audioValue.currentTime = this.durationFormat()
           this.audioValue.formatDuration = this.durationFormat(audio.duration)
         })
@@ -134,11 +133,11 @@
     methods: {
       //音频播放
       playHandler() {
-        //点击播放时为true
-        this.isClickPlay = true
         //设置上一个vue组件audio
         this.prevAudioVueComponent.isShowPlayEffect = false
         this.prevAudioVueComponent.isClickPlay = false
+        //点击播放时为true
+        this.isClickPlay = true
         //点击播放后获取音频对象
         let oriAudio = this.getAudio(this.audioUrl)
         //开启进度条效果
@@ -146,14 +145,12 @@
         this.$emit('setPlayEffect', this)
         //设置歌曲开始时间（秒）
         oriAudio.currentTime = this.thisStartTime
-        console.log("音乐开始播放");
         oriAudio.play()
         //audio的currentTime变化监听事件timeupdate(这里必须用箭头函数)
         oriAudio.addEventListener("timeupdate", () => {
           this.progressTime = oriAudio.currentTime * 100 / this.$qlAudio.duration
           // 更新与播放进度相关的内容
           if (parseInt(oriAudio.currentTime) === parseInt(this.startTime) + parseInt(this.playTime) / 1000) {
-            console.log("暂停了");
             oriAudio.pause()
             //关闭进度条效果
             this.isShowPlayEffect = false
@@ -162,16 +159,16 @@
         })
         if(this.musicId !== 0){
           //存储播放次数
-          play({musicId:this.musicId},false).then(response => {
-
-          })
+          play({musicId:this.musicId},false).then(response => {})
         }
+        console.log(this.isClickPlay);
       },
       //音频暂停
       pauseHandler() {
         this.$qlAudio.pause()
         this.isClickPlay = false
         this.isShowPlayEffect = false
+        console.log(this.isClickPlay);
       },
       //发布音频播放
       releasePlayHandler() {
@@ -181,7 +178,6 @@
         let oriAudio = this.getAudio(this.audioUrl)
         //设置歌曲开始时间（秒）
         oriAudio.currentTime = this.thisStartTime
-        console.log("音乐开始播放");
         oriAudio.play()
         //audio的currentTime变化监听事件timeupdate(这里必须用箭头函数)
         oriAudio.addEventListener("timeupdate", () => {

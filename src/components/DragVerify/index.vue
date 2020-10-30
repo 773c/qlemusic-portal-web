@@ -3,26 +3,22 @@
     ref="dragVerify"
     class="drag_verify"
     :style="dragVerifyStyle"
+    @touchmove.prevent
     @mousemove="dragMoving"
     @mouseup="dragFinish"
     @mouseleave="dragFinish"
     @touchmove="dragMoving"
-    @touchend="dragFinish"
-  >
-
+    @touchend="dragFinish">
     <div
       class="dv_progress_bar"
       :class="{goFirst2:isOk}"
       ref="progressBar"
-      :style="progressBarStyle"
-    >
-
+      :style="progressBarStyle">
     </div>
     <div
       class="dv_text"
       :style="textStyle"
-      ref="message"
-    >
+      ref="message">
       <slot
         name="textBefore"
         v-if="$slots.textBefore"
@@ -33,18 +29,15 @@
         v-if="$slots.textAfter"
       ></slot>
     </div>
-
     <div
       class="dv_handler dv_handler_bg"
       :class="{goFirst:isOk}"
       @mousedown="dragStart"
       @touchstart="dragStart"
       ref="handler"
-      :style="handlerStyle"
-    >
+      :style="handlerStyle">
       <i :class="handlerIcon"></i>
     </div>
-
   </div>
 </template>
 <script>
@@ -110,14 +103,14 @@
         default: "#333"
       }
     },
-    mounted: function() {
+    mounted: function () {
       const dragEl = this.$refs.dragVerify;
       dragEl.style.setProperty("--textColor", this.textColor);
       dragEl.style.setProperty("--width", Math.floor(this.width / 2) + "px");
       dragEl.style.setProperty("--pwidth", -Math.floor(this.width / 2) + "px");
     },
     computed: {
-      handlerStyle: function() {
+      handlerStyle: function () {
         return {
           left: "0px",
           width: this.height + "px",
@@ -125,19 +118,19 @@
           background: this.handlerBg
         };
       },
-      message: function() {
+      message: function () {
         return this.isPassing ? this.successText : this.text;
       },
-      dragVerifyStyle: function() {
+      dragVerifyStyle: function () {
         return {
           height: this.height + "px",
-          width:  this.width + "px",
+          width: this.width + "px",
           lineHeight: this.height + "px",
           background: this.background,
           borderRadius: this.circle ? this.height / 2 + "px" : this.radius
         };
       },
-      progressBarStyle: function() {
+      progressBarStyle: function () {
         return {
           background: this.progressBarBg,
           height: this.height + "px",
@@ -146,10 +139,10 @@
             : this.radius
         };
       },
-      textStyle: function() {
+      textStyle: function () {
         return {
           height: this.height + "px",
-          width:  this.width + "px",
+          width: this.width + "px",
           fontSize: this.textSize
         };
       }
@@ -162,7 +155,7 @@
       };
     },
     methods: {
-      dragStart: function(e) {
+      dragStart: function (e) {
         if (!this.isPassing) {
           this.isMoving = true;
           var handler = this.$refs.handler;
@@ -172,7 +165,7 @@
         }
         this.$emit("handlerMove");
       },
-      dragMoving: function(e) {
+      dragMoving: function (e) {
         if (this.isMoving && !this.isPassing) {
           var _x = (e.pageX || e.touches[0].pageX) - this.x;
           var handler = this.$refs.handler;
@@ -187,13 +180,13 @@
           }
         }
       },
-      dragFinish: function(e) {
+      dragFinish: function (e) {
         if (this.isMoving && !this.isPassing) {
           var _x = (e.pageX || e.changedTouches[0].pageX) - this.x;
-          if (_x < this.width - this.height-1) {
+          if (_x < this.width - this.height - 1) {
             this.isOk = true;
             var that = this;
-            setTimeout(function() {
+            setTimeout(function () {
               that.$refs.handler.style.left = "0";
               that.$refs.progressBar.style.width = "0";
               that.isOk = false;
@@ -208,7 +201,7 @@
           this.isMoving = false;
         }
       },
-      passVerify: function() {
+      passVerify: function () {
         this.$emit("update:isPassing", true);
         this.isMoving = false;
         var handler = this.$refs.handler;
@@ -219,7 +212,7 @@
         this.$refs.message.style.color = "#fff";
         this.$emit("passcallback");
       },
-      reset: function() {
+      reset: function () {
         const oriData = this.$options.data();
         for (const key in oriData) {
           if (oriData.hasOwnProperty(key)) {
@@ -246,6 +239,7 @@
     overflow: hidden;
     width: 84.5%;
   }
+
   .drag_verify .dv_handler {
     position: absolute;
     top: 0px;
@@ -254,20 +248,24 @@
     border: 1px solid #D3D3D3;
     border-radius: 4px;
   }
+
   .drag_verify .dv_handler i {
     color: #666;
     padding-left: 0;
     font-size: 16px;
   }
+
   .drag_verify .dv_handler .el-icon-circle-check {
     color: #6c6;
     margin-top: 9px;
   }
+
   .drag_verify .dv_progress_bar {
     position: absolute;
     height: 34px;
     width: 0px;
   }
+
   .drag_verify .dv_text {
     position: absolute;
     top: 0px;
@@ -293,13 +291,16 @@
     -webkit-text-size-adjust: none;
     animation: slidetounlock 3s infinite;
   }
+
   .drag_verify .dv_text * {
     -webkit-text-fill-color: var(--textColor);
   }
+
   .goFirst {
     left: 0px !important;
     transition: left 0.5s;
   }
+
   .goFirst2 {
     width: 0px !important;
     transition: width 0.5s;
@@ -314,6 +315,7 @@
       background-position: var(--width) 0;
     }
   }
+
   @-webkit-keyframes slidetounlock2 {
     0% {
       background-position: var(--pwidth) 0;

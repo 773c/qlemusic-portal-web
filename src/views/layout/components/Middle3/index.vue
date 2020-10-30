@@ -1,8 +1,8 @@
 <template>
   <div id="middle3">
-    <div class="bbs-music-title-wrapper">
-      <div class="bbsm-title">
-        {{userInfo.name}} 的音乐空间
+    <div class="bbs-music-name-wrapper">
+      <div class="bbsm-name">
+        {{userInfo.name}} 音乐空间
       </div>
       <div class="bbsm-img">
         <img src="@/assets/images/bg-my-music1.gif" height="120px">
@@ -21,7 +21,7 @@
 <script>
   import Left3 from './components/Left3'
   import Right3 from './components/Right3'
-  import {getUserById} from "@/api/user";
+  import {getUserById} from "@/api/userInfo";
 
   export default {
     name: "middle3",

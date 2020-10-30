@@ -89,9 +89,16 @@
     height: 50px;
     position: relative;
     top: -49px;
-    left: 30px;
     z-index: 1;
-    .audio-progress-effect-img {
+    .audio-progress-effect-img-static {
+      margin-left: 30px;
+      width: 27vw;
+      height: 50px;
+      border-top-right-radius: 50px;
+      border-bottom-right-radius: 50px;
+    }
+    .audio-progress-effect-img{
+      margin-left: 30px;
       width: 27vw;
       height: 50px;
       border-top-right-radius: 50px;

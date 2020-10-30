@@ -76,12 +76,10 @@
     methods: {
       //父组件需要调用时的手动提交
       submit() {
-        console.log(this.fileList);
         this.$refs.singleUpload.submit()
       },
       //选择文件后触发
       changeHandler(file, fileList) {
-        console.log(file);
         const isImg = file.raw.type === 'image/jpeg';
         const isLt3M = file.raw.size / 1024 / 1024 < 3;
 
@@ -127,14 +125,12 @@
       },
       //移除文件后触发
       removeHandler(file, fileList) {
-        console.log(file);
       },
       //点击预览图片
       previewHandler(file) {
       },
       //自定义上传
       uploadHandler() {
-        console.log("上传图片文件");
         let formData = new FormData();
         //如果是发布作品的音乐封面
         this.fileList.forEach(file => {
@@ -142,7 +138,6 @@
         })
         formData.append("ossUploadUrl", this.ossUploadUrl)
         if (this.avatar === 'audio') {
-          console.log("音频图片发布");
           this.$emit('releaseHandler', formData)
         } else {
           this.$emit('updateAvatarHandler', formData)
@@ -152,11 +147,9 @@
       },
       //上传文件之前触发
       beforeUploadHandler(file) {
-        console.log('beforeUploadHandler');
       },
       //上传文件成功后触发(自定义网络请求则会失效)
       uploadSuccessHandler(res, file) {
-        console.log("上传成功");
         //图片oss地址
         let url = this.dataObj.host + '/' + this.dataObj.dir + '/' + file.name;
         if (!this.useOss) {

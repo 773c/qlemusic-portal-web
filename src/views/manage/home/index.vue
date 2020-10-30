@@ -2,7 +2,7 @@
   <div id="manage-home">
     <div class="home-user-info-wrapper">
       <div class="hui-avatar-wrapper">
-        <el-avatar :size=70 :src="userInfo.headIcon"></el-avatar>
+        <el-avatar :size=70 :src="userInfo.avatar"></el-avatar>
       </div>
       <div class="hui-name-wrapper">
         {{userInfo.name}}

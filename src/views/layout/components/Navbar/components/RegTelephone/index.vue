@@ -1,8 +1,8 @@
 <template>
   <!--注册-->
-  <div>
+  <div class="reg-tabs-content-wrapper">
     <!--匹配验证码-->
-    <div v-show="!isMatchVerify" class="tabs-tel-content tabs-content">
+    <div v-if="!isMatchVerify" class="tabs-tel-content">
       <label class="tabs-label">手机号</label><br>
       <el-input type="text" v-model="regTelephone" class="tabs-telephone tabs-input" placeholder="  请输入手机号">
         <el-select v-model="select" slot="prepend" placeholder="请选择">
@@ -44,16 +44,15 @@
       <el-button class="tabs-log-button" type="danger" round @click="regBtonNextHandler" :disabled="btonShow">下一步
       </el-button>
       <button style="display: none"></button>
-      <div align="center">
-        <div class="tabs-reg-return-log" @click="returnLogClick">
-          返回登录
-        </div>
+      <div class="tabs-reg-return-log">
+        <span @click="returnLogClick">返回登录</span>
       </div>
     </div>
     <!--设置密码-->
     <set-password
-      v-show="isMatchVerify"
-      @regReset="regReset"
+      v-else
+      ref="setPasswordRef"
+      @regReset="isMatchVerify = true"
       @setDialogVisible="setDialogVisible"
       :regTelephone="regTelephone">
     </set-password>
@@ -131,16 +130,13 @@
         } else if (this.regVerify === '') {
           this.$tip.error('验证码不能为空')
         } else {
-          matchVerify(this.regTelephone, this.regVerify).then(response => {
-            console.log(response);
-            let data = response.data
+          matchVerify({telephone:this.regTelephone,verify:this.regVerify,credentialType:'verify'}).then(response => {
             this.isMatchVerify = true
           })
         }
       },
       //滑块重置
       reset() {
-        console.log("重置滑块");
         this.isPassing = false;
         if (this.$refs.dragVerify != undefined) {
           this.$refs.dragVerify.reset();
@@ -148,7 +144,6 @@
       },
       //滑块成功调用
       passCallBack() {
-        console.log("滑块验证成功走的方法");
         if (this.isSendSuccess)
           this.btonShow = false
         else if (this.regTelephone === '') {
@@ -166,10 +161,10 @@
       //注册返回登录界面
       returnLogClick() {
         this.$emit("returnLogClick")
+        this.regReset()
       },
       //注册界面重置
       regReset() {
-        this.isMatchVerify = false
         //手机号文本框清零
         this.regTelephone = ''
         //验证码文本框清零
@@ -178,6 +173,8 @@
         this.isSendSuccess = false
         //验证条复原
         this.reset()
+        //密码重置
+        this.$refs.setPasswordRef.regPwdReset()
       },
       //调用父组件方法
       setDialogVisible(){

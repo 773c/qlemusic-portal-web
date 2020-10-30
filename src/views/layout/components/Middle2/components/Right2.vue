@@ -1,8 +1,7 @@
 <template>
   <div id="right2">
-    <!--<div style="height: 200px"></div>-->
     <el-card
-      class="box-card"
+      class="personal-card"
       style="border-radius: 0;height: 808px;"
       :body-style="$route.name==='set'?{paddingLeft:0,paddingRight:0}:''"
       shadow="never">
@@ -10,7 +9,6 @@
         <router-view></router-view>
       </transition>
     </el-card>
-    <div style="width:955px;height: 20px;background-color: white;position: absolute;top: 1073px;left: 403px"></div>
   </div>
 </template>
 

@@ -47,7 +47,7 @@
       },
       size:{
         type:Number,
-        default:30
+        default:32
       }
     }
   }

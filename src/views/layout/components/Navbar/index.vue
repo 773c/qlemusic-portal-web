@@ -4,7 +4,7 @@
       <a id="nav-logo" href="/"><img class="img-logo" src="@/assets/images/flogo2.png" width="75"></a>
     </template>
     <template #one>
-      <router-link class="nav-router-link" to="/">
+      <router-link class="nav-router-link" to="/home">
         <el-menu-item index="/home">
           <span>黑怕空间</span>
         </el-menu-item>
@@ -26,7 +26,7 @@
     </template>
     <!--发布中心按钮-->
     <template #after-one>
-      <div class="home-release-button-wrapper" @click="clickForward('/manage/home',false)">
+      <div v-if="!isMobile" class="home-release-button-wrapper" @click="clickForward('/manage/home',false)">
         <el-button class="home-release-button" type="danger">
           <i class="el-icon-thumb"></i> 发布歌曲
         </el-button>
@@ -34,7 +34,7 @@
     </template>
     <!--收藏-->
     <template #after-two>
-      <el-tooltip class="item" effect="light" content="我的收藏" placement="bottom-start">
+      <el-tooltip v-if="!isMobile" class="item" effect="light" content="我的收藏" placement="bottom-start">
         <div class="collect-container">
           <!--<router-link target="_blank" to="/usr/collect">-->
           <div class="collect-wrapper" @click="clickForward('/usr/collect',false)">
@@ -46,7 +46,7 @@
     </template>
     <!--消息-->
     <template #after-three>
-      <el-dropdown class="info-container" placement="top">
+      <el-dropdown v-if="!isMobile" class="info-container" placement="top">
         <div class="info-wrapper">
           <el-badge is-dot class="item" style="width: 20px;">
             <div class="svg-info-wrapper">
@@ -108,15 +108,15 @@
         <template #log-content>
           <!--账号密码登录页面-->
           <log-telephone-password
+            v-if="isShowAccPwdLogin"
             ref="logTelephonePasswordRef"
-            v-show="isShowAccPwdLogin"
             @setDialogVisible="setDialogVisible"
             @regClickHandler="isShowLogin = false">
           </log-telephone-password>
           <!--手机号验证码登录页面-->
           <log-telephone
+            v-else
             ref="logTelephoneRef"
-            v-show="!isShowAccPwdLogin"
             @setDialogVisible="setDialogVisible"
             @regClickHandler="isShowLogin = false">
           </log-telephone>
@@ -132,7 +132,7 @@
       <div v-if="!isLogin">
         <el-dropdown class="avatar-container">
           <div class="avatar-wrapper">
-            <img class="user-avatar" :src="userInfo.headIcon">
+            <img class="user-avatar" :src="userInfo.avatar">
           </div>
           <el-dropdown-menu class="user-dropdown" slot="dropdown" style="width: 126px">
             <div @click="clickForward('/usr/personal',false)">
@@ -223,6 +223,15 @@
           return false;
         else
           return true;
+      },
+      device() {
+        return this.$store.state.app.device
+      },
+      isMobile(){
+        if(this.device === 'mobile')
+          return true
+        else
+          return false
       }
     },
     methods: {
@@ -244,7 +253,6 @@
           document.getElementById("no-login-btn").click()
         } else {
           let routeUrl = null
-          console.log(path);
           if (flag) {
             routeUrl = this.$router.resolve({
               path: path,
@@ -255,7 +263,6 @@
               path: path
             })
           }
-          console.log("routeUrl",routeUrl);
           if (this.$route.meta.isLevel === routeUrl.resolved.meta.isLevel) {
             window.open(routeUrl.href, '_self');
           } else {
@@ -265,12 +272,12 @@
       },
       //重置所有文本框内容和其他判断
       resetAll() {
-        //账号密码登录重置
-        this.$refs.logTelephonePasswordRef.logTelPwdReset()
-        //手机验证码登录重置
-        this.$refs.logTelephoneRef.logTelReset()
-        //手机验证码注册重置
-        this.$refs.regTelephoneRef.regReset()
+        if(this.isShowLogin && this.isShowAccPwdLogin){
+          //账号密码登录重置
+          this.$refs.logTelephonePasswordRef.logTelPwdReset()
+        }else {
+          this.isShowLogin = true
+        }
       }
     }
   }

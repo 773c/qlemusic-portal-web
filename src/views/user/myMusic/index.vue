@@ -1,6 +1,6 @@
 <template>
   <div id="myMusic">
-    <el-tabs type="border-card">
+    <el-tabs type="border-card" style="border:none">
       <el-tab-pane :label="'音乐（'+myMusicQuery.musicNum+'）'">
         <!--按类型排序-->
         <div class="type-sort">
@@ -27,8 +27,7 @@
         <div class="myMusic-bbsMusic" style="overflow:auto;">
           <el-table ref="bbsMusicTable"
                     :data="list"
-                    :show-header="false"
-                    border>
+                    :show-header="false">
             <div v-if="isEmptyList">
               空空如也
             </div>

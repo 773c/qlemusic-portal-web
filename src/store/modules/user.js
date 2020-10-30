@@ -1,5 +1,6 @@
 import {getToken, setToken, removeToken} from "@/utils/auth";
 import {login, getInfo, logout} from "@/api/login";
+import {qqLoginAuthSuccess} from "@/api/oauth";
 import {getUserByComment} from "@/api/comment";
 
 const user = {
@@ -15,16 +16,32 @@ const user = {
     },
     SET_USERINFO: (state, userInfo) => {
       state.userInfo = userInfo
-      state.avatar = userInfo.headIcon
+      state.avatar = userInfo.avatar
     },
     SET_USERCOMMENTINFO: (state, userCommentInfo) => {
       state.userCommentInfo = userCommentInfo
     }
   },
   actions: {
-    Login({commit}, userInfo) {
+    Login({commit}, userLogin) {
+      console.log(userLogin);
       return new Promise((resolve, reject) => {
-        login(userInfo).then(response => {
+        login(userLogin).then(response => {
+          //获取后台数据
+          const data = response.data
+          //保存到cookies中
+          setToken(data)
+          //提交到mutations
+          commit('SET_TOKEN', data)
+          resolve(response)
+        }).catch(error => {
+          reject(error)
+        })
+      })
+    },
+    QQLoginAuthSuccess({commit},codeAndState){
+      return new Promise((resolve, reject) => {
+        qqLoginAuthSuccess(codeAndState).then(response => {
           //获取后台数据
           const data = response.data
           //保存到cookies中

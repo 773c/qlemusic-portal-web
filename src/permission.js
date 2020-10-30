@@ -5,10 +5,9 @@ import store from '@/store'
 import {getToken} from '@/utils/auth'
 import {Message, MessageBox} from 'element-ui'
 
-
 router.beforeEach((to, from, next) => {
+  
   if (getToken()) {
-    console.log();
     if (to.meta.isLoadingNprogress) {
       //进度条样式
       NProgress.inc(0.2)
@@ -20,14 +19,13 @@ router.beforeEach((to, from, next) => {
       next()
     }else{
       store.dispatch('GetInfo',to.meta.isLoadingNprogress).then(response => {
-        console.log("获取用户信息");
         next()
       }).catch(error => {
         console.log(error);
       })
     }
   } else {
-    if(to.path !== '/home'){
+    if(to.meta.isNeedUserAuth){
       if(to.matched[0].path === '/usr' || to.matched[0].path === '/manage'){
         //说明是从主页面home点击的
         if(from.fullPath === '/'){
