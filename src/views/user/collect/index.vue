@@ -220,15 +220,7 @@
 
 <script>
   import {mapGetters} from 'vuex'
-  import {
-    createCollect,
-    getFavoriteList,
-    deleteCollectContent,
-    deleteCollect,
-    deleteCollectAndMove,
-    deleteCollectAndContent,
-    batchMoveContent
-  } from "@/api/collect";
+  import {createCollect, getFavoriteList, deleteCollectContent, deleteCollect, deleteCollectAndMove, deleteCollectAndContent, batchMoveContent} from "@/api/collect";
   import {getMusicByCollectId} from "@/api/bbsMusic";
 
   const defaultListQuery = {

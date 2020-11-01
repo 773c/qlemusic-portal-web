@@ -22,24 +22,53 @@ export function replyuserComment(data,isLoadingNprogress) {
   })
 }
 
-export function getUserByComment(data,isLoadingNprogress) {
+export function commentList(id,isLoadingNprogress) {
   return request({
-    url: '/comment/getUserByComment',
-    method: 'post',
+    url: '/comment/list/'+id,
+    method: 'get',
     headers: {
       isLoadingNprogress: isLoadingNprogress
-    },
-    data: data
+    }
   })
 }
 
-export function getCommentByMusicList(params,isLoadingNprogress) {
+export function msgCommentList(params,id,isLoadingNprogress) {
   return request({
-    url: '/comment/getCommentByMusic',
+    url: '/comment/msg/'+id,
     method: 'get',
     headers: {
       isLoadingNprogress: isLoadingNprogress
     },
-    params: params
+    params:params
+  })
+}
+
+export function msgReplyList(id,isLoadingNprogress) {
+  return request({
+    url: '/comment/msg/reply/'+id,
+    method: 'get',
+    headers: {
+      isLoadingNprogress: isLoadingNprogress
+    }
+  })
+}
+
+export function noSeeMsgCommentCount(id,isLoadingNprogress) {
+  return request({
+    url: '/comment/msg/noSee/'+id,
+    method: 'get',
+    headers: {
+      isLoadingNprogress: isLoadingNprogress
+    }
+  })
+}
+
+export function updateNoSeeMsgCommentCount(id,isLoadingNprogress) {
+  return request({
+    url: '/comment/msg/updateNoSee/'+id,
+    method: 'get',
+    headers: {
+      isLoadingNprogress: isLoadingNprogress
+    }
   })
 }

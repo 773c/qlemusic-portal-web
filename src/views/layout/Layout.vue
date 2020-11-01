@@ -7,7 +7,7 @@
     <!--内容部分-->
     <div class="content-wrapper">
       <!--首页风格-->
-      <div v-if="formatArr[0]" class="content-middle-one">
+      <div v-if="formatArr[0]" class="content-middle-one" >
         <!--走马灯-->
         <div class="home-carousel-wrapper">
           <carousel-video></carousel-video>
@@ -128,11 +128,12 @@
           this.formatArr[1] = false
           this.formatArr[2] = false
           this.formatArr[3] = false
-          return false
+          return true
         }
       }
     },
-    methods: {}
+    methods: {
+    }
   }
 </script>
 

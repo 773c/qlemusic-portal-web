@@ -1,20 +1,24 @@
 <template>
   <div id="right-msg">
     <el-card
-      class="box-card"
-      style="border-radius: 0;height: 808px;"
+      class="right-msg-card"
+      :body-style="device === 'mobile'?{padding:0}:''"
       shadow="never">
       <transition name="fade" mode="out-in">
         <router-view></router-view>
       </transition>
     </el-card>
-    <div style="width:955px;height: 20px;background-color: white;position: absolute;top: 873px;left: 403px"></div>
   </div>
 </template>
 
 <script>
   export default {
-    name: "rightMsg"
+    name: "rightMsg",
+    computed:{
+      device() {
+        return this.$store.state.app.device
+      }
+    }
   }
 </script>
 

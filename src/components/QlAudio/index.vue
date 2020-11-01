@@ -64,7 +64,7 @@
       },
       audioImgUrl: {
         type: String,
-        default: 'http://www.eiqle.com/img/default-avatar.png'
+        default: 'https://qlmusic-oss1.oss-cn-zhangjiakou.aliyuncs.com/qlemusic/images/default/default-avatar.png'
       },
       startTime: {
         type: String,

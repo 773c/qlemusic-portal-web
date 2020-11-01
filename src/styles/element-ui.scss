@@ -128,6 +128,9 @@
 .el-dropdown-menu__item:not(.is-disabled):hover {
   background-color: #fe0000;
   color: #ffffff;
+  .info-route{
+    color: white !important;
+  }
 }
 
 //el-pagination

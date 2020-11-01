@@ -102,8 +102,8 @@
 </template>
 
 <script>
-  import {visit, getVisitCount} from "@/api/visit";
-  import {getHotMusic} from "@/api/bbsMusic";
+  import {visit, visitCount} from "@/api/visit";
+  import {userHotList} from "@/api/bbsMusic";
 
   export default {
     name: "right3",
@@ -132,7 +132,7 @@
       },
       //获取用户访问数量
       getVisitCount(){
-        getVisitCount({id: this.$route.query.uid}, true).then(response => {
+        visitCount(this.$route.query.uid, true).then(response => {
           this.visitCount = response.data
         })
       },
@@ -144,8 +144,8 @@
         }
       },
       //获取热门音乐
-      getHotMusicList(){
-        getHotMusic({userId: this.$route.query.uid}, false).then(response => {
+      getUserHotList(){
+        userHotList({userId: this.$route.query.uid}, false).then(response => {
           this.hotMusicList = response.data
         })
       }
@@ -166,7 +166,7 @@
       //添加访问数量
       this.addUserVisit()
       //获取热门音乐
-      this.getHotMusicList()
+      this.getUserHotList()
     }
   }
 </script>

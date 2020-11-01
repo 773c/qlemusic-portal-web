@@ -106,7 +106,7 @@ const routes = [
         path: 'comment',
         name: 'comment',
         component: MsgComment,
-        meta: {title: '评论消息', icon: 'msgComment', isLoadingNprogress: true,isNeedUserAuth:true,isLevel: 4}
+        meta: {title: '评论消息', icon: 'msgComment', isLoadingNprogress: true,isNeedUserAuth:true,isLevel: 1}
       }
     ]
   },

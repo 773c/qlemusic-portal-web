@@ -1,7 +1,9 @@
 const path = require('path')
+
 function resolve(dir) {
   return path.join(__dirname, '.', dir)
 }
+
 module.exports = {
   chainWebpack: config => {
     config.module.rules.delete("svg"); //重点:删除默认配置中处理svg,
@@ -18,5 +20,19 @@ module.exports = {
       .options({
         symbolId: 'icon-[name]'
       })
+  },
+  devServer: {
+    proxy: {//配置跨域
+      '/apis': {
+        target: 'http://pv.sohu.com',//搜狐的域名
+        ws: true,
+        changOrigin: true,//允许跨域
+        pathRewrite: {
+          '^/apis': ''//请求的时候使用这个api就可以
+        }
+      }
+    }
   }
 }
+
+

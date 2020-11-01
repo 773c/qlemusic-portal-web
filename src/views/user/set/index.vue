@@ -163,7 +163,7 @@
             <el-divider content-position="left"><span>修改手机</span></el-divider>
           </div>
           <div v-if="!isNextByUpdateTel" class="us-telephone-wrapper">
-            <div v-if="userInfo.telephone === ''" class="us-telephone-tip">
+            <div v-if="userInfo.telephone === null" class="us-telephone-tip">
               Tip：您当前未绑定手机，请立即绑定提高安全吧 🥶
             </div>
             <div v-else class="us-telephone-tip">
@@ -171,8 +171,8 @@
             </div>
             <el-form label-width="100px">
               <el-form-item label="绑定手机号">
-                <el-input type="text" :placeholder="userInfo.telephone | telephoneFormat" style="width: 200px"
-                          :disabled="userInfo.telephone === ''?false:true"></el-input>
+                <el-input v-model="bindTelephone" type="text" :placeholder="userInfo.telephone | telephoneFormat" style="width: 200px"
+                          :disabled="userInfo.telephone === null?false:true"></el-input>
               </el-form-item>
               <el-form-item label="验证码">
                 <el-input type="text" v-model="setVerify" placeholder="输入验证码" style="width: 100px"></el-input>
@@ -186,7 +186,7 @@
                 </verify-button>
               </el-form-item>
               <el-form-item style="padding-top: 10px">
-                <el-button v-if="userInfo.telephone !== ''" type="danger" @click="updateTelNextHandler" style="padding: 8px 20px;margin-left: 30px">下一步
+                <el-button v-if="userInfo.telephone !== null" type="danger" @click="updateTelNextHandler" style="padding: 8px 20px;margin-left: 30px">下一步
                 </el-button>
                 <el-button v-else type="danger" @click="bindTelHandler" style="padding: 8px 20px;margin-left: 30px">绑定
                 </el-button>
@@ -284,6 +284,7 @@
         colors: ['#fe', '#F7BA2A', '#FF9900'],
         userSetTabsValue: 'home',
         setVerify: '',
+        bindTelephone: '',
         setTelephone: '',
         isSendSuccess: false,
         isNextByUpdateTel: false,
@@ -378,7 +379,7 @@
       },
       //修改手机号下一步
       updateTelNextHandler() {
-        if(this.userInfo.telephone === '') this.$tip.error('请绑定手机号')
+        if(this.userInfo.telephone === '' || this.userInfo.telephone === null) this.$tip.error('请绑定手机号')
         else if (!this.isSendSuccess) this.$tip.error('请发送验证码')
         else if (this.setVerify === '') this.$tip.error('验证码不能为空')
         else {

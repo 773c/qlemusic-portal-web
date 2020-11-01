@@ -1,15 +1,16 @@
 <template>
   <div id="home">
+    <!-- 阴影背景层 -->
     <collect-model :isShowCollectModel="isShowCollectModel" @addFavoriteHandler="addFavoriteHandler"></collect-model>
     <!--音频文章区域-->
     <div class="infinite-list-wrapper middle-bbs-music-wrapper">
-      <ul
-        class="list"
-        v-infinite-scroll="load"
-        infinite-scroll-disabled="disabled">
-        <el-table ref="bbsMusicTable"
-                  :data="list"
-                  border>
+      <ul class="list">
+        <!--<div v-show="drawer" @touchmove.prevent @mousewheel.prevent style="position:fixed;left:0;top:0;width:100%;height:100%;z-index:1511;background-color: rgba(0,0,0,0.5)">-->
+        <!--</div>-->
+        <el-table ref="bbsMusicTable" border :data="list" :style="{height:scrollHeightMobile+'px'}">
+          <template slot="empty">
+            <div v-loading="initLoading" style="height:200px;z-index: 1"></div>
+          </template>
           <el-table-column>
             <template slot="header" slot-scope="scope">
               <div class="bbs-music-title-wrapper">
@@ -66,199 +67,10 @@
                 </div>
                 <!--评论-->
                 <div class="comment div-threeIcon"
-                     @click="openCommentModel(scope.row.id,scope.row.bbsUserCommentList,scope.$index,scope.row.bbsMusicOperation.commentCount)">
+                     @click="openCommentModel(scope.row.id,scope.row.umsUserInfo.id,scope.row.bbsUserCommentList,scope.$index,scope.row.bbsMusicOperation.commentCount)">
                   <svg-icon class="threeIcon" icon-class="comment"></svg-icon>
                   <br v-if="device==='mobile'?true:false"/>
-                  <span>{{scope.row.bbsMusicOperation.commentCount === null?bbsMusic.commentCount:scope.row.bbsMusicOperation.commentCount}}</span>
-                </div>
-                <div class="bbsm-row-comment-drawer-wrapper" @click="hideReplyModel('')">
-                  <el-drawer
-                    :title="'评论（'+bbsMusic.commentCount+'）'"
-                    class="comment-drawer"
-                    :visible.sync="drawer"
-                    :modal="false"
-                    :direction="direction"
-                    :show-close="true"
-                    :size="direction === 'btt'?'60%':'35%'"
-                    :withHeader="true"
-                    @close="drawerCloseTrigger">
-                    <div class="comment-wrapper">
-                      <div class="comment-model-wrapper">
-                        <div class="comment-input-wrapper">
-                          <el-input
-                            ref="textareaRef"
-                            type="textarea"
-                            v-model="commentValue"
-                            :rows="direction === 'btt'?2:3"
-                            maxlength="255"
-                            show-word-limit
-                            placeholder="期待您的评论..."
-                            @blur="blurTrigger"
-                            @focus="inputTrigger">
-                          </el-input>
-                        </div>
-                        <div class="comment-input-button-wrapper">
-                          <el-popover placement="bottom-start" width="350" trigger="click" popper-class="emojiBox"
-                                      @show="showEmojiPopover('textareaRef')">
-                            <div class="emotionList">
-                              <a href="javascript:void(0);" @click="getEmoji(index)" v-for="(item1,index) in faceList"
-                                 :key="index" class="emotionItem">{{item1}}</a>
-                            </div>
-                            <img slot="reference" class="comment-input-emoji" src="@/assets/images/comment-emoji.png"
-                                 width="23" height="23">
-                          </el-popover>
-                          <el-button class="comment-input-button" type="success" @click="sendCommentHandler()">发表
-                          </el-button>
-                        </div>
-                      </div>
-                      <div style="clear: both"></div>
-                      <div v-if="commentList.length === 0" class="comment-empty-wrapper">暂无评论</div>
-                      <div v-else class="comment-content-wrapper">
-                        <div class="comment-content-title">精彩评论</div>
-                        <hr style="border:none;border-bottom: 1px solid #e4e4e4;margin-top: 10px">
-                        <!--每一条评论-->
-                        <div
-                          class="comment-content-row-wrapper"
-                          @click.stop="hideReplyModel(index)"
-                          v-for="(comment,index) in commentList" :key="index">
-                          <div class="cc-avatar-wrapper">
-                            <div class="cc-avatar">
-                              <el-avatar :size=34 :src="comment.umsUserInfo.avatar"></el-avatar>
-                            </div>
-                            <div class="cc-name-wrapper">
-                              <span class="cc-name">{{comment.umsUserInfo.name}}：</span>
-                              <span>{{comment.content}}</span>
-                              <span><el-button
-                                class="cc-button"
-                                type="text"
-                                style="margin-left: 10px;padding: 0 0"
-                                @click="showReplyModel(1,index,'')">回复</el-button>
-                              </span>
-                            </div>
-                            <div class="cc-time-wrapper">
-                              <div class="cc-time">
-                                {{comment.cusCreateTime}}
-                              </div>
-                            </div>
-                            <!--回复框1-->
-                            <div v-if="comment.isShowRelpy" class="comment-reply-model-wrapper">
-                              <div class="comment-reply-input-wrapper">
-                                <el-input
-                                  :id="'textareaReply1'+index"
-                                  type="textarea"
-                                  v-model="replyCommentValue"
-                                  :rows="direction === 'btt'?1:2"
-                                  maxlength="255"
-                                  show-word-limit
-                                  @blur="blurTrigger"
-                                  placeholder="填写您的回复...">
-                                </el-input>
-                              </div>
-                              <div class="comment-reply-input-button-wrapper">
-                                <el-popover placement="bottom-start" width="350" trigger="click" popper-class="emojiBox"
-                                            @show="replyShowEmojiPopover">
-                                  <div class="emotionList">
-                                    <a href="javascript:void(0);" @click="getReplyEmoji(1,index,index2)"
-                                       v-for="(item2,index2) in faceList"
-                                       :key="index2" class="emotionItem">{{item2}}</a>
-                                  </div>
-                                  <img slot="reference" class="comment-reply-input-emoji"
-                                       src="@/assets/images/comment-emoji.png"
-                                       width="21" height="21">
-                                </el-popover>
-                                <el-button class="comment-reply-input-button" type="success"
-                                           @click="replyCommentHandler(comment.userId,comment.createTime,'',comment.id)">
-                                  回复
-                                </el-button>
-                              </div>
-                            </div>
-                            <div style="clear: both"></div>
-                          </div>
-                          <div v-if="true" class="cc-open-other-user-wrapper">
-                            <div class="cc-open-other-user">
-                              <!--展开更多回复-->
-                            </div>
-                          </div>
-                          <!--回复评论2-->
-                          <div v-if="comment.bbsReplyuserCommentList !== null" class="cc-other-user-wrapper">
-                            <div
-                              class="ccou-content-row-wrapper"
-                              v-for="(reply,rindex) in comment.bbsReplyuserCommentList"
-                              :key="rindex">
-                              <div class="ccou-content-wrapper">
-                                <div class="ccou-avatar">
-                                  <el-avatar :size=30 :src="reply.umsUserInfo.avatar"></el-avatar>
-                                </div>
-                                <div class="ccou-name-wrapper">
-                                  <span class="ccou-name">{{reply.umsUserInfo.name}}：</span>
-                                  <span>
-                                    <span v-if="reply.isReplyTwo" class="ccou-reply-content-wrapper">
-                                      <span style="font-size: 13px">回复</span>
-                                      <span class="ccou-reply-name">@{{reply.replyName}}: </span>
-                                    </span>
-                                    <span>{{reply.content}}</span>
-                                  </span>
-                                  <span>
-                                    <el-button
-                                      type="text"
-                                      style="margin-left: 10px;padding: 0 0"
-                                      @click="showReplyModel(2,index,rindex)">回复
-                                    </el-button>
-                                  </span>
-                                </div>
-                                <div class="ccou-time-wrapper">
-                                  <div class="ccou-time">
-                                    {{reply.cusCreateTime}}
-                                  </div>
-                                </div>
-                                <!--回复框2-->
-                                <div v-if="reply.isShowRelpy" class="comment-reply2-model-wrapper">
-                                  <div class="comment-reply2-input-wrapper">
-                                    <el-input
-                                      :id="'textareaReply2'+rindex"
-                                      type="textarea"
-                                      v-model="replyCommentValue"
-                                      :rows="direction === 'btt'?1:2"
-                                      maxlength="255"
-                                      show-word-limit
-                                      @blur="blurTrigger"
-                                      placeholder="填写您的回复...">
-                                    </el-input>
-                                  </div>
-                                  <div class="comment-reply2-input-button-wrapper">
-                                    <el-popover placement="bottom-start" width="320" trigger="click" popper-class="emojiBox"
-                                                @show="replyShowEmojiPopover">
-                                      <div class="emotionList">
-                                        <a href="javascript:void(0);" @click="getReplyEmoji(2,rindex,index3)"
-                                           v-for="(item3,index3) in faceList"
-                                           :key="index3" class="emotionItem">{{item3}}</a>
-                                      </div>
-                                      <img slot="reference" class="comment-reply2-input-emoji"
-                                           src="@/assets/images/comment-emoji.png"
-                                           width="20" height="20">
-                                    </el-popover>
-                                    <el-button
-                                      class="comment-reply2-input-button"
-                                      type="success"
-                                      @click="replyCommentHandler(
-                                      reply.userId,
-                                      reply.createTime,
-                                      reply.umsUserInfo.name,
-                                      comment.id)">
-                                      回复
-                                    </el-button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                            <div style="clear: both;"></div>
-                          </div>
-                          <!--每一条评论分割线-->
-                          <hr style="border:none;border-bottom: 1px solid #e4e4e4;margin-top: 16px">
-                        </div>
-                      </div>
-                    </div>
-                  </el-drawer>
+                  <span>{{scope.row.bbsMusicOperation.commentCount === null?0:scope.row.bbsMusicOperation.commentCount}}</span>
                 </div>
                 <!--播放量-->
                 <div class="play div-threeIcon">
@@ -292,13 +104,200 @@
             </template>
           </el-table-column>
         </el-table>
+        <!--评论抽屉drawer框-->
+        <div class="bbsm-row-comment-drawer-wrapper" @click="hideReplyModel('')">
+          <el-drawer
+            :title="'评论（'+bbsMusic.commentCount+'）'"
+            class="comment-drawer"
+            :visible.sync="drawer"
+            :modal="false"
+            :modal-append-to-body="true"
+            :direction="direction"
+            :size="direction === 'btt'?'60%':'35%'"
+            @close="drawerCloseTrigger">
+            <div class="comment-wrapper">
+              <div class="comment-model-wrapper">
+                <div class="comment-input-wrapper">
+                  <el-input
+                    ref="textareaRef"
+                    type="textarea"
+                    v-model="commentValue"
+                    :rows="direction === 'btt'?2:3"
+                    maxlength="255"
+                    show-word-limit
+                    placeholder="期待您的评论..."
+                    @blur="blurTrigger"
+                    @focus="inputTrigger">
+                  </el-input>
+                </div>
+                <div class="comment-input-button-wrapper">
+                  <el-popover placement="bottom-start" width="350" trigger="click" popper-class="emojiBox"
+                              @show="showEmojiPopover('textareaRef')">
+                    <div class="emotionList">
+                      <a href="javascript:void(0);" @click="getEmoji(index)" v-for="(item1,index) in faceList"
+                         :key="index" class="emotionItem">{{item1}}</a>
+                    </div>
+                    <img slot="reference" class="comment-input-emoji" src="@/assets/images/comment-emoji.png"
+                         width="23" height="23">
+                  </el-popover>
+                  <el-button class="comment-input-button" type="success" @click="sendCommentHandler()">发表
+                  </el-button>
+                </div>
+              </div>
+              <div style="clear: both"></div>
+              <div v-if="commentList.length === 0" class="comment-empty-wrapper">暂无评论</div>
+              <div v-else class="comment-content-wrapper">
+                <div class="comment-content-title">精彩评论</div>
+                <hr style="border:none;border-bottom: 1px solid #e4e4e4;margin-top: 10px">
+                <!--每一条评论-->
+                <div
+                  class="comment-content-row-wrapper"
+                  @click.stop="hideReplyModel(index)"
+                  v-for="(comment,index) in commentList" :key="index">
+                  <div class="cc-avatar-wrapper">
+                    <div class="cc-avatar">
+                      <el-avatar :size=34 :src="comment.umsUserInfo.avatar"></el-avatar>
+                    </div>
+                    <div class="cc-name-wrapper">
+                      <span class="cc-name">{{comment.umsUserInfo.name}}</span>
+                      <div class="cc-content">
+                        {{comment.content}}
+                        <span><el-button
+                          class="cc-button"
+                          type="text"
+                          style="margin-left: 10px;padding: 0 0;"
+                          @click="showReplyModel(1,index,'')">回复</el-button>
+                      </span>
+                      </div>
+                    </div>
+                    <div class="cc-time-wrapper">
+                      <div class="cc-time">{{comment.cusCreateTime}}</div>
+                    </div>
+                    <!--回复框1-->
+                    <div v-if="comment.isShowRelpy" class="comment-reply-model-wrapper">
+                      <div class="comment-reply-input-wrapper">
+                        <el-input
+                          :id="'textareaReply1'+index"
+                          type="textarea"
+                          v-model="replyCommentValue"
+                          :rows="direction === 'btt'?1:2"
+                          maxlength="255"
+                          show-word-limit
+                          @blur="blurTrigger"
+                          placeholder="填写您的回复...">
+                        </el-input>
+                      </div>
+                      <div class="comment-reply-input-button-wrapper">
+                        <el-popover placement="bottom-start" width="350" trigger="click" popper-class="emojiBox"
+                                    @show="replyShowEmojiPopover">
+                          <div class="emotionList">
+                            <a href="javascript:void(0);" @click="getReplyEmoji(1,index,index2)"
+                               v-for="(item2,index2) in faceList"
+                               :key="index2" class="emotionItem">{{item2}}</a>
+                          </div>
+                          <img slot="reference" class="comment-reply-input-emoji"
+                               src="@/assets/images/comment-emoji.png"
+                               width="21" height="21">
+                        </el-popover>
+                        <el-button class="comment-reply-input-button" type="success"
+                                   @click="replyCommentHandler(comment.userId,comment.createTime,'',comment.id)">
+                          回复
+                        </el-button>
+                      </div>
+                    </div>
+                    <div style="clear: both"></div>
+                  </div>
+                  <div v-if="true" class="cc-open-other-user-wrapper">
+                    <div class="cc-open-other-user">
+                      <!--展开更多回复-->
+                    </div>
+                  </div>
+                  <!--回复评论2-->
+                  <div v-if="comment.bbsReplyuserCommentList !== null" class="cc-other-user-wrapper">
+                    <div
+                      class="ccou-content-row-wrapper"
+                      v-for="(reply,rindex) in comment.bbsReplyuserCommentList"
+                      :key="rindex">
+                      <div class="ccou-content-wrapper">
+                        <div class="ccou-avatar">
+                          <el-avatar :size=30 :src="reply.umsUserInfo.avatar"></el-avatar>
+                        </div>
+                        <div class="ccou-name-wrapper">
+                          <span class="ccou-name">{{reply.umsUserInfo.name}} </span>
+                          <span>
+                            <span v-if="reply.isReplyTwo" class="ccou-reply-content-wrapper">
+                              <span style="font-size: 13px">回复</span>
+                              <span class="ccou-reply-name">@{{reply.replyName}}</span>
+                            </span>
+                            <div class="ccou-content">
+                              {{reply.content}}
+                              <span>
+                              <el-button type="text" style="margin-left: 10px;padding: 0 0;font-size: 13px"
+                                       @click="showReplyModel(2,index,rindex)">回复</el-button></span>
+                            </div>
+                          </span>
+                        </div>
+                        <div class="ccou-time-wrapper">
+                          <div class="ccou-time">{{reply.cusCreateTime}}</div>
+                        </div>
+                        <!--回复框2-->
+                        <div v-if="reply.isShowRelpy" class="comment-reply2-model-wrapper">
+                          <div class="comment-reply2-input-wrapper">
+                            <el-input
+                              :id="'textareaReply2'+rindex"
+                              type="textarea"
+                              v-model="replyCommentValue"
+                              :rows="direction === 'btt'?1:2"
+                              maxlength="255"
+                              show-word-limit
+                              @blur="blurTrigger"
+                              placeholder="填写您的回复...">
+                            </el-input>
+                          </div>
+                          <div class="comment-reply2-input-button-wrapper">
+                            <el-popover placement="bottom-start" width="320" trigger="click"
+                                        popper-class="emojiBox"
+                                        @show="replyShowEmojiPopover">
+                              <div class="emotionList">
+                                <a href="javascript:void(0);" @click="getReplyEmoji(2,rindex,index3)"
+                                   v-for="(item3,index3) in faceList"
+                                   :key="index3" class="emotionItem">{{item3}}</a>
+                              </div>
+                              <img slot="reference" class="comment-reply2-input-emoji"
+                                   src="@/assets/images/comment-emoji.png"
+                                   width="20" height="20">
+                            </el-popover>
+                            <el-button
+                              class="comment-reply2-input-button"
+                              type="success"
+                              @click="replyCommentHandler(reply.userId,reply.createTime,reply.umsUserInfo.name,comment.id)">
+                              回复
+                            </el-button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div style="clear: both;"></div>
+                  </div>
+                  <!--每一条评论分割线-->
+                  <hr style="border:none;border-bottom: 1px solid #e4e4e4;margin-top: 16px">
+                </div>
+              </div>
+            </div>
+          </el-drawer>
+        </div>
       </ul>
-      <div
-        v-if="isShowloading"
-        align="center"
-        class="list-bottom-wrapper">
-        <div v-show="!isEmptyList" class="list-bottom-loading" v-loading="loading"></div>
-        <div v-show="isEmptyList" class="list-bottom-empty-wrapper">
+      <div align="center" class="list-bottom-wrapper">
+        <div v-if="!isEmptyList">
+          <div v-if="device === 'mobile' && !loading" class="list-bottom-mobile-wrapper" @click="showMoreMusic">
+            <div style="border-top: 1px solid #d3d4d6;width: 60px;float: left"></div>
+            <div style="float: left;margin: -8px 0 0 16px;font-size: 13px;color: #999999">展开更多<i
+              class="el-icon-caret-bottom" style="color: #bbbbbb"></i></div>
+            <div style="border-top: 1px solid #d3d4d6;width: 60px;float: right;"></div>
+          </div>
+          <div class="list-bottom-loading" v-loading="loading"></div>
+        </div>
+        <div v-else class="list-bottom-empty-wrapper">
           <div class="list-bottom-empty-text">到底了...</div>
           <img class="list-bottom-empty-img" src="@/assets/images/arrive-bottom.gif" height="70">
         </div>
@@ -308,26 +307,19 @@
 </template>
 
 <script>
-
-  import {getRecommendList} from '@/api/bbsMusic';
+  import {recommendList} from '@/api/bbsMusic';
   import CollectModel from '@/components/CollectModel'
   import {addCollect} from '@/api/collect';
   import {mapGetters} from 'vuex'
-  import {getMyMusicList} from '@/api/bbsMusic';
   import {like} from '@/api/like';
-  import {
-    userComment,
-    replyuserComment,
-    getUserByComment,
-    getCommentByMusicList
-  } from "@/api/comment";
+  import {userComment, replyuserComment, commentList} from "@/api/comment";
   import AvatarPopover from '@/components/AvatarPopover'
 
   const appData = require("@/assets/json/emoji.json");
 
   const defaultBbsMusic = {
     pageNum: 1,
-    pageSize: 5,
+    pageSize: 10,
     likeCount: 0,
     playCount: 0,
     commentCount: 0
@@ -340,13 +332,14 @@
     },
     data() {
       return {
+        initLoading: false,
         loading: false,
-        isShowloading: false,
         bbsMusic: Object.assign({}, defaultBbsMusic),
         list: [],
         listLength: 0,
         isEmptyList: false,
         musicId: null,
+        releaseUserId:null,
         musicIndex: null,
         userLikeIndex: null,
         voiceValue: 50,
@@ -367,12 +360,13 @@
         changeVoiceIcon: 'audio-voice',
         prevAudioVueComponent: {},
         isShowCollectModel: false,
-        total: null
+        total: null,
+        scrollHeight: 1152
       }
     },
     computed: {
-      disabled() {
-        return this.loading
+      device() {
+        return this.$store.state.app.device
       },
       volume() {
         return this.voiceValue / 100
@@ -394,6 +388,10 @@
       isMobile() {
         if (this.device === 'mobile') return true
         else return false
+      },
+      scrollHeightMobile() {
+        if (this.device !== 'mobile') return this.scrollHeight
+        else return this.scrollHeight + 233
       }
     },
     methods: {
@@ -403,11 +401,10 @@
         })
       },
       //获得默认推荐音乐片段
-      recommendList() {
-        getRecommendList({pageNum: this.bbsMusic.pageNum, pageSize: this.bbsMusic.pageSize}, false).then(response => {
+      getRecommendList() {
+        recommendList({pageNum: this.bbsMusic.pageNum, pageSize: this.bbsMusic.pageSize}, false).then(response => {
           console.log(response);
           this.loading = false
-          this.isShowloading = false
           let data = response.data;
           data.list.forEach((item, index) => {
             this.list.splice(this.listLength++, 0, item)
@@ -420,6 +417,17 @@
             }
           })
           this.total = data.total
+          this.initLoading = false
+          if (this.bbsMusic.pageNum !== 1) {
+            if (this.device !== 'mobile') {
+              if (this.bbsMusic.pageNum * this.bbsMusic.pageSize > this.total) this.scrollHeight += data.list.length * 110.3
+              else this.scrollHeight += 1103
+            } else {
+              if (this.bbsMusic.pageNum * this.bbsMusic.pageSize > this.total) this.scrollHeight += data.list.length * 134.1
+              else this.scrollHeight += 1341
+            }
+          }
+          window.addEventListener('scroll', this.load)
         })
       },
       //当滚动条到达最底端的时候加载新内容
@@ -431,26 +439,24 @@
         // 滚动条的总高度
         let scrollHeight = document.documentElement.scrollHeight || document.body.scrollHeight;
         // 判断是否到达底部
-        // console.log(Math.floor(scrollTop) + "+" + windowHeight + "=" + scrollHeight);
-        if (Math.floor(scrollTop) + windowHeight == scrollHeight) {
-          this.isShowloading = true
-          console.log(this.bbsMusic.pageNum +"*"+ this.bbsMusic.pageSize +"<="+ this.total);
-          if (this.bbsMusic.pageNum * this.bbsMusic.pageSize <= this.total) {
-            this.loading = true
-            this.bbsMusic.pageNum++
-            setTimeout(() => {
-              this.recommendList()
-              this.$nextTick(()=>{
-                window.removeEventListener('scroll', this.load)
-              })
-            }, 500)
-          } else {
-            this.loading = true
-            setTimeout(() => {
-              this.loading = false
-              this.isEmptyList = true
-            }, 500)
-          }
+        // console.log(Math.floor(scrollTop) + windowHeight + "=" + scrollHeight);
+        if (Math.ceil(scrollTop) + windowHeight >= scrollHeight) {
+          window.removeEventListener('scroll', this.load)
+          if (!this.initLoading) this.showMoreMusic()
+        }
+      },
+      //显示更多音乐
+      showMoreMusic() {
+        if (this.listLength < this.total) {
+          this.loading = true
+          this.bbsMusic.pageNum++
+          this.getRecommendList()
+        } else {
+          this.loading = true
+          setTimeout(() => {
+            this.loading = false
+            this.isEmptyList = true
+          }, 1000)
         }
       },
       changeVolume() {
@@ -545,16 +551,9 @@
         }
         return;
       },
-      //评论窗口关闭回调
-      drawerCloseTrigger() {
-        this.musicId = null
-        this.musicIndex = null
-        this.commentValue = ''
-        this.replyCommentValue = ''
-      },
       //获取对应音乐id的评论
-      commentByMusicList(musicId) {
-        getCommentByMusicList({musicId: musicId}, false).then(response => {
+      getCommentListByMusicId(musicId) {
+        commentList(musicId, false).then(response => {
           let data = response.data
           this.setCommentListValue(data)
           this.commentList = data
@@ -569,38 +568,43 @@
             comment.bbsReplyuserCommentList.forEach((reply2, index2) => {
               comment.userLike = false
               reply2.cusCreateTime = this.timeFormatToCAE(reply2.createTime)
-              //如果回复的不是用户评论
-              if (comment.userId !== reply2.replyuserId) {
-                //如果是自己回复自己
-                if (reply2.userId === reply2.replyuserId) {
-                  this.$set(reply2, "isReplyTwo", true)
-                  this.$set(reply2, "replyName", reply2.umsUserInfo.name)
-                } else {
-                  comment.bbsReplyuserCommentList.forEach((reply3, index3) => {
-                    if (reply2.replyuserId === reply3.userId) {
-                      this.$set(reply2, "isReplyTwo", true)
-                      this.$set(reply2, "replyName", reply3.umsUserInfo.name)
-                      return
-                    }
-                  })
-                }
+              //判断回复的是不是主用户（也就是第一个发表评论的用户，如果是自己回自己，comment,reply2的用户，回复id都一样）
+              if (comment.userId !== reply2.replyuserId || comment.createTime !== reply2.replyuserCreateTime) {
+                //不是，回复的是其他用户（则判断回复的是主用户还是其他）
+                comment.bbsReplyuserCommentList.forEach((reply3, index3) => {
+                  //判断用户回复相等，时间相等
+                  if (reply2.replyuserId === reply3.userId && reply2.replyuserCreateTime === reply3.createTime) {
+                    this.$set(reply2, "isReplyTwo", true)
+                    this.$set(reply2, "replyName", reply3.umsUserInfo.name)
+                    return
+                  }
+                })
               }
             })
           }
         })
       },
       //打开评论窗口(进行赋值)
-      openCommentModel(musicId, bbsUserCommentList, musicIndex, commentCount) {
-        for (let i in appData) this.faceList.push(appData[i].char);
+      openCommentModel(musicId,releaseUserId, bbsUserCommentList, musicIndex, commentCount) {
         this.drawer = true
         //将打开的音乐id赋值
         this.musicId = musicId
+        //将打开的音乐发布者id赋值
+        this.releaseUserId = releaseUserId
         //将打开的音乐索引位置赋值
         this.musicIndex = musicIndex
         //将打开的音乐评论数量赋值
         if (commentCount !== null) this.bbsMusic.commentCount = commentCount
         //获取评论用户集合
-        this.commentByMusicList(musicId)
+        this.getCommentListByMusicId(musicId)
+      },
+      //评论窗口关闭回调
+      drawerCloseTrigger() {
+        this.musicId = null
+        this.musicIndex = null
+        this.commentValue = ''
+        this.replyCommentValue = ''
+        this.bbsMusic.commentCount = 0
       },
       //发表评论
       sendCommentHandler() {
@@ -614,10 +618,11 @@
           userComment({
             userId: this.userInfo.id,
             musicId: this.musicId,
+            releaseUserId:this.releaseUserId,
             content: this.commentValue,
             umsUserInfo: umsUserInfo
           }, false).then(response => {
-            this.commentByMusicList(this.musicId)
+            this.getCommentListByMusicId(this.musicId)
             this.commentValue = ''
             this.list[this.musicIndex].bbsMusicOperation.commentCount++
             this.$tip.success("评论成功")
@@ -685,7 +690,7 @@
             replyuserCreateTime: replyuserCreateTime,
             umsUserInfo: umsUserInfo
           }, false).then(response => {
-            this.commentByMusicList(this.musicId)
+            this.getCommentListByMusicId(this.musicId)
             this.replyCommentValue = ''
             this.$set(this.commentList[this.commentIndex], "isShowRelpy", false)
             this.commentList[this.commentIndex].bbsReplyuserCommentList.forEach((reply, rindex) => {
@@ -718,14 +723,16 @@
           if (val.length > 4) return val.substring(0, 4) + "..."
           else return val
         }
-
       }
     },
     created() {
+      this.initLoading = true
       //获取默认音乐列表
-      this.recommendList()
+      this.getRecommendList()
       //初始化audio
       this.initAudio()
+      //初始化emoji表情
+      for (let i in appData) this.faceList.push(appData[i].char);
     },
     mounted() {
       //初始化音量图标
@@ -749,11 +756,12 @@
 </script>
 
 <style lang="scss">
-  .emojiBox{
+  .emojiBox {
     height: 189px !important;
     overflow: scroll;
     overflow-x: auto;
   }
+
   .animate {
     animation: scaleDraw 2s ease-in-out;
   }
@@ -837,12 +845,15 @@
             }
             .cc-name-wrapper {
               margin-left: 42px;
-              margin-top: -2px;
+              margin-top: -6px;
               width: auto;
               width: fit-content;
               width: -moz-fit-content;
               word-wrap: break-word;
               .cc-content {
+                margin-top: 6px;
+                line-height: 22px;
+                font-size: 14px;
               }
               .cc-name {
                 color: #fe0000;
@@ -851,7 +862,8 @@
               }
             }
             .cc-time-wrapper {
-              margin-left: 44px;
+              margin-top: 4px;
+              margin-left: 43px;
               .cc-time {
                 font-size: 11px;
                 color: #777777;
@@ -867,7 +879,7 @@
                 margin-top: 10px;
                 margin-bottom: 10px;
                 .comment-reply-input-button {
-                  padding: 5px 1vw;
+                  padding: 6px 1.2vw;
                 }
                 .comment-reply-input-emoji {
                   float: left;
@@ -887,16 +899,16 @@
             }
           }
           .cc-other-user-wrapper {
-            margin-top: 15px;
+            margin-top: 20px;
             margin-left: 20px;
             padding-left: 10px;
             border-left: 1px solid #e4e4e4;
             .ccou-content-row-wrapper {
               width: 100%;
-              margin-top: 5px;
+              margin-top: 8px;
               /*height: 46px;*/
               .ccou-content-wrapper {
-                padding-top: 3px;
+                padding-top: 10px;
                 .ccou-avatar {
                   float: left;
                 }
@@ -909,10 +921,15 @@
                   width: fit-content;
                   width: -moz-fit-content;
                   word-wrap: break-word;
-                  margin-top: -3px;
+                  margin-top: -6px;
                   .ccou-name {
                     color: #fe0000;
                     font-size: 13px;
+                  }
+                  .ccou-content {
+                    margin-top: 5px;
+                    line-height: 22px;
+                    font-size: 14px;
                   }
                   .ccou-reply-content-wrapper {
                     .ccou-reply-name {
@@ -925,8 +942,8 @@
                   }
                 }
                 .ccou-time-wrapper {
-                  margin-top: -2px;
-                  margin-left: 40px;
+                  margin-top: 4px;
+                  margin-left: 39px;
                   .ccou-time {
                     font-size: 10px;
                     color: #777777;
@@ -934,6 +951,7 @@
                 }
                 //回复评论框2
                 .comment-reply2-model-wrapper {
+                  height: 80px;
                   .comment-reply2-input-wrapper {
                     padding: 3px 0 0 40px;
                   }
@@ -942,7 +960,7 @@
                     margin-top: 10px;
                     margin-bottom: 10px;
                     .comment-reply2-input-button {
-                      padding: 3px 0.5vw;
+                      padding: 5px 1vw;
                     }
                     .comment-reply2-input-emoji {
                       float: left;

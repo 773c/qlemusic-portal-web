@@ -1,7 +1,6 @@
 import {getToken, setToken, removeToken} from "@/utils/auth";
 import {login, getInfo, logout} from "@/api/login";
 import {qqLoginAuthSuccess} from "@/api/oauth";
-import {getUserByComment} from "@/api/comment";
 
 const user = {
   state: {
@@ -17,14 +16,10 @@ const user = {
     SET_USERINFO: (state, userInfo) => {
       state.userInfo = userInfo
       state.avatar = userInfo.avatar
-    },
-    SET_USERCOMMENTINFO: (state, userCommentInfo) => {
-      state.userCommentInfo = userCommentInfo
     }
   },
   actions: {
     Login({commit}, userLogin) {
-      console.log(userLogin);
       return new Promise((resolve, reject) => {
         login(userLogin).then(response => {
           //获取后台数据
@@ -62,21 +57,6 @@ const user = {
           //提交到mutations
           commit('SET_USERINFO', data)
           resolve(response)
-        }).catch(error => {
-          reject(error)
-        })
-      })
-    },
-    GetUserByComment({commit}, data,musicId) {
-      return new Promise((resolve, reject) => {
-        getUserByComment(data, false).then(response => {
-          const data = response.data
-          let musicIds = []
-          musicIds.push(musicId)
-          data.append("musicId",)
-          //提交到mutations
-          commit('SET_USERCOMMENTINFO', data)
-          resolve(data)
         }).catch(error => {
           reject(error)
         })

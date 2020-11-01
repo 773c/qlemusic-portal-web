@@ -21,7 +21,7 @@
 <script>
   import Left3 from './components/Left3'
   import Right3 from './components/Right3'
-  import {getUserById} from "@/api/userInfo";
+  import {userInfo} from "@/api/userInfo";
 
   export default {
     name: "middle3",
@@ -36,8 +36,8 @@
       }
     },
     methods:{
-      getUser(){
-        getUserById(this.$route.query.uid,false).then(response => {
+      getUserInfo(){
+        userInfo(this.$route.query.uid,false).then(response => {
           this.userInfo = response.data
         })
       },
@@ -46,7 +46,7 @@
       }
     },
     created(){
-      this.getUser(0)
+      this.getUserInfo(0)
     }
   }
 </script>

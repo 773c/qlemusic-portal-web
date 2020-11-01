@@ -147,6 +147,12 @@
             margin-top: 24px;
             cursor: pointer;
             line-height: 15px;
+            .el-badge__content.is-fixed{
+              width: 18px;
+              height: 18px;
+              padding: 0;
+              background-color: #fe0000;
+            }
             .svg-info-wrapper {
               height: 23px;
               .svg-info {
@@ -160,7 +166,7 @@
       .right-user {
         height: 63px;
         float: left;
-        margin-left: 1.3vw;
+        margin-left: 1.4vw;
         //用户未登录
         .login-container {
           cursor: pointer;
@@ -345,7 +351,6 @@
 //滚动后的导航样式
 .scrollNavbar {
   .menu-button {
-
   }
   .nav-link-wrapper {
     // 路由链接
@@ -354,11 +359,9 @@
       }
       .el-menu-item:not(.is-active) {
         color: black;
-
       }
     }
   }
-
 }
 
 //移动端6/7/8
@@ -373,11 +376,11 @@
       width: 21px;
       height: 65px;
       line-height: 77px;
-      margin-left: 15px;
+      margin-left: 14px;
       cursor: pointer;
     }
     .logo-wrapper {
-      margin-left: 12px;
+      margin-left: 9px;
       line-height: 55px;
       .img-logo {
         width: 67px !important;
@@ -388,22 +391,23 @@
     }
     //搜索框
     .nav-search-wrapper {
-      margin-left: 5vw;
+      margin-left: 4.3vw;
       input {
-        width: 130px !important;
+        width: 120px !important;
         height: 23px;
 
       }
       .search {
         width: 180px !important;
         margin-top: -2px;
+
       }
       .bar input {
         border-bottom: 1px solid #bbbbbb !important;
       }
       .bar input:focus {
         border-bottom: 2px solid white !important;
-        width: 160px !important;
+        width: 150px !important;
       }
       .search-button {
         cursor: pointer;
@@ -413,9 +417,19 @@
       }
     }
     .nav-right-user {
-      right: 4vw;
+      right: 3.6vw;
       margin-top: -5px;
       .right-link {
+        // 消息
+        .info-container {
+          margin-top: -1px;
+          margin-right: 2.2vw;
+          height: 58px !important;
+          .info-wrapper {
+            .svg-info-wrapper {
+            }
+          }
+        }
         // 未登录按钮
         .login-container {
         }
@@ -424,6 +438,7 @@
 
     // 已登录
     .avatar-container {
+      height: 57px !important;
       .avatar-wrapper {
         cursor: pointer;
         height: 34px;
@@ -516,20 +531,26 @@
           #home {
             .middle-bbs-music-wrapper {
               .list {
-                .bbsm-row-audio-wrapper {
-                  margin-left: 6px;
-                  .ql-audio {
-                    width: 50px !important;
-                    height: 55px !important;
-                    .audio-progress-effect-wrapper {
-                      width: 180px !important;
-                      //display: none;
-                      .audio-progress-effect-img-static {
-                        width: 160px !important;
+                //标题
+                .bbs-music-title-wrapper {
+                  //音量调节
+                  .bbs-music-voice-wrapper {
+                    margin-right: 30px !important;
+                    //音量图标
+                    .bbs-music-voice-icon-wrapper {
+                      .bbs-music-voice-icon {
                       }
-                      .audio-progress-effect-img{
-                        width: 160px !important;
-                        margin-left: 50px !important;
+                    }
+
+                    //音量进度条
+                    .bbs-music-voice-progress {
+                      .el-slider__runway {
+                        .el-slider__bar {
+                        }
+                        .el-slider__button-wrapper {
+                          .el-slider__button {
+                          }
+                        }
                       }
                     }
                   }
@@ -543,7 +564,22 @@
                   }
                   //音频
                   .bbsm-row-audio-wrapper {
-                    margin-left: 2.8vw !important;
+                    margin-left: 3.5vw !important;
+                    .ql-audio {
+                      width: 50px !important;
+                      height: 55px !important;
+                      .audio-progress-effect-wrapper {
+                        width: 180px !important;
+                        //display: none;
+                        .audio-progress-effect-img-static {
+                          width: 160px !important;
+                        }
+                        .audio-progress-effect-img {
+                          width: 160px !important;
+                          margin-left: 45px !important;
+                        }
+                      }
+                    }
                   }
                   //播放量转文字
                   .play-text-wrapper {
@@ -602,6 +638,9 @@
                 }
               }
               .list-bottom-wrapper {
+                .list-bottom-mobile-wrapper {
+                  padding: 30px 68px 30px 80px;
+                }
                 .list-bottom-loading {
                   margin-left: -35px !important;
                 }
@@ -611,6 +650,7 @@
                   }
                 }
               }
+
             }
           }
 
@@ -721,5 +761,68 @@
     //    }
     //  }
     //}
+
+    //消息回复评论格式
+    //消息管理风格
+    .content-middle-msg{
+      margin-top: -20px;
+      #msg{
+        .msg-content-wrapper{
+          width: 100% !important;
+          //左侧
+          #left-msg{
+            .left-msg-card{
+            }
+          }
+          //右侧
+          #right-msg{
+            margin-left: 0 !important;
+            .right-msg-card{
+              border-radius: 0;
+              //评论回复消息
+              #msg-comment {
+                .msg-comment-wrapper {
+                  padding: 0 16px 0 0;
+                  .msg-comment {
+                    .msg-comment-new-img{
+                      float: left;
+                      margin-right: 3px;
+                      width: 30px;
+                    }
+                    .msg-comment-new-img-empty{
+                      width: 10px;
+                    }
+                    .msg-comment-new-img-empty-all{
+                      width: 0;
+                    }
+                    .msg-comment-card {
+                      .msg-comment-row-wrapper {
+                        .mc-user-wrapper {
+                          margin-left: 6px;
+                          width: 61vw;
+                          .mc-user-name {
+                          }
+                          .mc-user-content {
+                            margin-top: 2px;
+                            font-size: 14px;
+                          }
+                        }
+                        .mc-audio-wrapper {
+                          width: 85px;
+                          padding-left: 2.5vw;
+                          .mc-del-button {
+                            margin-left: 10px;
+                          }
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
   }
 }

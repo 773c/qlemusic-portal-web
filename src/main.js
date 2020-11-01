@@ -29,7 +29,6 @@ Vue.use(qlAudio)
 Vue.use(time)
 Vue.use(tip)
 
-
 Vue.config.productionTip = false
 
 new Vue({

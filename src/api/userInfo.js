@@ -38,15 +38,12 @@ export function updateAvatar(data) {
   })
 }
 
-export function getUserById(id,isLoadingNprogress) {
+export function userInfo(id,isLoadingNprogress) {
   return request({
-    url:'/user/getUserById',
+    url:'/user/info/'+id,
     method:'get',
     headers:{
       isLoadingNprogress:isLoadingNprogress
-    },
-    params: {
-      id:id
     }
   })
 }

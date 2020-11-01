@@ -100,7 +100,7 @@
 </template>
 
 <script>
-  import {getMyMusicList} from "@/api/bbsMusic";
+  import {myMusicList} from "@/api/bbsMusic";
   import {mapGetters} from 'vuex'
 
   const defaultMyMusic = {
@@ -155,8 +155,8 @@
         }
         localStorage.setItem("muted", audio.muted)
       },
-      myMusicList(category) {
-        getMyMusicList({
+      getMyMusicList(category) {
+        myMusicList({
           pageNum: this.myMusicQuery.pageNum,
           pageSize: this.myMusicQuery.pageSize,
           userId: this.$route.query.uid,
@@ -192,12 +192,12 @@
       },
       //按最新发布时间排序
       getMyMusicListByNewTime() {
-        this.myMusicList('newTime')
+        this.getMyMusicList('newTime')
         this.isNewTimeSort = true
       },
       //按最多播放量排序
       getMyMusicListByMaxPlay() {
-        this.myMusicList('maxPlay')
+        this.getMyMusicList('maxPlay')
         this.isNewTimeSort = false
       },
       currentChangeHanlder(pageNum) {
@@ -207,7 +207,7 @@
           category = 'newTime'
         else
           category = 'maxPlay'
-        this.myMusicList(category)
+        this.getMyMusicList(category)
       },
       //获取子组件传来的实例
       setPlayEffect(vueComponent) {
@@ -221,7 +221,7 @@
       }
     },
     created() {
-      this.myMusicList(null)
+      this.getMyMusicList(null)
     },
   }
 </script>

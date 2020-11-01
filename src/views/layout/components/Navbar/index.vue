@@ -38,7 +38,7 @@
         <div class="collect-container">
           <!--<router-link target="_blank" to="/usr/collect">-->
           <div class="collect-wrapper" @click="clickForward('/usr/collect',false)">
-            <svg-icon class="svg-collect" icon-class="nav-collect"></svg-icon>
+            <svg-icon class="svg-collect" icon-class="nav-collect" style="width: 24px"></svg-icon>
           </div>
           <!--</router-link>-->
         </div>
@@ -46,11 +46,11 @@
     </template>
     <!--消息-->
     <template #after-three>
-      <el-dropdown v-if="!isMobile" class="info-container" placement="top">
+      <el-dropdown class="info-container" placement="top">
         <div class="info-wrapper">
-          <el-badge is-dot class="item" style="width: 20px;">
+          <el-badge :value="msgCount" :hidden="!isNewMsg" class="item">
             <div class="svg-info-wrapper">
-              <svg-icon class="svg-info" icon-class="nav-info"></svg-icon>
+              <svg-icon class="svg-info" icon-class="nav-info" style="width: 18px"></svg-icon>
             </div>
           </el-badge>
         </div>
@@ -60,11 +60,13 @@
               点赞
             </el-dropdown-item>
           </router-link>
-          <router-link to="/msg/comment">
+          <!--<div @click="clickForward('/msg/comment',false)">-->
+          <router-link :to="{path:'/msg/comment',query:{noSeeMsgIdStr:noSeeMsgIdStr}}">
             <el-dropdown-item>
-              评论
+              评论 <span v-show="isNewMsg" class="info-route" style="color: #fe0000;">+{{msgCount}}</span>
             </el-dropdown-item>
           </router-link>
+          <!--</div>-->
           <router-link to="/">
             <el-dropdown-item>
               关注
@@ -95,7 +97,7 @@
     </template>
     <!--用户信息-->
     <template #user>
-      <div id="no-login-btn" class="login-container" v-if="isLogin" @click="dialogVisible = true">
+      <div v-if="!isLogin" id="no-login-btn" class="login-container" @click="dialogVisible = true">
         登录
       </div>
       <login-register
@@ -129,7 +131,7 @@
           </reg-telephone>
         </template>
       </login-register>
-      <div v-if="!isLogin">
+      <div v-if="isLogin">
         <el-dropdown class="avatar-container">
           <div class="avatar-wrapper">
             <img class="user-avatar" :src="userInfo.avatar">
@@ -181,14 +183,16 @@
 </template>
 
 <script>
+  import {mapGetters} from 'vuex'
   import LoginRegister from '@/components/LoginRegister'
   import LogTelephonePassword from './components/LogTelephonePassword'
   import LogTelephone from './components/LogTelephone'
   import RegTelephone from './components/RegTelephone'
   import SetPassword from './components/RegTelephone/SetPassword'
   import CommonNavbar from '@/components/Navbar'
-  import {mapGetters} from 'vuex'
   import {getToken} from "@/utils/auth";
+  import {getAddr} from "@/api/addr";
+  import {noSeeMsgCommentCount} from "@/api/comment";
 
   export default {
     name: "navbar",
@@ -212,6 +216,11 @@
         dialogVisible: false,
         isShowAccPwdLogin: true,
         isShowLogin: true,
+        addrInfo: '',
+        isNewMsg:false,
+        noSeeMsgIdStr:'',
+        msgLikeCount:0,
+        msgCommentCount:0,
       }
     },
     computed: {
@@ -219,20 +228,21 @@
         'userInfo'
       ]),
       isLogin() {
-        if (this.$store.state.user.token)
-          return false;
-        else
-          return true;
+        if (this.$store.state.user.token) return true;
+        else return false;
       },
       device() {
         return this.$store.state.app.device
       },
-      isMobile(){
-        if(this.device === 'mobile')
-          return true
-        else
-          return false
+      isMobile() {
+        if (this.device === 'mobile') return true
+        else return false
+      },
+      msgCount(){
+        return this.msgLikeCount + this.msgCommentCount
       }
+    },
+    watch:{
     },
     methods: {
       setDialogVisible() {
@@ -240,12 +250,15 @@
         this.resetAll()
       },
       logoutHandler() {
-        this.$loading({
+        const load = this.$loading({
           lock: true,
           background: 'rgba(0, 0, 0, 0.1)'
         });
         this.$store.dispatch('Logout').then(() => {
+          this.closeWebSocket()
           location.reload()
+        }).catch(() => {
+          load.close()
         })
       },
       clickForward(path, flag) {
@@ -272,17 +285,85 @@
       },
       //重置所有文本框内容和其他判断
       resetAll() {
-        if(this.isShowLogin && this.isShowAccPwdLogin){
+        if (this.isShowLogin && this.isShowAccPwdLogin) {
           //账号密码登录重置
           this.$refs.logTelephonePasswordRef.logTelPwdReset()
-        }else {
+        } else {
           this.isShowLogin = true
+        }
+      },
+      //获取用户未查看的消息
+      getNoSeeMsgCommentCount(){
+        noSeeMsgCommentCount(this.userInfo.id,false).then(response => {
+          let data = response.data
+          if(data.length !== 0){
+            data.forEach((item,index) => {
+              this.noSeeMsgIdStr += item +':'
+            })
+            this.msgCommentCount = data.length
+            this.isNewMsg = true
+          }
+        })
+      },
+      initWebSocket() {
+        // 连接错误
+        this.websocket.onerror = this.setErrorMessage
+        // 连接成功
+        this.websocket.onopen = this.setOnopenMessage
+        // 收到消息的回调
+        this.websocket.onmessage = this.setOnmessageMessage
+        // 连接关闭的回调
+        this.websocket.onclose = this.setOncloseMessage
+        // 监听窗口关闭事件，当窗口关闭时，主动去关闭websocket连接，防止连接还没断开就关闭窗口，server端会抛异常。
+        window.onbeforeunload = this.onbeforeunload
+      },
+      //连接失败状态
+      setErrorMessage() {
+        // console.log('WebSocket连接发生错误   状态码：' + this.websocket.readyState)
+      },
+      //连接成功状态
+      setOnopenMessage() {
+        // console.log('WebSocket连接成功    状态码：' + this.websocket.readyState)
+      },
+      //服务端返回消息
+      setOnmessageMessage(response) {
+        // 根据服务器推送的消息做自己的业务处理
+        this.$notify({
+          title: '提示',
+          message: response.data
+        });
+        this.getNoSeeMsgCommentCount()
+      },
+      //连接关闭状态
+      setOncloseMessage() {
+        // console.log('WebSocket连接关闭    状态码：' + this.websocket.readyState)
+      },
+      //关闭websocket
+      onbeforeunload() {
+        this.closeWebSocket()
+      },
+      //关闭websocket
+      closeWebSocket() {
+        this.websocket.close()
+      }
+    },
+    created(){
+      //获取用户未查看的消息
+      if(this.userInfo !== undefined || this.userInfo !== '' || this.userInfo !== null){
+        this.getNoSeeMsgCommentCount()
+      }
+    },
+    mounted(){
+      if(this.isLogin){
+        if ('WebSocket' in window) {
+          this.websocket = new WebSocket('ws://localhost:8001/connectWebSocket/' + this.userInfo.id)
+          this.initWebSocket()
         }
       }
     }
   }
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 
 </style>

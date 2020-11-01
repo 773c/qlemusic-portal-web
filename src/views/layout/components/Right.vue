@@ -46,7 +46,7 @@
         </div>
         <div class="hrrc-wrapper">
           <div class="hrrc-avatar-wrapper">
-            <el-avatar :size=48 src="http://www.eiqle.com/img/default-avatar.png"></el-avatar>
+            <el-avatar :size=48 src="https://qlmusic-oss1.oss-cn-zhangjiakou.aliyuncs.com/qlemusic/images/default/default-avatar.png"></el-avatar>
           </div>
           <div class="hrrc-info-wrapper">
             <div class="hrrci-name-wrapper">

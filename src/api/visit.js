@@ -11,13 +11,12 @@ export function visit(params,isLoadingNprogress) {
   })
 }
 
-export function getVisitCount(params,isLoadingNprogress) {
+export function visitCount(id,isLoadingNprogress) {
   return request({
-    url:'/visit/getVisitCount',
+    url:'/visit/count/'+id,
     method:'get',
     headers:{
       isLoadingNprogress:isLoadingNprogress
-    },
-    params: params
+    }
   })
 }

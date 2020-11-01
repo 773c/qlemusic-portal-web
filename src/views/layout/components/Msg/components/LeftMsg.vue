@@ -1,6 +1,6 @@
 <template>
-  <div id="left-msg">
-    <el-card class="left-msg-card" shadow="never">
+  <div v-if="device !== 'mobile'" id="left-msg">
+    <el-card  class="left-msg-card" shadow="never">
       <el-menu
         :default-active="$route.path"
         :router="true"
@@ -40,7 +40,12 @@
 
 <script>
   export default {
-    name: "leftMsg"
+    name: "leftMsg",
+    computed:{
+      device() {
+        return this.$store.state.app.device
+      }
+    }
   }
 </script>
 

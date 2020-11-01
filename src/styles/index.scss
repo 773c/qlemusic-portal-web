@@ -31,12 +31,14 @@ html {
   box-sizing: border-box;
   width: 100% !important;
   height: 100% !important;
+  overflow-y:auto;
 }
 
 *,
 *:before,
 *:after {
   box-sizing: inherit;
+  -webkit-overflow-scrolling: touch;/*解决移动端滑动卡顿问题*/
 }
 
 div:focus {
@@ -59,7 +61,7 @@ a:hover {
   内容部分
  */
 .main-wrapper {
-  height: 100% !important;
+  //height: 100% !important;
   //导航
   .navbar-wrapper {
     width: 100% !important;
@@ -75,11 +77,11 @@ a:hover {
     z-index: 998;
   }
   .content-wrapper {
-    height: 100% !important;
+    //height: 100% !important;
     //第一种格式（home）
     .content-middle-one {
       width: 100%;
-      height: 100% !important;
+      //height: 100% !important;
       //轮翻图
       .home-carousel-wrapper {
         position: absolute;
@@ -112,28 +114,26 @@ a:hover {
       .home-content-wrapper{
         width: 1200px;
         margin: 0 auto;
+        height: auto;
         //主页左边内容
         .content-middle {
           width: 900px;
           float: left;
-          margin-top: -9px;
+          margin-top: -11px;
           #home {
             //滚动条
             .el-scrollbar__wrap {
-              overflow-x: hidden;
+              //overflow-x: hidden;
             }
             .middle-bbs-music-wrapper {
-              overflow: auto;
               .list {
                 padding-left: 0px;
-                box-shadow: 0px -3px 0px 3px #fe0000;
-
+                box-shadow: 0px -5px 0px 0px #fe0000;
                 //.el-table__header-wrapper .el-table__header .has-gutter .el-table_1_column_1.is-leaf .cell {
                 //  color: #fe0000;
                 //  font-size: 19px;
                 //  margin-left: 10px;
                 //}
-
                 //标题
                 .bbs-music-title-wrapper {
                   .bbs-music-title {
@@ -148,7 +148,6 @@ a:hover {
                     float: right;
                     margin-top: -25px;
                     margin-right: 50px;
-
                     //音量图标
                     .bbs-music-voice-icon-wrapper {
                       .bbs-music-voice-icon {
@@ -157,7 +156,6 @@ a:hover {
                         height: 1.1em;
                       }
                     }
-
                     //音量进度条
                     .bbs-music-voice-progress {
                       margin: -27px 0 0 22px;
@@ -248,7 +246,6 @@ a:hover {
                     .lick-after-img{
                     }
                   }
-
                   //评论
                   .comment {
                     width: auto;
@@ -261,30 +258,32 @@ a:hover {
                     overflow: scroll;
                     overflow-x: auto;
                   }
-                  //评论抽屉框
-                  .bbsm-row-comment-drawer-wrapper{
-                    //给抽屉样式加滚动条
-                    .el-drawer {
-                      overflow: scroll;
-                      overflow-x: auto;
-                    }
-                    .comment-drawer{
-                      .el-drawer__header {
-                        font-size: 15px;
-                        font-weight: bold;
-                        color: black;
-                      }
-                      .comment-wrapper{
-                      }
-                    }
+                }
+              }
+              //评论抽屉框
+              .bbsm-row-comment-drawer-wrapper{
+                //给抽屉样式加滚动条
+                .el-drawer {
+                  overflow: scroll;
+                  overflow-x: auto;
+                  -webkit-overflow-scrolling: touch;/*解决移动端滑动卡顿问题*/
+                }
+                .comment-drawer{
+                  .el-drawer__header {
+                    font-size: 15px;
+                    font-weight: bold;
+                    color: black;
+                  }
+                  .comment-wrapper{
                   }
                 }
               }
+
               .list-bottom-wrapper{
-                margin-top:-10px;
-                height: 50px;
+                margin-top:-16px;
+                margin-bottom: 10px;
+                height: 60px;
                 .list-bottom-loading{
-                  margin-top: -7px;
                 }
                 .list-bottom-empty-wrapper{
                   color: #bbbbbb;
@@ -701,8 +700,8 @@ a:hover {
               z-index: 1;
               .title-img {
                 position: relative;
-                top: -17px;
-                left: 173px;
+                top: -12px;
+                left: 175px;
                 z-index: 100;
               }
             }
@@ -811,8 +810,8 @@ a:hover {
     .content-middle-msg{
       #msg{
         .msg-content-wrapper{
-          margin-left: 10vw;
-          width: 1205px;
+          width: 1200px;
+          margin: 0 auto;
           //左侧
           #left-msg{
             width: 250px;
@@ -835,7 +834,6 @@ a:hover {
           }
           //右侧
           #right-msg{
-            width: 955px !important;
             margin-left: 250px;
           }
         }

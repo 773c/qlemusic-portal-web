@@ -6,7 +6,6 @@ import {getToken} from '@/utils/auth'
 import {Message, MessageBox} from 'element-ui'
 
 router.beforeEach((to, from, next) => {
-  
   if (getToken()) {
     if (to.meta.isLoadingNprogress) {
       //进度条样式

@@ -35,7 +35,7 @@
     <div style="clear: both"></div>
     <div class="tabs-oauth-wrapper">
       <span><img id="qqLogin" src="@/assets/images/qq.png" alt="qq" width="32" height="32"
-             @click="connectqqHandler">
+                 @click="connectqqHandler">
       </span>
       <span class="tabs-oauth">
         <img src="@/assets/images/weixin.png" alt="qq" width="32" height="32">
@@ -59,7 +59,7 @@
         logTelephone: '',
         password: '',
         isNullTelPwd: true,
-        credentialType:'password'
+        credentialType: 'password'
       }
     },
     computed: {
@@ -148,7 +148,11 @@
           lock: true,
           background: 'rgba(0, 0, 0, 0.1)'
         })
-        this.$store.dispatch('Login', {telephone: this.logTelephone, password: this.password,credentialType:this.credentialType}).then(() => {
+        this.$store.dispatch('Login', {
+          telephone: this.logTelephone,
+          password: this.password,
+          credentialType: this.credentialType
+        }).then(() => {
           location.reload()
         }).catch(() => {
           load.close()

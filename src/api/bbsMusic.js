@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function getRecommendList(params,isLoadingNprogress) {
+export function recommendList(params,isLoadingNprogress) {
   return request({
     url: '/audio/recommend',
     method: 'get',
@@ -11,7 +11,7 @@ export function getRecommendList(params,isLoadingNprogress) {
   })
 }
 
-export function getMyMusicList(params, isLoadingNprogress) {
+export function myMusicList(params, isLoadingNprogress) {
   return request({
     url: '/audio/myMusic',
     method: 'get',
@@ -40,10 +40,10 @@ export function release(data) {
   })
 }
 
-export function getHotMusic(params, isLoadingNprogress) {
+export function userHotList(params, isLoadingNprogress) {
   return request({
-    url: '/audio/getHotMusic',
+    url: '/audio/user/hot',
     method: 'get',
-    params: params
+    params:params
   })
 }
