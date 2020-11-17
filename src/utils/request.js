@@ -6,7 +6,7 @@ import {getToken, removeToken} from "./auth";
 import NProgress from 'nprogress'
 
 const service = axios.create({
-  baseURL: 'http://47.94.161.88:8001',  //47.94.161.88
+  baseURL: 'http://localhost:8001',  
   timeout: 15000
 })
 
